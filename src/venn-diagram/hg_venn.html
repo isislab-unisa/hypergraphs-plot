@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Venn Diagram - pack layout</title>
+   <style>
+
+        #original {
+            margin-left: 10%;
+        }
+
+        .venntooltip{
+            position:absolute;
+            text-align: center;
+            background: #333;
+            color: #ddd;
+            padding: 2px;
+            border: 0px;
+            border-radius: 8px;
+        }
+
+    </style>
+</head>
+ 
+<body>
+    <div id="original"></div>
+    
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script type="text/javascript" src="venn.min.js"></script>
+    <script type="text/javascript" src="./d3-hypergraph-venn.js"></script>
+    <script>
+        d3.json("dataVENN.json", function(error, graph) {
+  	    if (error) throw error;
+	    var nodes = graph.nodes,
+	    	links = graph.links,
+	    	bilinks = [];
+        //d3.hypergraph invocation passing links and nodes 
+        var data = d3.hypergraph(links,nodes);
+        //d3.hypergraph links
+        links = data.links;
+        console.log(links);
+        console.log(links.length);
+        //d3.hypergraph nodes
+        nodes = data.nodes;
+        console.log(nodes);
+        
+        //logging
+        links.forEach(element => {
+            console.log("links");
+            console.log(element);
+        });
+        nodes.forEach(element => {
+            console.log("nodes");
+            console.log(element);
+        });
+
+        //creating sets
+        var letter=['A', 'B', 'C','D','E','F','G','H'];
+        console.log("letter");
+        console.log(letter);
+        var sets= [];
+        
+        for(i=0; i<links.length; i++){
+            sets.push({sets: [i], size: links[i].length});
+            console.log("links[i]: " + links[i]);
+        }
+        /*intersezione tra tutte le possibili coppie di insiemi
+        for(i=0; i<links.length; i++){
+            for(j=0; j<links.length; j++){
+                var intersection= links[i].filter(value => links[j].includes(value));
+                console.log(intersection);
+                if(intersection.length>0){
+                    sets.push({sets: [i, j], size: intersection.length})
+                }
+            }
+        }*/
+        /*
+        for(i=0; i<links.lenght; i++){
+            //CALCOLA L'INTERSEZIONE TRA N INSIEMI
+            var data= [links[0], links[1], ... , links[k], links[j]];
+            result = data.reduce((a, b) => a.filter(c => b.includes(c)));
+        }*/
+
+        
+        sets.push({sets: ["0","1"], size: 1});
+        sets.push({sets: ["0","2"], size: 1});
+        sets.push({sets: ["1","2"], size: 2});
+        sets.push({sets: ["0","1","2"], size: 1});
+        
+        console.log("sets");
+        console.log(sets);
+
+
+        //per rendere il grafo interattivo
+        // add listeners to all the groups to display tooltip on mouseover
+        var div= d3.select("#original");
+        div.datum(sets).call(venn.VennDiagram().width(screen.width * 0.5).height(screen.height * 0.5));
+
+        var tooltip = d3.select("body").append("div").attr("class","venntooltip");
+        
+
+        div.selectAll("g").on("mouseover", function(d, i) {
+            // sort all the areas relative to the current item
+            venn.sortAreas(div, d);
+            console.log(venn.sortAreas(div, d))
+            console.log(d.sets);
+            console.log(d.sets.length);
+
+            // Display a tooltip with the current size
+            tooltip.transition().duration(400).style("opacity", .9);
+            tooltip.text(d.size + " nodes");
+            
+            // highlight the current path
+            var selection = d3.select(this).transition("tooltip").duration(400);
+            selection.select("path")
+                .style("stroke-width", 3)
+                .style("fill-opacity", d.sets.length == 1 ? .4 : .1)
+                .style("stroke-opacity", 1)
+                .style("stroke", "white");
+            }).on("mousemove", function() {
+                tooltip.style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+            }).on("mouseout", function(d, i) {
+                tooltip.transition().duration(400).style("opacity", 0);
+                var selection = d3.select(this).transition("tooltip").duration(400);
+                selection.select("path")
+                    .style("stroke-width", 0)
+                    .style("fill-opacity", d.sets.length == 1 ? .25 : .0)
+                    .style("stroke-opacity", 0);
+            });
+            
+        });        
+    </script>
+
+</body>
+
+</html>

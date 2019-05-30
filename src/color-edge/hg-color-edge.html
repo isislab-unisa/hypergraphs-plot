@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<style>
+
+.link {
+  fill: none;
+  stroke: #bbb;
+}
+.node circle {
+
+  pointer-events: all;
+  stroke: #000;
+  stroke-width: 1px;
+}
+
+</style>
+<body>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="./d3-hypergraph.js"></script>
+<script type = "text/javascript">
+var dataMarker = { id: 0, name: 'circle', path: 'M 0, 0  m -5, 0  a 5,5 0 1,0 10,0  a 5,5 0 1,0 -10,0', viewbox: '-6 -6 12 12' };
+var nodeR = 20, lNodeR = 0.6;
+var nodeId = 0;
+var width = 960,
+height = 600;
+//zoom handler
+var zoom = d3.zoom()
+    .scaleExtent([1/2, 10])
+    .on("zoom", zoomed);
+
+//drag handler
+var drag = d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended);
+
+//svg creation	
+var svg = d3.select("body")
+			.append("svg:svg")
+			.attr("width",width)
+			.attr("height",height)
+			.call(zoom)
+			.append("g");
+	
+//defs creation for markers
+var defs = svg.append("defs");
+
+//force layout definition	
+var simulation = d3.forceSimulation()
+    .force("link", d3.forceLink().id(function(d) { return d.id; }))//.distance(80).strength(1))
+    .force("charge", d3.forceManyBody().strength(-50).distanceMin(30).distanceMax(200))
+    .force("center", d3.forceCenter(width / 2, height / 2))
+	.force("collide",d3.forceCollide(50));
+
+//data reading from json file 
+d3.json("data.json", function(error, graph) {
+  	if (error) throw error;
+	var nodes = graph.nodes,
+		links = graph.links,
+		bilinks = [];
+	//d3.hypergraph invocation passing links and nodes 
+	var data = d3.hypergraph(links,nodes);
+	//d3.hypergraph links
+	links = data.links;
+	console.log(links);
+	//d3.hypergraph nodes
+	nodes = data.nodes;
+	console.log(nodes);
+	//node mapping by id
+	nodeById = d3.map(nodes, function(d) { return d.id; });
+	
+	links.forEach(function (link, index){
+	var s = link.source = nodeById.get(link.source),
+        t = link.target = nodeById.get(link.target),
+        i = {}; // intermediate node
+    	nodes.push(i);
+		console.log(s,t,nodes.indexOf(t));
+    	links.push({source: s, target: i}, {source: i, target: t});
+    	bilinks.push([s, i, t]);
+	});
+	//links creation 
+  	var link = svg.selectAll(".link")
+    	.data(bilinks)
+    	.enter().append("path")
+    	.attr("class", "link")
+		.style("stroke", linkColour)
+		.attr("stroke-width", 2)
+  		.attr("marker-start","url(#circleMarker)")
+		.attr("marker-mid","url(#textMarker)")
+  		.attr("marker-end",function (d){
+  			if (!d[2].link)
+  				return "url(#circleMarker)";
+			else
+				return "null";
+  		});
+	//node creation
+  	var node = svg.selectAll(".node")
+    	.data(nodes.filter(function(d) { 
+				return d.id;
+			 }))
+    	.enter().append("g")
+		.attr("class", "node");
+	//for every node -> svg circle creation
+	node.append("circle")
+        .attr("class", function(d){
+  		  if (d.link){
+  			  return "linknode";
+  		  }else{
+  			  return "node";
+  		  }
+  	  })
+        .attr("r", function(d){
+  		  if (d.link){
+  			  return lNodeR;
+  		  }else{
+  			  return nodeR;
+  		  }
+        })
+        .attr("fill", function(d) {
+  		  if (d.link){ 
+  		  	return "rgb(100,100,100)";
+  	  	  }else{
+  			  return "rgb(255,255,255)";
+  	  	  }
+  	   });
+			
+	//id text
+	node.append("text")
+	    .attr("dx", 22)
+	    .attr("dy", ".35em")
+	    .text(function(d) { 
+			if (!d.link)
+				return d.id; 
+			return null;		
+		});
+		  
+	//onmouseover id text	  
+	node.append("title")
+		.text(function(d) { 
+			if (!d.link)
+				return d.id; 
+			return null;
+		});
+	
+	node.call(drag);
+  
+	//linkColour
+	//Function to choose the line colour and thickness 
+	//If the link type is "A" return green 
+	//If the link type is "E" return red 
+	function linkColour(d){
+		colorIndex = nodes.indexOf(d[2]) % 20;
+		var color = d3.scaleOrdinal(d3.schemeCategory20).range()[colorIndex];
+		console.log(d, colorIndex, color);
+		return color;
+	}
+  
+  //sphere marker
+  	var marker = defs.append("marker")
+		.attr("id","circleMarker")
+		.attr("markerHeight", 5)
+    	.attr("markerWidth", 5)
+    	.attr("markerUnits", "strokeWidth")
+    	.attr("orient", "auto")
+    	.attr("refX", 0)
+    	.attr("refY", 0)
+		.attr("viewBox", "-6 -6 12 12")
+		.append("path")
+		.attr("d","M 0, 0  m -5, 0  a 5,5 0 1,0 10,0  a 5,5 0 1,0 -10,0")
+		.attr("fill","black");
+			
+	simulation
+    .nodes(nodes)
+    .on("tick", ticked)
+	.force("link")
+    .links(links);
+	
+    function ticked() {
+      link.attr("d", positionLink);
+      node.attr("transform", positionNode);
+    }
+	
+});
+
+function positionLink(d) {
+	diffX0 = d[0].x - d[1].x;
+	diffY0 = d[0].y - d[1].y;
+	diffX2 = d[2].x - d[1].x;
+	diffY2 = d[2].y - d[1].y;
+	
+	pathLength01 = Math.sqrt((diffX0 * diffX0) + (diffY0 * diffY0));
+	pathLength12 = Math.sqrt((diffX2 * diffX2) + (diffY2 * diffY2));
+	
+	offsetX0 = (diffX0 *  nodeR) / pathLength01;
+	offsetY0 = (diffY0 *  nodeR) / pathLength01;
+	if(!d[2].link){
+		offsetX2 = (diffX2 * nodeR) / pathLength12;
+		offsetY2 = (diffY2 * nodeR) / pathLength12;
+	}else{
+		offsetX2 = (diffX2 * lNodeR) / pathLength12;
+		offsetY2 = (diffY2 * lNodeR) / pathLength12;
+	}
+
+	var x0Pos,y0Pos,x2Pos,y2Pos;
+	
+	if (d[0].link){
+		x0Pos = d[0].x;
+		y0Pos = d[0].y;
+	}else{
+		x0Pos = d[0].x - offsetX0;
+		y0Pos = d[0].y - offsetY0;
+	}
+	if (d[2].link){
+		x2Pos = d[2].x;
+		y2Pos = d[2].y;
+	}else{
+		x2Pos = d[2].x - offsetX2;
+		y2Pos = d[2].y - offsetY2;
+	}
+
+	return "M" + x0Pos + "," + y0Pos
+       + "S" + d[1].x + "," + d[1].y
+       + " " + x2Pos + "," + y2Pos;
+}
+
+function positionNode(d) {
+  return "translate(" + d.x + "," + d.y + ")";
+}
+
+function dragstarted(d) {
+	
+  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+  d.fx = d.x, d.fy = d.y;
+  d3.event.sourceEvent.stopPropagation();
+}
+
+function dragged(d) {
+  d.fx = d3.event.x, d.fy = d3.event.y;
+}
+
+function dragended(d) {
+  if (!d3.event.active) simulation.alphaTarget(0);
+  d.fx = null, d.fy = null;
+}
+
+function zoomed() {
+  svg.attr("transform", d3.event.transform);
+}   
+</script>
+</body>
+</html>
