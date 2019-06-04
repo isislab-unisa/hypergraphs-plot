@@ -1,3 +1,4 @@
+
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -11,7 +12,6 @@
 		var	j;
 		var	k;
 		links.forEach(function(d) {
-
 			//if link length >2 there's an Hyperlink: i need to create a connection node
 			if (d.length > 2) {
 			//connection node id creation
@@ -31,11 +31,9 @@
 			//if link < 2 then the connection is the traditional one w/o connection node
 				hyper.push({source: d[0],target: d[1]});
 			}
-			
 		});
 
 		 var obj  = {links:hyper,nodes:nodes};
-
 		 return obj;
 	}
 
