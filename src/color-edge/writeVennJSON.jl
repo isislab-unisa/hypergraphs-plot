@@ -2,31 +2,66 @@ using JSON
 
 function generateFileJSON(h::Hypergraph)
     n_ver,n_he=size(h)
-    s="{
+    s="{"
+
+    sNodes="
     \"nodes\":["
+    sLinks="
+    \"links\":["
+    sNodeLinks="
+    \"nodelinks\":["
+
     x=1
     for x in 1:n_ver
-        s=s*"
-        {\"id\": \""*string(x)*"\", \"group\":"*string(x)*"},"
+        sNodes=sNodes*"
+        {\"id\":\""*string(x)*"\"},"
     end
-    s=chop(s)
-    s=s*"
-    ],
-    \"links\":["
+    sNodes=chop(sNodes);
+    sNodes=sNodes*"
+    ],"
+
+
+
     x=1
     for x in 1:n_he
         y=1
+        pos=[]
         for y in 1:n_ver
             if getindex(h,y,x)!=nothing
-                s=s*"
-                {\"source\": \""*string(y)*"\", \"target\":\""*string(x)*"\", \"value\":"*string(getindex(h,y,x))*"},"
+                push!(pos,y)
             end
         end
+        if length(pos)>1
+            sLinks=sLinks*"
+            ["
+            y=1
+            temp="ln"
+            for y in y:length(pos)
+                sLinks=sLinks*"\""*string(pos[y])*"\","
+                temp=temp*string(pos[y])
+            end
+            for y in y:length(pos)
+                sNodeLinks=sNodeLinks*"
+                {\"id\":\""*string(pos[y])*"\",\"link\":\""*temp*"\",\"value\":\""*string(getindex(h,pos[y],x))*"\"},"
+            end
+            sLinks=chop(sLinks)
+            sLinks=sLinks*"],"
+        end
     end
-    s=chop(s)
-    s=s*"
+
+    sLinks=chop(sLinks)
+    sLinks=sLinks*"
+    ],"
+
+    sNodeLinks=chop(sNodeLinks)
+    sNodeLinks=sNodeLinks*"
     ]
-    }"
+}"
+
+
+s=s*sNodes*sLinks*sNodeLinks
+
+
 open("C:\\Users\\Marti\\github\\hypergraphs-plot\\src\\color-edge\\data.json","w") do f
   write(f, s)
 end
