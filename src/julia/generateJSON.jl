@@ -62,7 +62,7 @@ function generateFileJSON(h::Hypergraph)
 s=s*sNodes*sLinks*sNodeLinks
 
 
-open("C:\\Users\\Marti\\github\\hypergraphs-plot\\src\\color-edge\\data.json","w") do f
+open("../color-edge/data.json","w") do f
   write(f, s)
 end
 end

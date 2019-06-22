@@ -8,24 +8,24 @@ params: h: Hyperhgraph
         type: extra_node(default), eulero_venn, matrix
         layout: spring_layout(default), circular_layout
 =#
-function hgplot(h::Hypergraph, vis="extra_node")
-    if vis== "extra_node"
+function hgplot(h::Hypergraph, vis="color-edge")
+    if vis== "color-edge"
         extranodeJSON(h)
     elseif vis=="eulero_venn"
         eulero_vennJSON(h)
     end
 end
 
-function hgplot(h::Hypergraph; type= "extra_node", layout="spring_layout")
-    if type=="extra_node"
-        hgplot(h, "extra_node")
+function hgplot(h::Hypergraph; type= "color-edge", layout="spring_layout")
+    if type=="color-edge"
+        hgplot(h, "color-edge")
     elseif type=="eulero_venn"
         hgplot(h, "eulero_venn")
     end
 end
 
 function extranodeJSON(h::Hypergraph)
-    #createJSON extranode
+    generateFileJSON(h)
 end
 
 function eulero_vennJSON(h::Hypergraph)
