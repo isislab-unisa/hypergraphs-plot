@@ -1,20 +1,28 @@
 using JSON
 
-function generateFileJSON(h::Hypergraph, s)
+function generateFileJSON(h::Hypergraph)
     n_ver,n_he=size(h)
     s="{"
 
+
     sNodes="
     \"nodes\":["
-    sLinks="
-    \"links\":["
-    sNodeLinks="
-    \"nodelinks\":["
-
     x=1
     for x in 1:n_ver
         sNodes=sNodes*"
-        {\"id\":\""*string(x)*"\"},"
+        {\"id\":\""*string(x)*"\" , \"links\":["
+        flag=true;
+        y=1
+        for y in 1:n_he
+            if getindex(h,x,y)!=nothing
+                sNodes=sNodes*"\""*string(y)*"\","
+                flag=false;
+            end
+        end
+        if flag==false
+            sNodes=chop(sNodes);
+        end
+        sNodes=sNodes*"]},"
     end
     sNodes=chop(sNodes);
     sNodes=sNodes*"
@@ -22,52 +30,67 @@ function generateFileJSON(h::Hypergraph, s)
 
 
 
+
+    sLinks="
+    \"links\":["
     x=1
     for x in 1:n_he
+        sLinks=sLinks*"
+        {\"id\":\""*string(x)*"\", \"nodes\": ["
+        flag=true;
         y=1
-        pos=[]
         for y in 1:n_ver
             if getindex(h,y,x)!=nothing
-                push!(pos,y)
+                sLinks=sLinks*"\""*string(y)*"\","
+                flag=false;
             end
         end
-        if length(pos)>1
-            sLinks=sLinks*"
-            ["
-            y=1
-            temp="ln"
-            for y in y:length(pos)
-                sLinks=sLinks*"\""*string(pos[y])*"\","
-                temp=temp*string(pos[y])
-            end
-            for y in y:length(pos)
-                sNodeLinks=sNodeLinks*"
-                {\"id\":\""*string(pos[y])*"\",\"link\":\""*temp*"\",\"value\":\""*string(getindex(h,pos[y],x))*"\"},"
-            end
+        if flag==false
             sLinks=chop(sLinks)
-            sLinks=sLinks*"],"
         end
+        sLinks=sLinks*"]},"
     end
-
     sLinks=chop(sLinks)
     sLinks=sLinks*"
     ],"
 
-    sNodeLinks=chop(sNodeLinks)
-    sNodeLinks=sNodeLinks*"
-    ]
-}"
+
+
+    sNodeLinks="
+    \"nodelinks\":["
+        x=1
+        for x in 1:n_he
+            y=1
+            pos=[]
+            for y in 1:n_ver
+                if getindex(h,y,x)!=nothing
+                    push!(pos,y)
+                end
+            end
+            if length(pos)>1
+                y=1
+                temp="ln"
+                for y in y:length(pos)
+                    temp=temp*string(pos[y])
+                end
+                for y in y:length(pos)
+                    sNodeLinks=sNodeLinks*"
+                    {\"node\":\""*string(pos[y])*"\",\"link\":\""*temp*"\",\"value\":\""*string(getindex(h,pos[y],x))*"\"},"
+                end
+            end
+        end
+        sNodeLinks=chop(sNodeLinks)
+        sNodeLinks=sNodeLinks*"
+        ]
+    }"
+
+
 
 
 s=s*sNodes*sLinks*sNodeLinks
 
-    if(s=="color-edge")
-        open("../color-edge/data.json","w") do f
+    open("src/scripts/data.json","w") do f
         write(f, s)
     end
-    else
-        open("../venn-diagram/data.json","w") do f
-        write(f, s)
-    end
-end
+
 end

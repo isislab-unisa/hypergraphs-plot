@@ -49,10 +49,10 @@ function hgColorEdgePlot(){
             bilinks = [];
     
         var nod=graph.nodelinks;
-    
+        console.log(nodes);
         var dict = {};
         nod.forEach(function(element,i){
-            dict[element.id+"-"+element.link]=element.value;
+            dict[element.node+"-"+element.link]=element.value;
         });
     
         //d3.hypergraph invocation passing links and nodes
@@ -248,6 +248,7 @@ function hgColorEdgePlot(){
             var	k;
             links.forEach(function(d) {
                 //if link length >2 there's an Hyperlink: i need to create a connection node
+                d = d.nodes;
                 if (d.length > 2) {
                 //connection node id creation
                     var	id = 'ln';
