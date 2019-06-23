@@ -11,7 +11,7 @@ params: h: Hyperhgraph
 function hgplot(h::Hypergraph, vis="color-edge")
     if vis== "color-edge"
         extranodeJSON(h)
-    elseif vis=="eulero_venn"
+    elseif vis=="venn"
         eulero_vennJSON(h)
     end
 end
@@ -19,15 +19,15 @@ end
 function hgplot(h::Hypergraph; type= "color-edge", layout="spring_layout")
     if type=="color-edge"
         hgplot(h, "color-edge")
-    elseif type=="eulero_venn"
-        hgplot(h, "eulero_venn")
+    elseif type=="venn"
+        hgplot(h, "venn")
     end
 end
 
 function extranodeJSON(h::Hypergraph)
-    generateFileJSON(h)
+    generateFileJSON(h,"color-edge")
 end
 
 function eulero_vennJSON(h::Hypergraph)
-    #createJSON eulero
+    generateFileJSON(h,"venn")
 end

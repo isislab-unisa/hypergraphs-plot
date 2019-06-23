@@ -1,6 +1,6 @@
 using JSON
 
-function generateFileJSON(h::Hypergraph)
+function generateFileJSON(h::Hypergraph, s)
     n_ver,n_he=size(h)
     s="{"
 
@@ -61,8 +61,13 @@ function generateFileJSON(h::Hypergraph)
 
 s=s*sNodes*sLinks*sNodeLinks
 
-
-open("../color-edge/data.json","w") do f
-  write(f, s)
+    if(s=="color-edge")
+        open("../color-edge/data.json","w") do f
+        write(f, s)
+    end
+    else
+        open("../venn-diagram/data.json","w") do f
+        write(f, s)
+    end
 end
 end
