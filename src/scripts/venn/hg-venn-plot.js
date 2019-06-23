@@ -21,7 +21,7 @@ require.config({
 
 function hgVennPlot(){  
     require(['d3', 'venn'], function(d3, venn){
-        d3.json("scripts/dataVENN.json", function(error, graph) {
+        d3.json("scripts/data.json", function(error, graph) {
             if (error) throw error;
             
           var nodes = graph.nodes,
@@ -33,7 +33,7 @@ function hgVennPlot(){
           });
           console.log("links " + links)
           nodelinks.forEach(element => {
-              console.log(element.id + "  " + element.link + "  " + element.value)
+              console.log(element.node + "  " + element.link + "  " + element.value)
           });
 
           //d3.hypergraph invocation passing links and nodes 
