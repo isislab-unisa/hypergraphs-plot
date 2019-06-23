@@ -42,7 +42,7 @@ function hgColorEdgePlot(){
         .force("collide",d3.forceCollide(50));
     
     //data reading from json file
-    d3.json("data.json", function(error, graph) {
+    d3.json("scripts/data.json", function(error, graph) {
           if (error) throw error;
         var nodes = graph.nodes,
             links = graph.links,
