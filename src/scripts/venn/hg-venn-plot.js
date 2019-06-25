@@ -27,32 +27,22 @@ function hgVennPlot(){
           var nodes = graph.nodes,
               links = graph.links,
               nodelinks = graph.nodelinks;
-  
-          nodes.forEach(element => {
-              console.log(element.id + "  " + element.links)
-          });
-          console.log("links " + links)
-          nodelinks.forEach(element => {
-              console.log(element.node + "  " + element.link + "  " + element.value)
-          });
 
           //d3.hypergraph invocation passing links and nodes 
           let data = hypergraph(links,nodes,nodelinks)
           
+          console.log(data.map)
+
           //creating sets
           var sets= [];
-  
-          console.log("@@@@@ HTML @@@@@")
-          console.log(data.links)
-          console.log(data.nodes)
-  
-          //creating sets
           for(var i=0; i<data.links.length; i++){
-              sets.push({sets: data.links[i].links, size: data.links[i].size})
+              console.log("@@@@@@ ITERAZIONE " + i+ " @@@@@@")
+              sets.push({sets: data.links[i].links, size: data.links[i].size, node: data.map[data.links[i].links]})
           }
 
-          console.log("sets");
-          console.log(sets);
+          //add nodes
+          console.log(sets)
+          
   
           //per rendere il grafo interattivo
           // add listeners to all the groups to display tooltip on mouseover
@@ -60,7 +50,41 @@ function hgVennPlot(){
           div.datum(sets).call(venn.VennDiagram().width(screen.width * 0.5).height(screen.height * 0.5));
           var tooltip = d3.select("body").append("div").attr("class","venntooltip");
   
-          /*/TRY PLOTTING NODE, NEED REVIEW
+          
+          div.selectAll("g").on("mouseover", function(d, i) {
+              // sort all the areas relative to the current item
+              venn.sortAreas(div, d);
+
+              // Display a tooltip with the current size
+              tooltip.transition().duration(400).style("opacity", .9);
+              if(d.node!==undefined){
+                tooltip.text("nodi: " + d.node)
+              }else{ tooltip.text("nessun nodo") }
+              
+              
+              // highlight the current path
+              var selection = d3.select(this).transition("tooltip").duration(400);
+              selection.select("path")
+                  .style("stroke-width", 3)
+                  .style("fill-opacity", d.sets.length == 1 ? .4 : .1)
+                  .style("stroke-opacity", 1)
+                  .style("stroke", "white");
+              }).on("mousemove", function() {
+                  tooltip.style("left", (d3.event.pageX) + "px")
+                      .style("top", (d3.event.pageY - 28) + "px");
+              }).on("mouseout", function(d, i) {
+                  tooltip.transition().duration(400).style("opacity", 0);
+                  var selection = d3.select(this).transition("tooltip").duration(400);
+                  selection.select("path")
+                      .style("stroke-width", 0)
+                      .style("fill-opacity", d.sets.length == 1 ? .25 : .0)
+                      .style("stroke-opacity", 0);
+              });
+              
+              
+
+
+              /*/TRY PLOTTING NODE, NEED REVIEW
           var texts= d3.selectAll("text").each(function(d, i){
   
               //get x and y center cordinates of each set
@@ -114,38 +138,8 @@ function hgVennPlot(){
               }
           });*/
   
-          div.selectAll("g").on("mouseover", function(d, i) {
-              // sort all the areas relative to the current item
-              venn.sortAreas(div, d);
-              console.log(venn.sortAreas(div, d))
-              console.log(d.sets);
-              console.log(d.sets.length);
-              console.log("NODIIII" + d.nodes)
-  
-              // Display a tooltip with the current size
-              tooltip.transition().duration(400).style("opacity", .9);
-              tooltip.text(d.size)
-              
-              
-              // highlight the current path
-              var selection = d3.select(this).transition("tooltip").duration(400);
-              selection.select("path")
-                  .style("stroke-width", 3)
-                  .style("fill-opacity", d.sets.length == 1 ? .4 : .1)
-                  .style("stroke-opacity", 1)
-                  .style("stroke", "white");
-              }).on("mousemove", function() {
-                  tooltip.style("left", (d3.event.pageX) + "px")
-                      .style("top", (d3.event.pageY - 28) + "px");
-              }).on("mouseout", function(d, i) {
-                  tooltip.transition().duration(400).style("opacity", 0);
-                  var selection = d3.select(this).transition("tooltip").duration(400);
-                  selection.select("path")
-                      .style("stroke-width", 0)
-                      .style("fill-opacity", d.sets.length == 1 ? .25 : .0)
-                      .style("stroke-opacity", 0);
-              });
-              
+            
+
           });
   
           //unused
@@ -178,69 +172,69 @@ function hgVennPlot(){
 
           function hypergraph(links,nodes,nodelinks) {
             var map= {} //map used to store the sets and the number of nodes
+            var map2= {} //map used to store the sets and the nodes inside the sets
+
+            //add sets and nodes inside sets
+            var linkss= []
+            for(var i=0; i<links.length; i++){
+                var arr= []
+                arr.push(links[i].id)
+                linkss.push({links: arr, size: 100})
+
+                var s1= links[i].id
+                var s2= links[i].nodes
+                map2[s1]= s2
+            }//end
             
-            console.log(links)
-            console.log(nodes)
-            console.log(nodelinks)
-        
-            //intersections and sizes
+
+            //intersections, sizes and nodes
             nodes.forEach(element => {
-                console.log(element.links)
-                console.log(map[element.links])
+                //intections
                 if(map[element.links] === undefined){
                     map[element.links]=1
                 }else{ map[element.links]= map[element.links] + 1; }
-                
+
+
+                if(map2[element.links] === undefined){
+                    map2[element.links]= new Array(element.id)
+                }else{
+                    if(element.links.length!=1){
+                        var v= map2[element.links]
+                        v.push(element.id)
+                        map2[element.links]= v}
+                    }
+
                 if(element.links.length>2){
-                    console.log("SIZE " + element.links.length)
                     for(var i=0; i<element.links.length-1; i++){
                         for(var j=i+1; j<element.links.length; j++){
                             var couple= [element.links[i], element.links[j]]
-                            console.log("@@@@COPPIA@@@@ " + couple)
                             if(map[couple] === undefined){
                                 map[couple]=1
                             }else{ map[couple]= map[couple] + 1 }
                         }
                     }
                 }
-                console.log(element.id);
             });//end
             
-            console.log(" @@@@@@@@ MAP @@@@@@@")
-            console.log(map)
-        
-            //add sets
-            var linkss= []
-            for(var i=0; i<links.length; i++){
-                var arr= []
-                arr.push(""+(i+1))
-                linkss.push({links: arr, size: 100})
-            }//end
+            console.log(map2)
+            
             i=0
             //add intersections
             Object.entries(map).forEach(entry=>{
                 //entry[0] is the intersection
                 //entry[1] is the number of nodes inside of intersection
-                console.log("@@@@@ LENGTH @@@@@@")
-                console.log(entry[0])
-                console.log(entry[0].length)
                 if(entry[0].length!=0 && entry[0].length!=1){
                     var arr= []
                     arr= entry[0].split(",");
-                    console.log("@@@@@ ARR[0] @@@@@")
-                    console.log(arr[0])
                     linkss.push({links: arr, size: Math.round(100/entry[0].length)})
                     i++
                 }
             })//end
         
-            console.log(" @@@@@@@ INTERSECTIONS @@@@@@@@@")
-            console.log(linkss)
-            var obj  = {links:linkss,nodes:nodes};
-            console.log("@@@@@@@ HYPERGRAPH @@@@@@")
-            console.log(obj)
+            var obj  = {links:linkss,nodes:nodes,map:map2};
             return obj;
         }
         
     })
 }
+
