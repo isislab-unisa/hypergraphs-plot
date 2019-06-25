@@ -6,66 +6,57 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Venn Diagram - pack layout</title>
     <script src="scripts/require.js"></script>
-   <style>
-
-        #original {
-            margin-left: 10%;
-        }
-
-        .venntooltip{
-            position:absolute;
-            text-align: left;
-            background: #333;
-            color: #ddd;
-            padding: 2px;
-            border: 0px;
-            border-radius: 8px;
-        }
-
-    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="scripts/venn/venn-style.css">
 </head>
  
 <body>
+        <div class="input-group input-group-lg" style="position:absolute; top:0; right:0;">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-lg"><h2>New Nodes</h2></span>
+                </div>
+                Id Nodes
+                <input type="text" id="newnodes" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" size="10" placeholder="5"> 
+            
+            
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-lg"><h2>New HyperEdges</h2></span>
+                  </div>
+                  Id HyperEdges
+                  <input type="text" id="newhyperedgesid" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" size="10" placeholder="5">
+                  <br>
+                  Nodes HyperEdges
+                  <input type="text" id="newhyperedgesnodes" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" size="10" placeholder="1,2,3">
+                  <br>
+                  Values Nodes HyperEdges
+                  <input type="text" id="newhyperedgesvalues" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" size="10" placeholder="1,2,3">
+            
+                  <br>
+                  <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-lg"><h2> Nodes</h2></span>
+                  </div>
+                  Select Node
+                  <input type="text" id="newhyperedgesvalues" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" size="10" placeholder="1">
+                  <input type="checkbox" id="checkbox" name="checkbox" value="checkbox"><br>
+                  <br>
+                <button type="button" id="confirm" style="margin-top:5%">Invia</button>
+                <button type="button" id="reset" style="margin-top:5%">Reset</button>
+              </div>
+
+              <!--
+              <div id="links_information">
+                <p>nodi:</p>
+                <p>valori:</p>
+              </div>
+              -->
+
     <div id="original"></div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript" src="scripts/venn/hg-venn-plot.js"></script>
+    <script src="scripts/venn/venn-functions.js"></script>
     <script>
         hgVennPlot()
     </script>   
-
-
-
-<div class="input-group input-group-lg" style="position:absolute; top:0; right:0;">
-    <div class="input-group-prepend">
-      <span class="input-group-text" id="inputGroup-sizing-lg"><h2>New Nodes</h2></span>
-    </div>
-    Id Nodes
-    <input type="text" id="newnodes" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" size="10" placeholder="5"> 
-
-
-    <div class="input-group-prepend">
-        <span class="input-group-text" id="inputGroup-sizing-lg"><h2>New HyperEdges</h2></span>
-      </div>
-      Id HyperEdges
-      <input type="text" id="newhyperedgesid" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" size="10" placeholder="5">
-      <br>
-      Nodes HyperEdges
-      <input type="text" id="newhyperedgesnodes" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" size="10" placeholder="1,2,3">
-      <br>
-      Values Nodes HyperEdges
-      <input type="text" id="newhyperedgesvalues" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" size="10" placeholder="1,2,3">
-
-      <br>
-      <div class="input-group-prepend">
-          <span class="input-group-text" id="inputGroup-sizing-lg"><h2> Nodes</h2></span>
-      </div>
-      Select Node
-      <input type="text" id="newhyperedgesvalues" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" size="10" placeholder="1">
-      <input type="checkbox" id="checkbox" name="checkbox" value="checkbox"><br>
-      <br>
-    <button type="button" id="confirm" style="margin-top:5%">Invia</button>
-    <button type="button" id="reset" style="margin-top:5%">Reset</button>
-  </div>
 </body>
 
 </html>

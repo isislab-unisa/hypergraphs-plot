@@ -1,0 +1,26 @@
+#original {
+    margin-left: 10%;
+}
+
+.venntooltip{
+    position:absolute;
+    text-align: left;
+    background: #333;
+    color: #ddd;
+    padding: 2px;
+    border: 0px;
+    border-radius: 8px;
+}
+
+#links_information{
+    min-width: 20%;
+    min-height: 20%;
+    position: absolute;
+    top:10%;
+    right: 20%;
+    background-color: red;
+}
+
+#links_information p{
+    font-size: 2em;
+}
