@@ -31,18 +31,14 @@ function hgVennPlot(){
           //d3.hypergraph invocation passing links and nodes 
           let data = hypergraph(links,nodes,nodelinks)
           
-          console.log(data.nodesInLinks)
 
           //creating sets
           var sets= [];
           for(var i=0; i<data.links.length; i++){
-              console.log("@@@@@@ ITERAZIONE " + i+ " @@@@@@")
               sets.push({sets: data.links[i].links, size: data.links[i].size, nodes: data.nodesInLinks[data.links[i].links], nodesToDisplay: data.nodesToDisplay[data.links[i].links]})
           } 
 
-          //add nodes
-          console.log(sets)
-          
+            console.log(sets)          
   
           //per rendere il grafo interattivo
           // add listeners to all the groups to display tooltip on mouseover
@@ -138,8 +134,6 @@ function hgVennPlot(){
                   }
               }
           });*/
-  
-            
 
           });
   
@@ -231,7 +225,6 @@ function hgVennPlot(){
                 }
             });//end
             
-            console.log(nodesInLinks)
             
             i=0
             //add intersections
@@ -241,8 +234,6 @@ function hgVennPlot(){
                 if(entry[0].length!=0 && entry[0].length!=1){
                     var arr= []
                     arr= entry[0].split(",");
-                    console.log(entry[1])
-                    console.log(Math.round(entry[1]))
                     linkss.push({links: arr, size: Math.round(MAX_SIZE/entry[0].length* MAX_SIZE/100 + OFFSET)})
                     i++
                 }
@@ -252,6 +243,6 @@ function hgVennPlot(){
             return obj;
         }
         
-    })
+    });
 }
 
