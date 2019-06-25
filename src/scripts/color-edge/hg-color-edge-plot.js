@@ -50,10 +50,7 @@ function hgColorEdgePlot(){
     //data reading from json file
     d3.json("scripts/data.json", function(error, graph) {
           if (error) throw error;
-          if(grafo==null)
-          grafo=graph;
-
-          readJson(grafo);
+          readJson(graph);
     });
 
 
@@ -66,12 +63,14 @@ function hgColorEdgePlot(){
         
         var dictlinks ={};
         links.forEach(function(element,i){
+            console.log(element.nodes);
             if((element.nodes).length>2)
             dictlinks[element.id]="ln"+(element.nodes).toString();
-            else
+            if((element.nodes).length==2)
             dictlinks[element.id]=(element.nodes[1]).toString();
+            if((element.nodes).length==1)
+            dictlinks[element.id]=(element.nodes[0]).toString();
         });
-       // console.log(dictlinks);
 
         var dict = {};
         nod.forEach(function(element,i){
@@ -99,10 +98,17 @@ function hgColorEdgePlot(){
         var s = link.source = nodeById.get(link.source),
             t = link.target = nodeById.get(link.target),
             i = {}; // intermediate node
+            if(t==null && s!=null){
+                t=s;
+            }
+            if(t!=null && s!=null){
             nodes.push(i);
             links.push({source: s, target: i}, {source: i, target: t});
             bilinks.push([s, i, t]);
+            }
         });
+        console.log(bilinks);
+
         //links creation
           var link = svg.selectAll(".link")
             .data(bilinks)
@@ -317,11 +323,13 @@ function hgColorEdgePlot(){
 
             $("#confirm").click(function(){
                 if(x!=null && x){
-                    $("#hg-plot").empty();
-                    grafo["nodes"].push({"id":x.toString(),"links":[]});
-                    hgColorEdgePlot();
+                    var nodes = grafo.nodes;
+                    nodes.push({"id":x.toString(),"links":[]});
+                    console.log(grafo);
+                    readJson(grafo);
                 }
                 if(nodeshe.length==newhyperedgesvalues.length && idhe && nodeshe && newhyperedgesvalues){
+                    console.log("banana");
                         var numbersArray = nodeshe.split(',');
                         var values = newhyperedgesvalues.split(',');
                         grafo["links"].push({"id":idhe.toString(),"nodes":numbersArray});
