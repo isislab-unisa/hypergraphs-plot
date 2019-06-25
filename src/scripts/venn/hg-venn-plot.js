@@ -31,18 +31,14 @@ function hgVennPlot(){
           //d3.hypergraph invocation passing links and nodes 
           let data = hypergraph(links,nodes,nodelinks)
           
-          console.log(data.map)
 
           //creating sets
           var sets= [];
           for(var i=0; i<data.links.length; i++){
-              console.log("@@@@@@ ITERAZIONE " + i+ " @@@@@@")
-              sets.push({sets: data.links[i].links, size: data.links[i].size, node: data.map[data.links[i].links]})
-          }
+              sets.push({sets: data.links[i].links, size: data.links[i].size, nodes: data.nodesInLinks[data.links[i].links], nodesToDisplay: data.nodesToDisplay[data.links[i].links]})
+          } 
 
-          //add nodes
-          console.log(sets)
-          
+            console.log(sets)          
   
           //per rendere il grafo interattivo
           // add listeners to all the groups to display tooltip on mouseover
@@ -57,11 +53,8 @@ function hgVennPlot(){
 
               // Display a tooltip with the current size
               tooltip.transition().duration(400).style("opacity", .9);
-              if(d.node!==undefined){
-                tooltip.text("nodi: " + d.node)
-              }else{ tooltip.text("nessun nodo") }
-              
-              
+              if(d.nodes!==undefined || d.nodesToDisplay!==undefined){
+                tooltip.text("sets: " + d.sets + " nodi: " + d.nodes + " nodi da plottare: " + d.nodesToDisplay)
               // highlight the current path
               var selection = d3.select(this).transition("tooltip").duration(400);
               selection.select("path")
@@ -69,6 +62,10 @@ function hgVennPlot(){
                   .style("fill-opacity", d.sets.length == 1 ? .4 : .1)
                   .style("stroke-opacity", 1)
                   .style("stroke", "white");
+              }else{
+                  tooltip.text("no nodes")
+              }
+            
               }).on("mousemove", function() {
                   tooltip.style("left", (d3.event.pageX) + "px")
                       .style("top", (d3.event.pageY - 28) + "px");
@@ -81,7 +78,7 @@ function hgVennPlot(){
                       .style("stroke-opacity", 0);
               });
               
-              
+            
 
 
               /*/TRY PLOTTING NODE, NEED REVIEW
@@ -137,8 +134,6 @@ function hgVennPlot(){
                   }
               }
           });*/
-  
-            
 
           });
   
@@ -172,51 +167,64 @@ function hgVennPlot(){
 
           function hypergraph(links,nodes,nodelinks) {
             var map= {} //map used to store the sets and the number of nodes
-            var map2= {} //map used to store the sets and the nodes inside the sets
+            var nodesInLinks= {} //object that store the sets and the nodes inside the sets
+            var nodesToDisplay= {} //object that store the node to display
+            var MAX_SIZE=nodes.length *10 //max size of venn diagram
+            var OFFSET= links.length //offset used for the visualization
 
             //add sets and nodes inside sets
             var linkss= []
             for(var i=0; i<links.length; i++){
                 var arr= []
                 arr.push(links[i].id)
-                linkss.push({links: arr, size: 100})
+                linkss.push({links: arr, size: MAX_SIZE})
 
+                //fill nodesInLinks
                 var s1= links[i].id
                 var s2= links[i].nodes
-                map2[s1]= s2
+                nodesInLinks[s1]= s2
             }//end
             
 
             //intersections, sizes and nodes
             nodes.forEach(element => {
-                //intections
+                //interctions
                 if(map[element.links] === undefined){
                     map[element.links]=1
                 }else{ map[element.links]= map[element.links] + 1; }
 
-
-                if(map2[element.links] === undefined){
-                    map2[element.links]= new Array(element.id)
+                //fill nodesInLinks
+                if(nodesInLinks[element.links] === undefined){
+                    nodesInLinks[element.links]= new Array(element.id)
                 }else{
                     if(element.links.length!=1){
-                        var v= map2[element.links]
+                        var v= nodesInLinks[element.links]
                         v.push(element.id)
-                        map2[element.links]= v}
+                        nodesInLinks[element.links]= v}
                     }
+                
+                //fill nodesToDisplay
+                if(nodesToDisplay[element.links] === undefined){
+                    nodesToDisplay[element.links]= new Array(element.id)
+                }else{
+                        var v= nodesToDisplay[element.links]
+                        v.push(element.id)
+                        nodesToDisplay[element.links]= v
+                }
 
+                //add couples needed for display
                 if(element.links.length>2){
                     for(var i=0; i<element.links.length-1; i++){
                         for(var j=i+1; j<element.links.length; j++){
                             var couple= [element.links[i], element.links[j]]
                             if(map[couple] === undefined){
                                 map[couple]=1
-                            }else{ map[couple]= map[couple] + 1 }
+                            }else{ map[couple]= map[couple]+1 }
                         }
                     }
                 }
             });//end
             
-            console.log(map2)
             
             i=0
             //add intersections
@@ -226,15 +234,15 @@ function hgVennPlot(){
                 if(entry[0].length!=0 && entry[0].length!=1){
                     var arr= []
                     arr= entry[0].split(",");
-                    linkss.push({links: arr, size: Math.round(100/entry[0].length)})
+                    linkss.push({links: arr, size: Math.round(MAX_SIZE/entry[0].length* MAX_SIZE/100 + OFFSET)})
                     i++
                 }
             })//end
         
-            var obj  = {links:linkss,nodes:nodes,map:map2};
+            var obj  = {links:linkss,nodes:nodes,nodesInLinks:nodesInLinks,nodesToDisplay:nodesToDisplay};
             return obj;
         }
         
-    })
+    });
 }
 
