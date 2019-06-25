@@ -3,6 +3,10 @@ require.config({
         d3: 'https://d3js.org/d3.v4.min'
     }
 });
+var grafo;
+var dictN ={};
+var dictL ={};
+var dictNL={};
 
 function hgColorEdgePlot(){
     require(['d3'],function(d3){
@@ -10,7 +14,7 @@ function hgColorEdgePlot(){
     //var dataMarker = { id: 0, name: 'circle', path: 'M 0, 0  m -5, 0  a 5,5 0 1,0 10,0  a 5,5 0 1,0 -10,0', viewbox: '-6 -6 12 12' };
     var nodeR = 20, lNodeR = 0.3;    //raggio nodi e nodo iperarco
     var nodeId = 0;
-    var width = 1500,height = 1500;
+    var width = 2000,height = 2000;
     var color = d3.scaleOrdinal(d3.schemeCategory20);
     //zoom handler
     var zoom = d3.zoom()
@@ -30,10 +34,12 @@ function hgColorEdgePlot(){
                 .attr("height",height)
                 .call(zoom)
                 .append("g");
-    
+ 
+
     //defs creation for markers
     var defs = svg.append("defs");
-    
+
+
     //force layout definition
     var simulation = d3.forceSimulation()
         .force("link", d3.forceLink().id(function(d) { return d.id; }))//.distance(80).strength(1))
@@ -44,17 +50,41 @@ function hgColorEdgePlot(){
     //data reading from json file
     d3.json("scripts/data.json", function(error, graph) {
           if (error) throw error;
+          readJson(graph);
+    });
+
+
+    function readJson(graph){
         var nodes = graph.nodes,
             links = graph.links,
             bilinks = [];
-    
+        
         var nod=graph.nodelinks;
-        console.log(nodes);
+        
+        var dictlinks ={};
+        links.forEach(function(element,i){
+            console.log(element.nodes);
+            if((element.nodes).length>2)
+            dictlinks[element.id]="ln"+(element.nodes).toString();
+            if((element.nodes).length==2)
+            dictlinks[element.id]=(element.nodes[1]).toString();
+            if((element.nodes).length==1)
+            dictlinks[element.id]=(element.nodes[0]).toString();
+        });
+
         var dict = {};
         nod.forEach(function(element,i){
-            dict[element.node+"-"+element.link]=element.value;
+            dict["node:"+element.node+"-"+"link:"+dictlinks[element.link]]=element.value;
         });
-    
+        nodes.forEach(function(element,i){
+            dictN[element.id]=element.links;
+        });
+        links.forEach(function(element,i){
+            dictL[element.id]=element.nodes;
+        });
+
+
+        
         //d3.hypergraph invocation passing links and nodes
         var data = hypergraph(links,nodes);
         //d3.hypergraph links
@@ -68,10 +98,17 @@ function hgColorEdgePlot(){
         var s = link.source = nodeById.get(link.source),
             t = link.target = nodeById.get(link.target),
             i = {}; // intermediate node
+            if(t==null && s!=null){
+                t=s;
+            }
+            if(t!=null && s!=null){
             nodes.push(i);
             links.push({source: s, target: i}, {source: i, target: t});
             bilinks.push([s, i, t]);
+            }
         });
+        console.log(bilinks);
+
         //links creation
           var link = svg.selectAll(".link")
             .data(bilinks)
@@ -132,8 +169,9 @@ function hgColorEdgePlot(){
             });
     
         link.append("title")
-                .text(function(d){
-                    return dict[d[0].id+"-"+d[2].id];
+                .text(function(d,i){   
+                    //console.log(d);                 
+                    return dict["node:"+d[0].id+"-"+"link:"+d[2].id];
                 })
     
         //onmouseover id text
@@ -170,8 +208,7 @@ function hgColorEdgePlot(){
           link.attr("d", positionLink);
           node.attr("transform", positionNode);
         }
-    
-    });
+    }
     
     
     function positionLink(d) {
@@ -253,8 +290,9 @@ function hgColorEdgePlot(){
                 //connection node id creation
                     var	id = 'ln';
                     for(k = 0; k < d.length; k++) {
-                        id += d[k];
+                        id += d[k]+",";
                     }
+                    id = id.slice(0, -1); 
                 //connection node creation
                     i = {id: id,link: true};
                 //add the connection node to the node array
@@ -272,5 +310,76 @@ function hgColorEdgePlot(){
              var obj  = {links:hyper,nodes:nodes};
              return obj;
         }
-    })
+
+
+
+
+        $(document).ready(function(){
+
+            var x = $('#newnodes').val();
+            var idhe = $("#newhyperedgesid").val();
+            var nodeshe = $("#newhyperedgesnodes").val();
+            var newhyperedgesvalues = $("#newhyperedgesvalues").val();
+
+            $("#confirm").click(function(){
+                if(x!=null && x){
+                    var nodes = grafo.nodes;
+                    nodes.push({"id":x.toString(),"links":[]});
+                    console.log(grafo);
+                    readJson(grafo);
+                }
+                if(nodeshe.length==newhyperedgesvalues.length && idhe && nodeshe && newhyperedgesvalues){
+                    console.log("banana");
+                        var numbersArray = nodeshe.split(',');
+                        var values = newhyperedgesvalues.split(',');
+                        grafo["links"].push({"id":idhe.toString(),"nodes":numbersArray});
+                        numbersArray.forEach(function(element,i){
+                            grafo["nodelinks"].push({"node":numbersArray[i].toString(),"link":idhe.toString(),"value":values[i].toString()});
+                            var z = dictN[numbersArray[i]];
+                            z.push(nodeshe.toString());
+                            grafo["nodes"].forEach(function(element,j){
+                                if(grafo["nodes"][j].id==numbersArray[i]){
+                                    grafo["nodes"][j].links=z;
+                                }
+                            });
+
+                        });
+                }
+
+
+
+            });
+
+            $("#reset").click(function(){
+                $('#newnodes').val("");
+                $("#newhyperedgesid").val("");
+                $("#newhyperedgesnodes").val("");
+                $("#newhyperedgesvalues").val("");
+            });
+
+            
+            
+
+
+            $('input[type="checkbox"]').click(function(){
+
+                if($(this).prop("checked") == true){
+    
+                    alert("Checkbox is checked.");
+    
+                }
+            });
+
+
+
+
+
+          });
+        
+
+
+
+
+    });
 }
+

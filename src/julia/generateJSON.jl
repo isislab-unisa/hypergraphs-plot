@@ -59,23 +59,12 @@ function generateFileJSON(h::Hypergraph)
     sNodeLinks="
     \"nodelinks\":["
         x=1
-        for x in 1:n_he
+        for x in 1:n_ver
             y=1
-            pos=[]
-            for y in 1:n_ver
-                if getindex(h,y,x)!=nothing
-                    push!(pos,y)
-                end
-            end
-            if length(pos)>1
-                y=1
-                temp="ln"
-                for y in y:length(pos)
-                    temp=temp*string(pos[y])
-                end
-                for y in y:length(pos)
+            for y in 1:n_he
+                if getindex(h,x,y)!=nothing
                     sNodeLinks=sNodeLinks*"
-                    {\"node\":\""*string(pos[y])*"\",\"link\":\""*temp*"\",\"value\":\""*string(getindex(h,pos[y],x))*"\"},"
+                    {\"node\":\""*string(x)*"\",\"link\":\""*string(y)*"\",\"value\":\""*string(getindex(h,x,y))*"\"},"
                 end
             end
         end
