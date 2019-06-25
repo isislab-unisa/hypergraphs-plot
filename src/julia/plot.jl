@@ -9,5 +9,5 @@ params: h: Hyperhgraph
         layout: spring_layout(default), circular_layout
 =#
 function hgplot(h::Hypergraph; type= "color-edge", layout="spring_layout")
-    generateFileJSON(h,"color-edge")
+    generateFileJSON(h)
 end
