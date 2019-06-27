@@ -32,7 +32,8 @@ function plotColorEdge(graph){
         grafo=graph;
     //var dataMarker = { id: 0, name: 'circle', path: 'M 0, 0  m -5, 0  a 5,5 0 1,0 10,0  a 5,5 0 1,0 -10,0', viewbox: '-6 -6 12 12' };
 var nodeR = 20, lNodeR = 0.3;    //raggio nodi e nodo iperarco
-var nodeId = 0;
+var nodeE = 30;
+//var nodeId = 0;
 var width = 2000,height = 2000;
 var color = d3.scaleOrdinal(d3.schemeCategory20);
 //zoom handler
@@ -111,16 +112,19 @@ var simulation = d3.forceSimulation()
     var s = link.source = nodeById.get(link.source),
         t = link.target = nodeById.get(link.target),
         i = {}; // intermediate node
-        /*if(t==null && s!=null){
-            t=s;
-        }*/
+        if(t==null && s!=null){
+            t={
+                id:s.id,
+                link:null
+            }
+        }
         if(t!=null && s!=null){
         nodes.push(i);
         links.push({source: s, target: i}, {source: i, target: t});
         bilinks.push([s, i, t]);
         }
     });
-    bilink = bilinks;
+    
     //links creation
         var link = svg.selectAll(".link")
         .data(bilinks)
@@ -128,7 +132,7 @@ var simulation = d3.forceSimulation()
         .attr("class", "link")
             .attr("marker-start","url(#circleMarker)")
         .attr("marker-mid","url(#textMarker)")
-            .attr("marker-end",function (d){
+            .attr("marker-end",function (d){ 
                 if (!d[2].link)
                     return "url(#circleMarker)";
             else
@@ -253,6 +257,47 @@ var simulation = d3.forceSimulation()
         }else{
             x2Pos = d[2].x - offsetX2;
             y2Pos = d[2].y - offsetY2;
+        }
+
+        if(d[2].link==null){
+            var 
+            x1 = d[0].x,
+            y1 = d[0].y,
+            x2 = d[0].x,
+            y2 = d[0].y,
+            dx = x2 - x1,
+            dy = y2 - y1,
+            dr = Math.sqrt(dx * dx + dy * dy),
+      
+            // Defaults for normal edge.
+            drx = dr,
+            dry = dr,
+            xRotation = 0, // degrees
+            largeArc = 0, // 1 or 0
+            sweep = 1; // 1 or 0
+      
+            // Self edge.
+            if ( x1 === x2 && y1 === y2 ) {
+              // Fiddle with this angle to get loop oriented.
+              xRotation = -45;
+      
+              // Needs to be 1.
+              largeArc = 1;
+      
+              // Change sweep to change orientation of loop. 
+              //sweep = 0;
+      
+              // Make drx and dry different to get an ellipse
+              // instead of a circle.
+              drx = 30;
+              dry = 20;
+      
+              // For whatever reason the arc collapses to a point if the beginning
+              // and ending points of the arc are the same, so kludge it.
+              x2 = x2 + 1;
+              y2 = y2 + 1;
+            } 
+       return "M" + x1 + "," + y1 + "A" + drx + "," + dry + " " + xRotation + "," + largeArc + "," + sweep + " " + x2 + "," + y2;
         }
     
         return "M" + x0Pos + "," + y0Pos
