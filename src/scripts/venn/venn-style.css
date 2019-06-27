@@ -1,5 +1,5 @@
 #original {
-    margin-left: 10%;
+    margin-left: 5%;
 }
 
 .venntooltip{
@@ -18,9 +18,28 @@
     position: absolute;
     top:10%;
     right: 20%;
-    background-color: red;
+    display: none;
 }
 
-#links_information p{
-    font-size: 2em;
+#links_information span{
+    font-size: 1.8em;
+    cursor: pointer;
+    margin-left: 0.5%;
+    padding:5px;
+}
+
+table {
+    border-collapse: collapse;
+    border-radius: 8px;
+    background-color: #f7dc6f;
+}
+  
+th{
+    border-bottom: 1px solid black;
+    min-width: 5%;
+    text-align: center;
+}
+
+td{
+    text-align: center;
 }
