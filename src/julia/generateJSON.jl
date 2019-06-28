@@ -78,7 +78,7 @@ function generateFileJSON(h::Hypergraph)
 
 s=s*sNodes*sLinks*sNodeLinks
 
-    open("src/scripts/data.json","w") do f
+    open("scripts/data.json","w") do f
         write(f, s)
     end
 

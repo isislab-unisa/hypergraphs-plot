@@ -1,5 +1,5 @@
-#original {
-    margin-left: 5%;
+#original{
+    margin-left: 15%
 }
 
 .venntooltip{
@@ -16,8 +16,8 @@
     min-width: 20%;
     min-height: 20%;
     position: absolute;
-    top:10%;
-    right: 20%;
+    top:5%;
+    left: 2%;
     display: none;
 }
 

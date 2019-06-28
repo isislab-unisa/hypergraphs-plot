@@ -8,6 +8,14 @@ params: h: Hyperhgraph
         type: extra_node(default), eulero_venn, matrix
         layout: spring_layout(default), circular_layout
 =#
-function hgplot(h::Hypergraph; type= "color-edge", layout="spring_layout")
+function plot(h::Hypergraph; type= "color-edge")
     generateFileJSON(h)
+    if type=="color-edge"
+        plotColorEdge()
+    elseif type=="venn"
+        plotVenn()
+    end
 end
+
+plotColorEdge() = py"plotColorEdge"()
+plotVenn() = py"plotVenn"()
