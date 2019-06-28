@@ -2,24 +2,14 @@
 <meta charset="utf-8">
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="scripts/color-edge/color-edge-style.css">
     <script src="scripts/require.js"></script>
 </head>
 <style>
 
-.link {
-	stroke-width:2px;
-  fill: none;
-  stroke: #bbb;
-}
-.node circle {
-  pointer-events: all;
-  stroke: #000;
-  stroke-width: 1px;
-}
-
 </style>
 <body>
-    <div class="input-group input-group-lg" style="position:absolute; top:0; right:0;">
+    <div class="input-group input-group-lg">
         <div class="input-group-prepend">
           <span class="input-group-text" id="inputGroup-sizing-lg"><h2>New Nodes</h2></span>
         </div>
@@ -46,23 +36,15 @@
           <input type="text" id="valuesNodesInNewHypergraph" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" size="10" placeholder="1,2,3">
 
           <br>
-          <div class="input-group-prepend">
-              <span class="input-group-text" id="inputGroup-sizing-lg"><h2> Nodes</h2></span>
-          </div>
-          Select Node
-          <input type="text" id="selectnode" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" size="10" placeholder="1">
-          <input type="checkbox" id="checkbox" name="checkbox" value="checkbox"><br>
-          <br>
-        <button type="button" id="confirm" style="margin-top:5%">Invia</button>
-        <button type="button" id="reset" style="margin-top:5%">Reset</button>
+        <button type="button" id="confirm">Invia</button>
+        <button type="button" id="reset">Reset</button>
       </div>
 
       
 
     <div class="hg-plot"></div>
-
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="scripts/functions.js"></script>
     <script src="scripts/color-edge/hg-color-edge-plot.js"></script>
     
     <script>
