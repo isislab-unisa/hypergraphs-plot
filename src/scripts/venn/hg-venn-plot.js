@@ -18,7 +18,8 @@ require.config({
     }
 });
 
-grafo = {}
+var grafo = {}
+var type;
 
 /**
  * hgVennPlot can accept no params or a graph or a json string path with the follow sintax
@@ -56,6 +57,7 @@ function hgVennPlot({ graph, json } = {}) {
 
 function plotVenn(graph) {
     grafo = graph
+    type="venn"
     console.log("@@@@@ grafo @@@@@@")
     console.log(graph)
     require(['d3', 'venn'], function (d3, venn) {
