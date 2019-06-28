@@ -89,15 +89,13 @@ var simulation = d3.forceSimulation()
         if((element.nodes).length==2)
         dictlinks[element.id]=(element.nodes[1]).toString();
         if((element.nodes).length==1)
-        dictlinks[element.id]=(element.nodes[0]).toString();
+        dictlinks[element.id]="SelfLoop:"+element.id+"Node:"+(element.nodes[0]).toString();
     });
-
+    
     var dict = {};
     nod.forEach(function(element,i){
         dict["node:"+element.node+"-"+"link:"+dictlinks[element.link]]="Node:"+element.node+" - Link:"+element.link+" - Value:"+element.value;
     });
-
-
     
     //d3.hypergraph invocation passing links and nodes
     var data = hypergraph(links,nodes);
@@ -115,7 +113,8 @@ var simulation = d3.forceSimulation()
         if(t==null && s!=null){
             t={
                 id:s.id,
-                link:null
+                link:null,
+                linkid:link.linkid
             }
         }
         if(t!=null && s!=null){
@@ -139,8 +138,12 @@ var simulation = d3.forceSimulation()
                 return "null";
             })
             .style("stroke",function(d){
+                console.log(d);
                 if(isNaN(d[2].id)) return color(d[2].id);
-                else               return color(d[2].id+d[0].id);
+                else               {
+                        if(d[2].link==true) return color(d[2].id+d[0].id);
+                        else                return color(d[2].id+d[0].id+d[2].linkid);
+                }
             });
 
     //node creation
@@ -183,9 +186,12 @@ var simulation = d3.forceSimulation()
                 return d.id;
             return null;
         });
-
     link.append("title")
-            .text(function(d,i){   
+            .text(function(d,i){  
+                if (d[2].link==null){
+                return dict["node:"+d[0].id+"-"+"link:SelfLoop:"+d[2].linkid+"Node:"+d[0].id];
+                }
+                else
                 return dict["node:"+d[0].id+"-"+"link:"+d[2].id];
             })
 
@@ -224,6 +230,56 @@ var simulation = d3.forceSimulation()
         node.attr("transform", positionNode);
     }
     function positionLink(d) {
+        if(d[2].link==null){
+            var 
+            x1 = d[0].x,
+            y1 = d[0].y,
+            x2 = d[0].x,
+            y2 = d[0].y,
+            dx = x2 - x1,
+            dy = y2 - y1,
+            dr = Math.sqrt(dx * dx + dy * dy),
+      
+            // Defaults for normal edge.
+            drx = dr,
+            dry = dr,
+            xRotation = 0, // degrees
+            largeArc = 0, // 1 or 0
+            sweep = 1; // 1 or 0
+            
+            // Self edge.
+            if ( x1 === x2 && y1 === y2 ) {
+              // Fiddle with this angle to get loop oriented.
+              xRotation = -45;
+      
+              // Needs to be 1.
+              largeArc = 1;
+      
+              // Change sweep to change orientation of loop. 
+              //sweep = 0;
+      
+              // Make drx and dry different to get an ellipse
+              // instead of a circle.
+              drx = 1 * d[1].index; //devo modifare questa cosa, mette cond >10
+              dry = 1 * d[1].index;
+      
+              // For whatever reason the arc collapses to a point if the beginning
+              // and ending points of the arc are the same, so kludge it.
+              x2 = (x2 + 1);
+              y2 = y2 + 20;
+              x1 = x1 + 20;
+              y1 = y1 + 1;
+              // invece attorno
+              /*
+              x2 = x2 + 20;
+              y2 = y2 + 1;
+              x1 = x1 + 1;
+              y1 = y1 + 20;
+              */
+            } 
+       return "M" + x1 + "," + y1 + "A" + drx + "," + dry + " " + xRotation + "," + largeArc + "," + sweep + " " + x2 + "," + y2;
+        }
+        
         diffX0 = d[0].x - d[1].x;
         diffY0 = d[0].y - d[1].y;
         diffX2 = d[2].x - d[1].x;
@@ -259,46 +315,6 @@ var simulation = d3.forceSimulation()
             y2Pos = d[2].y - offsetY2;
         }
 
-        if(d[2].link==null){
-            var 
-            x1 = d[0].x,
-            y1 = d[0].y,
-            x2 = d[0].x,
-            y2 = d[0].y,
-            dx = x2 - x1,
-            dy = y2 - y1,
-            dr = Math.sqrt(dx * dx + dy * dy),
-      
-            // Defaults for normal edge.
-            drx = dr,
-            dry = dr,
-            xRotation = 0, // degrees
-            largeArc = 0, // 1 or 0
-            sweep = 1; // 1 or 0
-      
-            // Self edge.
-            if ( x1 === x2 && y1 === y2 ) {
-              // Fiddle with this angle to get loop oriented.
-              xRotation = -45;
-      
-              // Needs to be 1.
-              largeArc = 1;
-      
-              // Change sweep to change orientation of loop. 
-              //sweep = 0;
-      
-              // Make drx and dry different to get an ellipse
-              // instead of a circle.
-              drx = 30;
-              dry = 20;
-      
-              // For whatever reason the arc collapses to a point if the beginning
-              // and ending points of the arc are the same, so kludge it.
-              x2 = x2 + 1;
-              y2 = y2 + 1;
-            } 
-       return "M" + x1 + "," + y1 + "A" + drx + "," + dry + " " + xRotation + "," + largeArc + "," + sweep + " " + x2 + "," + y2;
-        }
     
         return "M" + x0Pos + "," + y0Pos
             + "S" + d[1].x + "," + d[1].y
@@ -331,6 +347,7 @@ var simulation = d3.forceSimulation()
             var	k;
             links.forEach(function(d) {
                 //if link length >2 there's an Hyperlink: i need to create a connection node
+                id = d.id;
                 d = d.nodes;
                 if (d.length > 2) {
                 //connection node id creation
@@ -345,11 +362,11 @@ var simulation = d3.forceSimulation()
                     nodes.push(i);
                 //creation of the link from every node of the connection set to the connection node
                     for (j = 0; j < d.length; j++) {
-                        hyper.push({source: d[j], target: i.id});
+                        hyper.push({source: d[j], target: i.id, linkid:id});
                     }
                 }else{
                 //if link < 2 then the connection is the traditional one w/o connection node
-                    hyper.push({source: d[0],target: d[1]});
+                    hyper.push({source: d[0],target: d[1], linkid:id});
                 }
             });
     
