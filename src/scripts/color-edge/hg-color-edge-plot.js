@@ -31,7 +31,7 @@ function plotColorEdge(graph) {
         //var dataMarker = { id: 0, name: 'circle', path: 'M 0, 0  m -5, 0  a 5,5 0 1,0 10,0  a 5,5 0 1,0 -10,0', viewbox: '-6 -6 12 12' };
         var nodeR = 20, lNodeR = 0.3;    //raggio nodi e nodo iperarco
         //var nodeId = 0;
-        var width = screen.width * 0.3, height = screen.height * 0.3;
+        var width = screen.width * 0.5, height = screen.height * 0.5;
         var color = d3.scaleOrdinal(d3.schemeCategory20);
         //zoom handler
         var zoom = d3.zoom()
@@ -155,13 +155,14 @@ function plotColorEdge(graph) {
             });
         link.append("title")
             .text(function (d, i) {
-                if (d[2].link == null) {
-                    return dictNodeLinks["node:" + d[0].id + "-idlink" + d[2].linkid + "-link:SelfLoop:" + d[2].linkid];
+                if (d[2].link == null) {        
+                    console.log("node:"+d[0].id+"-linkid:"+d[2].linkid+"-SelfLoop:"+d[2].linkid);           
+                    return dictNodeLinks["node:"+d[0].id+"-linkid:"+d[2].linkid+"-SelfLoop:"+d[2].linkid];
                 }
                 else
-                    return dictNodeLinks["node:" + d[0].id + "-" + "idlink" + d[2].linkid + "-link:" + d[2].id];
-            })
-
+                    return dictNodeLinks["node:"+d[0].id + "-"+d[2].id];
+            });
+            console.log(dictNodeLinks);
         //onmouseover id text
         node.append("title")
             .text(function (d) {
@@ -227,8 +228,8 @@ function plotColorEdge(graph) {
 
                     // Make drx and dry different to get an ellipse
                     // instead of a circle.
-                    drx = d[2].linkid;
-                    dry = d[2].linkid;
+                    drx = d[2].linkid*10;
+                    dry = d[2].linkid*10;
                     // For whatever reason the arc collapses to a point if the beginning
                     // and ending points of the arc are the same, so kludge it.
                     x2 = x2 + 1;
@@ -326,8 +327,8 @@ function plotColorEdge(graph) {
                     dictLinks[element.id] = "SelfLoop:" + element.id.toString();
             });
             nodelinksvalue.forEach(function (element, i) {
-                dictNodeLinks["node:" + element.node + "-" + "idlink" + element.link + "-link:" + dictLinks[element.link]] = "Node:" + element.node + " - Link:" + element.link + " - Value:" + element.value;
-            });
+                dictNodeLinks["node:"+element.node+"-linkid:"+element.link+"-"+ dictLinks[element.link]] = "Node:" + element.node + " - Link:" + element.link + " - Value:" + element.value;
+            }); 
 
             links.forEach(function (d) {
                 //if link length >2 there's an Hyperlink: i need to create a connection node
@@ -336,7 +337,7 @@ function plotColorEdge(graph) {
                 d = d.nodes;
                 if (d.length >= 2) {
                     //connection node id creation
-                    var id = 'ln';
+                    var id ='linkid:'+linkid+'-ln';
                     for (k = 0; k < d.length; k++) {
                         id += d[k] + ",";
                     }
