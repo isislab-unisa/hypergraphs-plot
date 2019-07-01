@@ -1,27 +1,6 @@
 
-function calculateDict(){
-    var nodes=grafo.nodes,
-    links=grafo.links,
-    nodelinksvalue=grafo.nodelinks;
-
-nodes.forEach(function(element,i){
-    dictNodes[element.id]=element.links;
-});
-links.forEach(function(element,i){
-    if((element.nodes).length>=2)
-    dictLinks[element.id]="ln"+(element.nodes).toString();
-    if((element.nodes).length==1)
-    dictLinks[element.id]="SelfLoop:"+element.id.toString();
-});
-nodelinksvalue.forEach(function(element,i){
-    dictNodeLinks["node:"+element.node+"-"+"idlink"+element.link+"-link:"+dictLinks[element.link]]="Node:"+element.node+" - Link:"+element.link+" - Value:"+element.value;
-});
-}
-
-
 $(document).ready(function(){
     $("#confirm").click(function(){
-            calculateDict();
             var idNewNode = $('#idNewNode').val();                      //id new node
             var idHypergraphNewNode = $("#idHypergraphNewNode").val();  //id hypergraph for new node
             var idHypergraphNewNodeV = idHypergraphNewNode.split(',');  // vector hypergraph
@@ -41,10 +20,13 @@ $(document).ready(function(){
                         grafo["nodelinks"].push({"node":idNewNode.toString(),"link":idHypergraphNewNodeV[i].toString(),"value":valueNewNodeV[i].toString()})
                     });  
                     refresh();
-                    plotColorEdge(grafo);
+                    if(type==="color-edge")
+                        plotColorEdge(grafo)
+                    else if(type==="venn")
+                        plotVenn(grafo)
                 }
 
-
+                
             var newIdHypergraph = $("#newIdHypergraph").val();
             var nodesInNewHypergraph = $("#nodesInNewHypergraph").val();
             var nodesInNewHypergraph = nodesInNewHypergraph.split(',');
@@ -55,16 +37,20 @@ $(document).ready(function(){
                 grafo["links"].push({"id":newIdHypergraph.toString(),"nodes":nodesInNewHypergraph});   //inserisco ai links, l'id e i nodi
                 nodesInNewHypergraph.forEach(function(element,i){
                     grafo["nodelinks"].push({"node":nodesInNewHypergraph[i].toString(),"link":newIdHypergraph.toString(),"value":valuesNodesInNewHypergraphV[i].toString()});    //nodelinks,  nodo - link - value
-                    var z = dictNodes[nodesInNewHypergraph[i]];
-                    z.push(newIdHypergraph.toString());
                     grafo["nodes"].forEach(function(element,j){
                         if(grafo["nodes"][j].id==nodesInNewHypergraph[i]){
-                            grafo["nodes"][j].links=z;
+                            var links= grafo["nodes"][j].links
+                            console.log(links)
+                            links.push(newIdHypergraph.toString())
+                            grafo["nodes"][j].links= links
                         }
                     });
                 });
                 refresh();
-                plotColorEdge(grafo);
+                if(type==="color-edge")
+                    plotColorEdge(grafo)
+                else if(type==="venn")
+                    plotVenn(grafo)
                 }
 
     });

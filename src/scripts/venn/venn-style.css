@@ -1,5 +1,18 @@
-#original{
-    margin-left: 15%
+.input-group-lg{
+    position:absolute;
+    top:0;
+    right:50px;
+    max-width:15%;
+}
+#confirm{
+    margin-top:5%;
+}
+#reset{
+    margin-top:5%;
+}
+
+#original {
+    margin-left: 5%;
 }
 
 .venntooltip{
@@ -26,6 +39,11 @@
     cursor: pointer;
     margin-left: 0.5%;
     padding:5px;
+}
+
+#close_information{
+    float: right; 
+    color: brown;
 }
 
 table {
