@@ -128,5 +128,4 @@ def plotVenn(JSONPath):
     </script>   
 </body>
 
-</html>"""
-)
+</html>""")

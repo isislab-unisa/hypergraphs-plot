@@ -31,7 +31,7 @@ function plotColorEdge(graph) {
         //var dataMarker = { id: 0, name: 'circle', path: 'M 0, 0  m -5, 0  a 5,5 0 1,0 10,0  a 5,5 0 1,0 -10,0', viewbox: '-6 -6 12 12' };
         var nodeR = 20, lNodeR = 0.3;    //raggio nodi e nodo iperarco
         //var nodeId = 0;
-        var width = screen.width * 0.5, height = screen.height * 0.5;
+        var width = 1000, height = 1000;
         var color = d3.scaleOrdinal(d3.schemeCategory20);
         //zoom handler
         var zoom = d3.zoom()

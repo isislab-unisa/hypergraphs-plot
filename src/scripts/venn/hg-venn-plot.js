@@ -82,7 +82,7 @@ function plotVenn(graph) {
         //per rendere il grafo interattivo
         // add listeners to all the groups to display tooltip on mouseover
         var div = d3.select("#original");
-        div.datum(sets).call(venn.VennDiagram().width(screen.width * 0.5).height(screen.height * 0.5));
+        div.datum(sets).call(venn.VennDiagram().width(800).height(800));
         var tooltip = d3.select("body").append("div").attr("class", "venntooltip");
 
 
