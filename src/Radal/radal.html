@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <script src="https://d3js.org/d3.v4.min.js"></script>
-
 <style type="text/css">
 	body {
 		font-family: 'Open Sans', sans-serif;
@@ -26,41 +25,52 @@
 <script type="text/javascript">
 
 
+d3.json("data.json", function (error, graph) {
 	var margin = {top: 100, right: 100, bottom: 100, left: 100},
-	width = Math.min(700, window.innerWidth - 10) - margin.left - margin.right,
-	height = Math.min(width, window.innerHeight - margin.top - margin.bottom - 20);
-
+	width = 800,
+	height = 800;
 	var offset = 0;
-	var data = [	
-	[     
-    {axis:"nodo1",value: 1},
-	{axis:"nodo2",value: 1},
-	{axis:"nodo3",value: 1},
-	{axis:"nodo4",value: 1},
-	{axis:"nodo5",value: 1}
-    ],
-    [
-    {axis:"nodo1",value: 2},
-	{axis:"nodo2",value: 2},
-	{axis:"nodo3",value: 2},
-	{axis:"nodo4",value: 2},
-	{axis:"nodo5",value: 2}
-    ],
-    [     
-    {axis:"nodo1",value: 3},
-	{axis:"nodo2",value: 3},
-	{axis:"nodo3",value: 3},
-	{axis:"nodo4",value: 3},
-	{axis:"nodo5",value: 3}
-    ],
-    [     
-    {axis:"nodo1",value: 4},
-	{axis:"nodo2",value: 4},
-	{axis:"nodo3",value: 4},
-	{axis:"nodo4",value: 4},
-	{axis:"nodo5",value: 4}
-    ],
-	];
+
+	nodes = graph.nodes;
+	links = graph.links;
+	nodelinks = graph.nodelinks;
+
+	var data = [];
+
+	var count=0;
+
+	var firstnodes=[];
+	nodes.forEach(function(element,j){
+			var obj = {"axis":"idNodo"+element.id,"value":0.7,"bool":true}
+			firstnodes.push(obj);
+	});
+	var cc=2;
+	links.forEach(function(element,i){
+		nod=element.nodes;
+		if(nod.length!=1){
+			var d=[];
+			nodes.forEach(function(ele,j){
+			var obj = {"axis":"idNodo"+ele.id,"value":cc,"bool":false}
+			d.push(obj);
+			});
+			data.push(d);
+		}
+		if(nod.length!=1){
+		nod.forEach(function(el,x){
+			var result = d.filter(obj => {
+  				if(obj.axis === "idNodo"+el) obj.bool=true;
+				});
+		})	
+		}
+		else{
+			firstnodes.filter(obj => {
+				if(obj.axis === "idNodo"+nod[0]) obj.bool=false;
+			});
+			count=count+1;
+		}
+		cc=cc+1;
+	});
+	data.push(firstnodes);
 
 
 	var color = d3.scaleOrdinal().range(["#FC74FD"]);
@@ -76,7 +86,6 @@
 		opacityCircles: 0
 	};
 
-
 //Call function to draw the Radar chart
 RadarChart(".radarChart", data, radarChartOptions);
 
@@ -85,15 +94,15 @@ RadarChart(".radarChart", data, radarChartOptions);
 
 function RadarChart(id, data, options) {
 var cfg = {
-w: 600,				//Width of the circle
-h: 600,				//Height of the circle
+w: 1500,				//Width of the circle
+h: 1500,				//Height of the circle
 margin: {top: 20, right: 20, bottom: 20, left: 20}, //The margins of the SVG
-levels: 3,				//How many levels or inner circles should there be drawn
+levels: 2,				//How many levels or inner circles should there be drawn
 maxValue: 0, 			//What is the value that the biggest circle will represent
 labelFactor: 1.25, 	//How much farther than the radius of the outer circle should the labels be placed
 wrapWidth: 60, 		//The number of pixels after which a label needs to be given a new line
 opacityArea: 0, 	//The opacity of the area of the blob
-dotRadius: 4, 			//The size of the colored circles of each blog
+dotRadius: 5, 			//The size of the colored circles of each blog
 opacityCircles: 1, 	//The opacity of the circles of each blob
 strokeWidth: 2, 		//The width of the stroke around each blob
 roundStrokes: false,	//If true the area and stroke will follow a round path (cardinal-closed)
@@ -108,7 +117,7 @@ if('undefined' !== typeof options){
 }//if
 
 //If the supplied maxValue is smaller than the actual one, replace by the max in the data
-var maxValue = data.length;   //Math.max(cfg.maxValue, d3.max(data, function(i){return d3.max(i.map(function(o){return o.value;}))}));
+var maxValue = data.length	;   //Math.max(cfg.maxValue, d3.max(data, function(i){return d3.max(i.map(function(o){return o.value;}))}));
 
 var allAxis = (data[0].map(function(i, j){return i.axis})),	//Names of each axis
 total = allAxis.length,					//The number of different axes
@@ -220,7 +229,7 @@ var blobWrapper = g.selectAll(".radarWrapper")
 .enter().append("g")
 .attr("class", "radarWrapper");
 
-
+/*
 //Append the backgrounds	
 blobWrapper
 .append("path")
@@ -243,7 +252,7 @@ d3.select(this)
 d3.selectAll(".radarArea")
 .transition().duration(200)
 .style("fill-opacity", cfg.opacityArea);
-});
+});*/
 
 //Create the outlines	
 	
@@ -251,15 +260,28 @@ d3.selectAll(".radarArea")
 //Append the circles
 blobWrapper.selectAll(".radarCircle")
 .data(function(d,i) { return d; })
-.enter().append("circle")
+.enter()
+.append("circle")
 .attr("class", "radarCircle")
 .attr("r", cfg.dotRadius)
-.attr("cx", function(d,i){ return rScale(d.value) * Math.cos(angleSlice*i  - Math.PI/2 - offset); })
-.attr("cy", function(d,i){ return rScale(d.value) * Math.sin(angleSlice*i  - Math.PI/2 - offset); })
-.style("fill", function(d,i,j) { return cfg.color(j); })
-.style("fill-opacity", 0.8);
+.attr("cx", function(d,i){ 
+	//if(d.bool==true)
+	return rScale(d.value) * Math.cos(angleSlice*i  - Math.PI/2 - offset); 
+})
+.attr("cy", function(d,i){ 
+	//if(d.bool==true)
+	return rScale(d.value) * Math.sin(angleSlice*i  - Math.PI/2 - offset); 
+})
+.style("fill", function(d,i,j) { 
+	if(d.value==1 && d.bool==false) return "black";
+	if(d.bool==true)	return cfg.color(j);
+	else				return "white"; })
+.style("fill-opacity",function(d,i){
+	if(d.bool==true || d.value==1)	return 0.8;
+	else				return 0;
+});
 
-
+blobWrapper
 
 //Set up the small tooltip for when you hover over a circle
 var tooltip = g.append("text")
@@ -297,5 +319,9 @@ while (word = words.pop()) {
 
 }//RadarChart
 
+
+
+
+});
 </script>
 
