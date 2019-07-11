@@ -1,8 +1,8 @@
 module.exports = {
-    entry: "./src/try.js",
+    entry: "./src/main.js",
     output: {
       filename: "bundle.js",
       libraryTarget: 'var',
-      library: 'trylib'
+      library: 'hgplot'
     }
   }
