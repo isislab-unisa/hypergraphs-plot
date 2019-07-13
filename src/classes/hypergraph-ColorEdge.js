@@ -10,13 +10,10 @@ export default class ColorEdgeHG extends Hypergraph {
         var dictNodes = {};
         var dictLinks = {};
         var dictNodeLinks = {};
-<<<<<<< HEAD
-=======
         console.log(links)
         console.log(nodes)
         console.log(nodelinks)
         var nodelinksvalue = nodelinks;
->>>>>>> 57955414acf36c2b7a0365418a940419c6968da8
 
         
         nodes.forEach(function (element, i) {
