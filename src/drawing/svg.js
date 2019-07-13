@@ -180,10 +180,9 @@ function plotColorEdge(graph) {
     var nodes = graph.nodes,
         links = graph.links,
         bilinks = [];
-    grafo = JSON.parse(JSON.stringify(graph));
-    //d3.hypergraph invocation passing links and nodes
-    console.log(grafo)
-    var data = new ColorEdgeHG(links, nodes, grafo.nodelinks);
+    grafo = JSON.parse(JSON.stringify(graph));              //d3.hypergraph invocation passing links and nodes
+    var data = new ColorEdgeHG(links, nodes, graph.nodelinks);
+
     //d3.hypergraph links
     links = data.links;
     //d3.hypergraph nodes
@@ -193,6 +192,7 @@ function plotColorEdge(graph) {
     var dictNodeLinks = data.dictNodeLinks
     //node mapping by id
     var nodeById = d3.map(nodes, function (d) { return d.id; });
+    console.log(links);
     links.forEach(function (link) {
         var s = link.source = nodeById.get(link.source),
             t = link.target = nodeById.get(link.target),
@@ -202,6 +202,7 @@ function plotColorEdge(graph) {
                 link: null,
             }
         }
+        console.log(link);
         t["linkid"] = link.linkid;
         nodes.push(i);
         links.push({ source: s, target: i }, { source: i, target: t });

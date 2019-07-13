@@ -31,6 +31,7 @@
     "verbose": true,
     "testMatch": [
       "**/__tests__/functions.test.js"
-    ]
+    ],
+    "collectCoverage": true
   }
 }

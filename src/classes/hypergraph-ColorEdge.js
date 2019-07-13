@@ -1,6 +1,6 @@
-import Hypergraph from './Hypergraph';
+var Hypergraph = require('./Hypergraph');
 
-export default class ColorEdgeHG extends Hypergraph {
+class ColorEdgeHG extends Hypergraph {
         constructor(links, nodes, nodelink) {
         super(links, nodes, nodelink);
         var hyper = [];
@@ -10,11 +10,6 @@ export default class ColorEdgeHG extends Hypergraph {
         var dictNodes = {};
         var dictLinks = {};
         var dictNodeLinks = {};
-        console.log(links)
-        console.log(nodes)
-        console.log(nodelinks)
-        var nodelinksvalue = nodelinks;
-
         
         nodes.forEach(function (element, i) {
             dictNodes[element.id] = element.links;
@@ -27,21 +22,16 @@ export default class ColorEdgeHG extends Hypergraph {
             if ((element.nodes).length == 1)
                 dictLinks[element.id] = "SelfLoop:" + element.id.toString();
         });
-        nodelinksvalue.forEach(function (element, i) {
+        nodelink.forEach(function (element, i) {
             dictNodeLinks["node:" + element.node + "-linkid:" + element.link + "-" + dictLinks[element.link]] = "Node:" + element.node + " - Link:" + element.link + " - Value:" + element.value;
             //dictNodeLinks["node:1-linkid1-ln1,2,3]="node1-link1-value1""
         });
 
         links.forEach(function (d) {
-            linkid = d.id;  //id of the link
+            var linkid = d.id,  //id of the link
             d = d.nodes;    //nodes of the link
             //if link length >2 there's an Hyperlink: i need to create a connection node
-<<<<<<< HEAD
-=======
 
-            var linkid = d.id;
-            d = d.nodes;
->>>>>>> 57955414acf36c2b7a0365418a940419c6968da8
             if (d.length >= 2) {
                 //connection node id creation
                 var id = 'linkid:' + linkid + '-ln';
@@ -73,3 +63,6 @@ export default class ColorEdgeHG extends Hypergraph {
 
     
 }
+
+
+module.exports={ColorEdgeHG};

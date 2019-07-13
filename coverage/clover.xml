@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1563039492434" clover="3.2.0">
+  <project timestamp="1563039492435" name="All files">
+    <metrics statements="30" coveredstatements="16" conditionals="6" coveredconditionals="0" methods="18" coveredmethods="11" elements="54" coveredelements="27" complexity="0" loc="30" ncloc="30" packages="1" files="2" classes="2"/>
+    <file name="Hypergraph.js" path="C:\Users\Marti\OneDrive\Desktop\hypergraphs-plot\src\classes\Hypergraph.js">
+      <metrics statements="14" coveredstatements="9" conditionals="2" coveredconditionals="0" methods="8" coveredmethods="6"/>
+      <line num="9" count="1" type="stmt"/>
+      <line num="10" count="1" type="stmt"/>
+      <line num="11" count="1" type="stmt"/>
+      <line num="21" count="1" type="stmt"/>
+      <line num="31" count="1" type="stmt"/>
+      <line num="41" count="1" type="stmt"/>
+      <line num="51" count="1" type="stmt"/>
+      <line num="61" count="1" type="stmt"/>
+      <line num="65" count="0" type="stmt"/>
+      <line num="66" count="0" type="stmt"/>
+      <line num="67" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="68" count="0" type="stmt"/>
+      <line num="71" count="0" type="stmt"/>
+      <line num="78" count="1" type="stmt"/>
+    </file>
+    <file name="functions.js" path="C:\Users\Marti\OneDrive\Desktop\hypergraphs-plot\src\classes\functions.js">
+      <metrics statements="16" coveredstatements="7" conditionals="4" coveredconditionals="0" methods="10" coveredmethods="5"/>
+      <line num="2" count="1" type="stmt"/>
+      <line num="11" count="1" type="stmt"/>
+      <line num="21" count="1" type="stmt"/>
+      <line num="31" count="1" type="stmt"/>
+      <line num="41" count="1" type="stmt"/>
+      <line num="51" count="1" type="stmt"/>
+      <line num="62" count="0" type="stmt"/>
+      <line num="73" count="0" type="stmt"/>
+      <line num="74" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="75" count="0" type="stmt"/>
+      <line num="88" count="0" type="stmt"/>
+      <line num="89" count="0" type="stmt"/>
+      <line num="90" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="91" count="0" type="stmt"/>
+      <line num="94" count="0" type="stmt"/>
+      <line num="97" count="1" type="stmt"/>
+    </file>
+  </project>
+</coverage>
