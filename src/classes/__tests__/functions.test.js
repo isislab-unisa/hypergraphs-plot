@@ -1,4 +1,7 @@
-import ColorEdgeHG from "../hypergraph-ColorEdge"
+import * as ColorEdgeHG from '../hypergraph-ColorEdge';
+ColorEdgeHG.otherFn = jest.fn();
+
+
 
 test("Return nodes length of hypergraph with 10 nodes",()=>{
     this.nodes =[

@@ -17,7 +17,7 @@ export default class Hypergraph{
      * @param {Hypergraph} Hypergraph Hypergraph
      * @return {Array of Objects} List of nodes with the attributes id of the node and links where it belongs
      */
-    get getNodes(Hypergraph){
+    getNodes(Hypergraph){
     return this.Hypergraph.nodes;
     }
 
@@ -27,7 +27,7 @@ export default class Hypergraph{
      * @param {Hypergraph} Hypergraph Hypergraph
      * @return {Array of Objects} List of links with the attributes id of the link and the nodes he has
      */
-    get getLinks(Hypergraph){
+    getLinks(Hypergraph){
     return this.Hypergraph.links;
     }
 
@@ -37,7 +37,7 @@ export default class Hypergraph{
      * @param {Hypergraph} Hypergraph Hypergraph
      * @return {Array of Objects} Array of objects (node,link,value)
      */
-    get getNodesLinks(Hypergraph){
+    getNodesLinks(Hypergraph){
     return this.Hypergraph.nodelink;
     }
 
@@ -47,7 +47,7 @@ export default class Hypergraph{
      * @param {Hypergraph} Hypergraph Hypergraph
      * @return {Int} Number of nodes
      */
-    get getNumNodes(HG){
+    getNumNodes(HG){
     return this.Hypergraph.nodes.length;
     }
 
@@ -57,7 +57,7 @@ export default class Hypergraph{
      * @param {Hypergraph} Hypergraph Hypergraph
      * @return {Int} Number of links
      */
-    get getNumLinks(HG){
+    getNumLinks(HG){
     return this.Hypergraph.links.length;
 }
 
@@ -69,7 +69,7 @@ export default class Hypergraph{
      * @param {Hypergraph} Hypergraph Hypergraph
      * @return {Array of Objects} List of nodes with the attributes id of the node and links where it belongs
      */
-    get getNodes(Hypergraph){
+    getNodes(Hypergraph){
     return this.Hypergraph.nodes;
     }
     
@@ -79,7 +79,7 @@ export default class Hypergraph{
      * @param {Hypergraph} Hypergraph Hypergraph
      * @return {Array of Objects} List of links with the attributes id of the link and the nodes he has
      */
-    get getLinks(Hypergraph){
+    getLinks(Hypergraph){
     return this.Hypergraph.links;
     }
 
@@ -89,7 +89,7 @@ export default class Hypergraph{
      * @param {Hypergraph} Hypergraph Hypergraph
      * @return {Array of Objects} Array of objects (node,link,value)
      */
-    get getNodesLinks(Hypergraph){
+    getNodesLinks(Hypergraph){
     return this.Hypergraph.nodelink;
     }
 
@@ -99,7 +99,7 @@ export default class Hypergraph{
      * @param {Hypergraph} Hypergraph Hypergraph
      * @return {Int} Number of nodes
      */
-    get getNumNodes(HG){
+    getNumNodes(Hypergraph){
     return this.Hypergraph.nodes.length;
     }
 
@@ -109,7 +109,7 @@ export default class Hypergraph{
      * @param {Hypergraph} Hypergraph Hypergraph
      * @return {Int} Number of links
      */
-    get getNumLinks(HG){
+    getNumLinks(Hypergraph){
     return this.Hypergraph.links.length;
 }
     
