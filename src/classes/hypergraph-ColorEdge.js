@@ -1,8 +1,8 @@
 import Hypergraph from './Hypergraph';
 
 export default class ColorEdgeHG extends Hypergraph {
-        constructor(links, nodes, nodelink) {
-        super(links, nodes, nodelink);
+        constructor(links, nodes, nodelinks) {
+        super(links, nodes, nodelinks);
         var hyper = [];
         var i;
         var j;
@@ -33,15 +33,8 @@ export default class ColorEdgeHG extends Hypergraph {
         });
 
         links.forEach(function (d) {
-            linkid = d.id;  //id of the link
-            d = d.nodes;    //nodes of the link
-            //if link length >2 there's an Hyperlink: i need to create a connection node
-<<<<<<< HEAD
-=======
-
             var linkid = d.id;
             d = d.nodes;
->>>>>>> 57955414acf36c2b7a0365418a940419c6968da8
             if (d.length >= 2) {
                 //connection node id creation
                 var id = 'linkid:' + linkid + '-ln';
@@ -64,6 +57,8 @@ export default class ColorEdgeHG extends Hypergraph {
             }
         });
 
+        this.links= hyper;
+        this.nodes= nodes;
         this.dictNodes= dictNodes;
         this.dictLinks= dictLinks;
         this.dictNodeLinks= dictNodeLinks;
