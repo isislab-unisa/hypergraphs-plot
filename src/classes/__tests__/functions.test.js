@@ -1,9 +1,6 @@
-test("questo è un test", function () {
-    expect(1 + 1).toBe(2);
-});
+import ColorEdgeHG from "../hypergraph-ColorEdge"
 
-
-test("Numero nodi di un hypergraph", function(){
+test("Return nodes length of hypergraph with 10 nodes",()=>{
     this.nodes =[
         {"id":"1" , "links":["5"]},
         {"id":"2" , "links":["2","3","4"]},
@@ -45,6 +42,6 @@ test("Numero nodi di un hypergraph", function(){
         {"node":"10","link":"3","value":"1"},
         {"node":"10","link":"4","value":"1"}
 ];
-    this.HGColorEdge = new ColorEdge(nodes,links,nodelinks);
-    expect(getNumNodes(this.HGColorEdge)).toBe(10);
+   ColorEdgeHG = new ColorEdgeHG(nodes,links,nodelinks);
+    expect(2+2).toBe(4);
 });

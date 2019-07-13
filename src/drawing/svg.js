@@ -12,7 +12,7 @@ var type;
  * hgVennPlot({graph:graph})
  * hgVennPlot({json:string})
  */
-export default function hgVennPlot({ graph, json } = {}) {
+export function hgVennPlot({ graph, json } = {}) {
     if (graph !== undefined) {
         console.log("with graph")
         plotVenn(graph)
@@ -127,7 +127,7 @@ function plotVenn(graph) {
     })
 }
 
-export default function hgColorEdgePlot({ graph, json } = {}) {
+export function hgColorEdgePlot({ graph, json } = {}) {
     if (graph !== undefined) {
         console.log("graph")
         plotColorEdge(graph)

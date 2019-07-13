@@ -29,7 +29,7 @@
   "jest": {
     "verbose": true,
     "testMatch": [
-      "**/__tests__/functions-test.js"
+      "**/__tests__/functions.test.js"
     ]
   }
 }

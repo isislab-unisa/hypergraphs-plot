@@ -1,4 +1,4 @@
-import HypergraphsPlotException from './HypergraphsPlotException';
+import HypergraphsPlotException from './HypergraphsPlotExeption';
 
 export default class HypergraphsPlotError extends HypergraphsPlotException {
   constructor(message) {
