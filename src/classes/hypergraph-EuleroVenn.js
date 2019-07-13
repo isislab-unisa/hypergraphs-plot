@@ -1,4 +1,4 @@
-export default class VennHypergraph {
+export default class VennHG {
     constructor(links, nodes, nodelinks) {
         var map = {} //map used to store the sets and the number of nodes
         var nodesInLinks = {} //object that store the sets and the nodes inside the sets

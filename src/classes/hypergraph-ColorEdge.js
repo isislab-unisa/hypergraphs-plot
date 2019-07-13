@@ -10,6 +10,13 @@ export default class ColorEdgeHG extends Hypergraph {
         var dictNodes = {};
         var dictLinks = {};
         var dictNodeLinks = {};
+<<<<<<< HEAD
+=======
+        console.log(links)
+        console.log(nodes)
+        console.log(nodelinks)
+        var nodelinksvalue = nodelinks;
+>>>>>>> 57955414acf36c2b7a0365418a940419c6968da8
 
         
         nodes.forEach(function (element, i) {
@@ -32,6 +39,12 @@ export default class ColorEdgeHG extends Hypergraph {
             linkid = d.id;  //id of the link
             d = d.nodes;    //nodes of the link
             //if link length >2 there's an Hyperlink: i need to create a connection node
+<<<<<<< HEAD
+=======
+
+            var linkid = d.id;
+            d = d.nodes;
+>>>>>>> 57955414acf36c2b7a0365418a940419c6968da8
             if (d.length >= 2) {
                 //connection node id creation
                 var id = 'linkid:' + linkid + '-ln';
