@@ -7,7 +7,10 @@ export default class ColorEdgeHG {
         var dictNodes = {};
         var dictLinks = {};
         var dictNodeLinks = {};
-        nodelinksvalue = nodelinks;
+        console.log(links)
+        console.log(nodes)
+        console.log(nodelinks)
+        var nodelinksvalue = nodelinks;
 
         nodes.forEach(function (element, i) {
             dictNodes[element.id] = element.links;
@@ -25,7 +28,7 @@ export default class ColorEdgeHG {
         links.forEach(function (d) {
             //if link length >2 there's an Hyperlink: i need to create a connection node
 
-            linkid = d.id;
+            var linkid = d.id;
             d = d.nodes;
             if (d.length >= 2) {
                 //connection node id creation

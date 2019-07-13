@@ -1,7 +1,6 @@
 import * as d3 from "d3";
 import * as venn from "venn.js";
-import * as VennHG from "../classes/hypergraph-EuleroVenn"
-import * as ColorEdgeHG from "../classes/hypergraph-ColorEdge"
+import { ColorEdgeHG, VennHG } from "../classes/index"
 
 var grafo = {}
 var type;
@@ -12,23 +11,19 @@ var type;
  * hgVennPlot({graph:graph})
  * hgVennPlot({json:string})
  */
-export default function hgVennPlot({ graph, json } = {}) {
+export function hgVennPlot({ graph, json } = {}) {
     if (graph !== undefined) {
         console.log("with graph")
         plotVenn(graph)
 
     } else if (json) {
         console.log("with json")
-        d3.json(json, function (error, graph) {
-            if (error) throw error;
-            plotVenn(graph)
-        });
+        var graph = require(""+json)
+        plotVenn(graph)
     } else {
         console.log("default path")
-        d3.json("scripts/data.json", function (error, graph) {
-            if (error) throw error;
-            plotVenn(graph)
-        });
+        var graph = require("./data.json")
+        plotVenn(graph)
     }
 }
 
@@ -42,10 +37,9 @@ function plotVenn(graph) {
         links = graph.links,
         nodelinks = graph.nodelinks;
 
-
     //d3.hypergraph invocation passing links and nodes 
-    let data = new VennHG(links, nodes, nodelinks)
-
+    var data = new VennHG(links, nodes, nodelinks)
+    console.log(data)
 
     //creating sets
     var sets = [];
@@ -127,29 +121,30 @@ function plotVenn(graph) {
     })
 }
 
-export default function hgColorEdgePlot({ graph, json } = {}) {
+export function hgColorEdgePlot({ graph, json } = {}) {
     if (graph !== undefined) {
         console.log("graph")
         plotColorEdge(graph)
     } else if (json !== undefined) {
         console.log("json")
-        d3.json(json, function (error, graph) {
-            plotColorEdge(graph)
-        })
+        var graph = require(""+json)
+        plotColorEdge(graph)
     } else {
-        d3.json("scripts/data.json", function (error, graph) {
-            plotColorEdge(graph)
-        })
+        var graph = require("./data.json");
+        plotColorEdge(graph)
     }
 }
 
 function plotColorEdge(graph) {
     type = "color-edge"
+    console.log(graph)
     //var dataMarker = { id: 0, name: 'circle', path: 'M 0, 0  m -5, 0  a 5,5 0 1,0 10,0  a 5,5 0 1,0 -10,0', viewbox: '-6 -6 12 12' };
     var nodeR = 20, lNodeR = 0.3;    //raggio nodi e nodo iperarco
     //var nodeId = 0;
     var width = 1000, height = 1000;
-    var color = d3.scaleOrdinal(d3.schemeCategory20);
+    console.log("AAAAAAA")
+    var color = d3.scaleOrdinal(d3.schemeCategory10);
+    console.log("BBBBBB")
     //zoom handler
     var zoom = d3.zoom()
         .scaleExtent([1 / 2, 10])
@@ -187,16 +182,17 @@ function plotColorEdge(graph) {
         bilinks = [];
     grafo = JSON.parse(JSON.stringify(graph));
     //d3.hypergraph invocation passing links and nodes
+    console.log(grafo)
     var data = new ColorEdgeHG(links, nodes, grafo.nodelinks);
     //d3.hypergraph links
     links = data.links;
     //d3.hypergraph nodes
     nodes = data.nodes;
-    dictNodes = data.dictNodeLinks
-    dictLinks = data.dictLinks
-    dictNodeLinks = data.dictNodeLinks
+    var dictNodes = data.dictNodeLinks
+    var dictLinks = data.dictLinks
+    var dictNodeLinks = data.dictNodeLinks
     //node mapping by id
-    nodeById = d3.map(nodes, function (d) { return d.id; });
+    var nodeById = d3.map(nodes, function (d) { return d.id; });
     links.forEach(function (link) {
         var s = link.source = nodeById.get(link.source),
             t = link.target = nodeById.get(link.target),
@@ -363,6 +359,8 @@ function plotColorEdge(graph) {
             }
             return "M" + x1 + "," + y1 + "A" + drx + "," + dry + " " + xRotation + "," + largeArc + "," + sweep + " " + x2 + "," + y2;
         }
+
+        var diffX0, diffY0, diffX2, diffY2, pathLength01, pathLength12, offsetX0, offsetY0, offsetX2, offsetY2;
 
         diffX0 = d[0].x - d[1].x;
         diffY0 = d[0].y - d[1].y;
