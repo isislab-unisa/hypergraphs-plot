@@ -1,5 +1,15 @@
 //var JSNetworkXError = require('../exceptions/HypergraphsPlotError');
-var Hypergraph = require('./Hypergraph');
+import Hypergraph from './index';
+
+export function getName(Hypergraph){
+    return Hypergraph.getName();
+}
+
+export function setName(Hypergraph,name){
+    return Hypergraph.setName(name);
+}
+
+
 
 /**
  * Return a copy of the hypergraph nodes in a list.
@@ -7,7 +17,7 @@ var Hypergraph = require('./Hypergraph');
  * @param {Hypergraph} Hypergraph Hypergraph
  * @return {Array} List of nodes
  */
-function getNodes(Hypergraph){
+export function getNodes(Hypergraph){
     return Hypergraph.getNodes();
 }
 
@@ -17,7 +27,7 @@ function getNodes(Hypergraph){
  * @param {Hypergraph} Hypergraph Hypergraph
  * @return {Array} List of links
  */
-function getLinks(Hypergraph){
+export function getLinks(Hypergraph){
     return Hypergraph.getLinks();
 }
 
@@ -27,7 +37,7 @@ function getLinks(Hypergraph){
  * @param {Hypergraph} Hypergraph Hypergraph
  * @return {Array of Objects} Array of objects (node,link,value)
  */
-function getNodesLinks(Hypergraph){
+export function getNodesLinks(Hypergraph){
     return Hypergraph.getNodesLinks();
 }
 
@@ -37,7 +47,7 @@ function getNodesLinks(Hypergraph){
  * @param {Hypergraph} Hypergraph Hypergraph
  * @return {number} Number of nodes
  */
-function getNumNodes(Hypergraph){
+export function getNumNodes(Hypergraph){
     return Hypergraph.getNumNodes();
 }
 
@@ -47,7 +57,7 @@ function getNumNodes(Hypergraph){
  * @param {Hypergraph} Hypergraph Hypergraph
  * @return {Int} Number of links
  */
-function getNumLinks(Hypergraph){
+export function getNumLinks(Hypergraph){
     return Hypergraph.getNumLinks();
 }
 
@@ -58,23 +68,8 @@ function getNumLinks(Hypergraph){
  * @param {String} idNode id of the node
  * @return {!Map} Dictionary of attributes keyed by node 
  */
-function getNodeAttributes(Hypergraph,idNode){
+export function getNodeAttributes(Hypergraph,idNode){
     return Hypergraph.getNodeAttributes(idNode);
-}
-
-/**
- * Set node attributes from Hypergraph nodes
- * 
- * @param {Hypergraph} Hypergraph Hyperpgrah
- * @param {String} idNode id of the node
- * @param {String} attributes attributes
- */
-function setNodeAttributes(Hypergraph,idNode,attributes){
-    Hypergraph.nodes.forEach(function(node,i){
-        if(node.id === idNode){
-            node.attributes = attributes;
-        }
-    })
 }
 
 /**
@@ -84,14 +79,31 @@ function setNodeAttributes(Hypergraph,idNode,attributes){
  * @param {String} idLink id of the link
  * @return {!Map} Dictionary of attributes keyed by node 
  */
-function getLinkAttributes(Hypergraph,idLink){
-    var dict = new Map();
-    Hypergraph.links.forEach(function(link,i){
-        if(link.id === idLink){
-            dict.set(link.id, link.nodes);
-        }
-    })
-    return dict;
+export function getLinkAttributes(Hypergraph,idLink){
+    return Hypergraph.getLinkAttributes(idLink);
 }
 
-module.exports={getNodes,getLinks,getNodesLinks,getNumNodes,getNumLinks,getNodeAttributes,getNodeAttributes,getLinkAttributes};
+export function hasNode(Hypergraph,node){
+    return Hypergraph.hasNode(node);
+}
+
+
+export function addNode(Hypergraph,idNode,links,values){
+    return Hypergraph.addNode(idNode,links,values);
+}
+
+export function removeNode(Hypergraph,idNode){
+    return Hypergraph.removeNode(idNode);
+}
+
+export function addEdge(Hypergraph,idLink,nodes,values){
+    return Hypergraph.addEdge(idLink,nodes,values);
+}
+
+export function removeEdge(Hypergraph,idLink){
+    return Hypergraph.removeEdge(idLink);
+}
+
+export function numberSelfLoop(Hypergraph){
+    return Hypergraph.numberSelfLoop();
+}

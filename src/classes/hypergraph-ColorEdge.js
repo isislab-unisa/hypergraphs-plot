@@ -1,6 +1,6 @@
-var Hypergraph = require('./Hypergraph');
+/*import {Hypergraph} from './index';
 
-class ColorEdgeHG extends Hypergraph {
+export default class ColorEdgeHG extends Hypergraph {
         constructor(links, nodes, nodelink) {
         super(links, nodes, nodelink);
         var hyper = [];
@@ -61,10 +61,5 @@ class ColorEdgeHG extends Hypergraph {
         this.dictNodeLinks= dictNodeLinks;
     }
 
-
-
-    
 }
-
-
-module.exports={ColorEdgeHG};
+*/
