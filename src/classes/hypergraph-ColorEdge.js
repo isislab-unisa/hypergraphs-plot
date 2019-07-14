@@ -54,6 +54,8 @@ class ColorEdgeHG extends Hypergraph {
             }
         });
 
+        this.links= hyper;
+        this.nodes= nodes;
         this.dictNodes= dictNodes;
         this.dictLinks= dictLinks;
         this.dictNodeLinks= dictNodeLinks;

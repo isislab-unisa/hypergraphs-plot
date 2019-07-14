@@ -1,4 +1,4 @@
-class Hypergraph{
+export default class Hypergraph {
     /**
          * 
          * @param {links}, Is an object that has the id of the link and the nodes that belong to it
