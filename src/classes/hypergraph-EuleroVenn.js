@@ -1,5 +1,8 @@
-export default class VennHG {
+import Hypergraph from './Hypergraph';
+
+export default class VennHG extends Hypergraph{
     constructor(links, nodes, nodelinks) {
+        super(links, nodes, nodelinks);
         var map = {} //map used to store the sets and the number of nodes
         var nodesInLinks = {} //object that store the sets and the nodes inside the sets
         var nodesToDisplay = {} //object that store the node to display

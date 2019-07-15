@@ -1,4 +1,4 @@
-/*import {Hypergraph} from './index';
+import Hypergraph from './Hypergraph';
 
 export default class ColorEdgeHG extends Hypergraph {
         constructor(links, nodes, nodelink) {
@@ -62,4 +62,3 @@ export default class ColorEdgeHG extends Hypergraph {
     }
 
 }
-*/
