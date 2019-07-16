@@ -44,20 +44,31 @@ const nodelink =[
 ];
 const HG = new Hypergraph(links,nodes,nodelink);
 
-describe('Testing return of the name of a Hypergraph',()=>{
-test('The name is null',()=>{
+describe('Testing the return of the name of a Hypergraph',()=>{
+test('The name is empty',()=>{
     expect(functions.getName(HG)).toBe('');
 });
 });
 
-describe('Testing set the name of a Hypergraph',()=>{
-test('The name is GrafoNetwork',()=>{
-    functions.setName(HG,'GrafoNetwork');
+describe('Testing the set the name of a Hypergraph',()=>{
+test('Set the name GrafoNetwork',()=>{;
+    expect(functions.setName(HG,'GrafoNetwork')).toBe('done');
+});
+});
+
+describe('Testing the return of the name of a Hypergraph',()=>{
+test('The name is now GrafoNetwork',()=>{
     expect(functions.getName(HG)).toBe('GrafoNetwork');
 });
 });
 
-describe('Testing return of the nodes of a Hypergraph',()=>{
+describe('Testing the return number of the nodes of a Hypergraph',()=>{
+test('The number of the nodes is 10',()=>{
+    expect(functions.getNumNodes(HG)).toBe(10);
+});
+});
+
+describe('Testing the return of the number of nodes',()=>{
 test('The nodes are 10',()=>{
     expect(functions.getNodes(HG)).toBe(nodes);
 });
@@ -75,11 +86,7 @@ test('The node-link are 10',()=>{
 });
 });
 
-describe('Testing return number of the nodes of a Hypergraph',()=>{
-test('The number of the nodes is 10',()=>{
-    expect(functions.getNumNodes(HG)).toBe(10);
-});
-});
+
 
 describe('Testing return number of the links of a Hypergraph',()=>{
 test('The number of the links is 5',()=>{
@@ -217,3 +224,5 @@ test('Selfloop is 1',()=>{
     expect(functions.numberSelfLoop(HG)).toBe(1);
 });
 });
+
+

@@ -1,15 +1,36 @@
 //var JSNetworkXError = require('../exceptions/HypergraphsPlotError');
 import Hypergraph from './index';
 
+/**
+ * Return the name of the hypergraph
+ * 
+ * @param {Hypergraph} Hypergraph Hypergraph
+ * @return {String} The name
+ */
 export function getName(Hypergraph){
     return Hypergraph.getName();
 }
 
+/**
+ * Set the name to a hypergraph
+ * 
+ * @param {Hypergraph} Hypergraph Hypergraph
+ * @param {String} name The name
+ * @return {String}  Return a confirmation that set it
+ */
 export function setName(Hypergraph,name){
     return Hypergraph.setName(name);
 }
 
-
+/**
+ * Return the number of nodes in the hypergraph.
+ *
+ * @param {Hypergraph} Hypergraph Hypergraph
+ * @return {number} Number of nodes
+ */
+export function getNumNodes(Hypergraph){
+    return Hypergraph.getNumNodes();
+}
 
 /**
  * Return a copy of the hypergraph nodes in a list.
@@ -41,15 +62,7 @@ export function getNodesLinks(Hypergraph){
     return Hypergraph.getNodesLinks();
 }
 
-/**
- * Return the number of nodes in the hypergraph.
- *
- * @param {Hypergraph} Hypergraph Hypergraph
- * @return {number} Number of nodes
- */
-export function getNumNodes(Hypergraph){
-    return Hypergraph.getNumNodes();
-}
+
 
 /**
  * Return the number of edges in the hypergraph.
@@ -107,3 +120,7 @@ export function removeEdge(Hypergraph,idLink){
 export function numberSelfLoop(Hypergraph){
     return Hypergraph.numberSelfLoop();
 }
+/*
+export function nodesWithSelfLoop(Hypergraph){
+    return Hypergraph.nodesWithSelfLoop();
+}*/

@@ -6,8 +6,9 @@ export default class Hypergraph {
          * @param {links}, Is an object that has the id of the link and the nodes that belong to it
          * @param {nodes}, Is an object that has the id of the node and the links that belong to it
          * @param {nodelink}, Is an object that has the id of the node  associated with the hyperarch id with its own value
+         * @param {name}, Is the name of the hypergraph
      */
-    constructor(links,nodes,nodelink, name=''){
+    constructor(links=[],nodes=[],nodelink=[], name=''){
         this.nodes=nodes;
         this.links=links;
         this.nodelink=nodelink;
@@ -22,30 +23,53 @@ export default class Hypergraph {
      */
     getName(){
         return this.name || '';
-    }
-    
+    } 
     setName(name){
         this.name=name;
+        return "done";
     }
 
-
+    /**
+     * Return the number of nodes in the hypergraph.
+     *
+     * ###Example
+     * 
+     * '''
+     * var nodes = ["1","2","3"];
+     * var G = new Hypergraph(nodes);
+     * G.getNumNodes();
+     * //3
+     * 
+     * @return {number} Number of nodes
+     */
+    getNumNodes(){
+        return this.nodes.length;
+    }
 
 
     /**
      * Return a copy of the hypergraph nodes in a list.
      *
+     * ###Example
+     * 
+     * '''
+     * var nodes = [{"id":"1","links":["1","2","3"]}];
+     * var G = new Hypergraph(nodes);
+     * G.getNodes();
+     * //{"id":"1","links":["1","2","3"]}
      * @param {Hypergraph} Hypergraph Hypergraph
-     * @return {Array of Objects} List of nodes with the attributes id of the node and links where it belongs
+     * @return {Array} List of nodes
      */
     getNodes(){
     return this.nodes;
     }
 
+
     /**
      * Return a copy of the hypergraph links in a list.
      *
      * @param {Hypergraph} Hypergraph Hypergraph
-     * @return {Array of Objects} List of links with the attributes id of the link and the nodes he has
+     * @return {Array} List of links
      */
     getLinks(){
     return this.links;
@@ -61,15 +85,7 @@ export default class Hypergraph {
     return this.nodelink;
     }
 
-    /**
-     * Return the number of nodes in the hypergraph.
-     *
-     * @param {Hypergraph} Hypergraph Hypergraph
-     * @return {Int} Number of nodes
-     */
-    getNumNodes(){
-    return this.nodes.length;
-    }
+
 
     /**
      * Return the number of edges in the hypergraph.
@@ -264,6 +280,19 @@ export default class Hypergraph {
         });
         return count;
     }
+/*
+    nodesWithSelfLoop(){
+        var nodes=[];
+        this.links.forEach(function(link){
+            if(link.nodes.length==1){
+                nodes.push(link.nodes[0]);
+            }
+        });
+        var uniqueNodes = nodes.filter(function(elem, index, self) {
+            return index === self.indexOf(elem);
+        });
+        return uniqueNodes;
+    }*/
 
     
 
