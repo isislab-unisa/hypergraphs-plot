@@ -4,5 +4,6 @@ module.exports = {
       filename: "bundle.js",
       libraryTarget: 'var',
       library: 'hgplot'
-    }
+    },
+    performance: { hints: false }
   }

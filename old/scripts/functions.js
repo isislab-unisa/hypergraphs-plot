@@ -26,7 +26,6 @@ $(document).ready(function(){
                         plotVenn(grafo)
                 }
 
-                
             var newIdHypergraph = $("#newIdHypergraph").val();
             var nodesInNewHypergraph = $("#nodesInNewHypergraph").val();
             var nodesInNewHypergraph = nodesInNewHypergraph.split(',');

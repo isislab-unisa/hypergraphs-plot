@@ -44,40 +44,45 @@ const nodelink =[
 ];
 const HG = new Hypergraph(links,nodes,nodelink);
 
-describe('Testing return of the name of a Hypergraph',()=>{
-test('The name is null',()=>{
+describe('Testing the return of the name of a Hypergraph',()=>{
+test('The name is empty',()=>{
     expect(functions.getName(HG)).toBe('');
 });
 });
 
-describe('Testing set the name of a Hypergraph',()=>{
-test('The name is GrafoNetwork',()=>{
-    functions.setName(HG,'GrafoNetwork');
+describe('Testing the set the name of a Hypergraph',()=>{
+test('Set the name GrafoNetwork',()=>{;
+    expect(functions.setName(HG,'GrafoNetwork')).toBe('done');
+});
+});
+
+describe('Testing the return of the name of a Hypergraph',()=>{
+test('The name is now GrafoNetwork',()=>{
     expect(functions.getName(HG)).toBe('GrafoNetwork');
 });
 });
 
-describe('Testing return of the nodes of a Hypergraph',()=>{
+describe('Testing the return number of the nodes of a Hypergraph',()=>{
+test('The number of the nodes is 10',()=>{
+    expect(functions.getNumNodes(HG)).toBe(10);
+});
+});
+
+describe('Testing the return of nodes of a Hypergraph',()=>{
 test('The nodes are 10',()=>{
-    expect(functions.getNodes(HG)).toBe(nodes);
+    expect(functions.getNodes(HG)).toEqual(nodes);
 });
 });
 
 describe('Testing return of the links of a Hypergraph',()=>{
 test('The links are 5',()=>{
-    expect(functions.getLinks(HG)).toBe(links);
+    expect(functions.getLinks(HG)).toEqual(links);
 });
 });
 
 describe('Testing return of the node-links of a Hypergraph',()=>{
 test('The node-link are 10',()=>{
-    expect(functions.getNodesLinks(HG)).toBe(nodelink);
-});
-});
-
-describe('Testing return number of the nodes of a Hypergraph',()=>{
-test('The number of the nodes is 10',()=>{
-    expect(functions.getNumNodes(HG)).toBe(10);
+    expect(functions.getNodesLinks(HG)).toEqual(nodelink);
 });
 });
 
@@ -89,7 +94,7 @@ test('The number of the links is 5',()=>{
 
 describe('Testing return of a node which is in the hypergraph',()=>{
 test('Node with id:1',()=>{
-    expect(functions.getNodeAttributes(HG,"1")).toEqual(nodes[0]);
+    expect(functions.getNodeAttributes(HG,"2")).toEqual(nodes[1]);
 });
 });
 
@@ -111,62 +116,60 @@ test('link with id:6',()=>{
 });
 });
 
-
 describe('Testing add a generic node of a Hypergraph',()=>{
-test('Add node with id:12 and links["2","3"] and values ["1","2"]',()=>{
-    const HGProva = new Hypergraph(links,nodes,nodelink);
+test('Add node with id:"12" and links["2","3"] and values ["1","2"]',()=>{
     const idNode = "12";
     const link = ["2","3"];
     const values = ["1","2"];
-    expect(functions.addNode(HGProva,idNode,link,values)).toEqual("add");
+    expect(functions.addNode(HG,idNode,link,values)).toBe("add");
 });
 });
 
 describe('Testing add a generic node with links  that do not exist of a Hypergraph',()=>{
-test('Add node with id:14 and links["2","13"] and values ["1","2"]',()=>{
+test('Add node with id:"14" and links["2","13"] and values ["1","2"]',()=>{
     const HGProva = new Hypergraph(links,nodes,nodelink);
     const idNode = "14";
     const link = ["2","13"];
     const values = ["1","2"];
-    expect(functions.addNode(HGProva,idNode,link,values)).toEqual("notAdd");
+    expect(functions.addNode(HGProva,idNode,link,values)).toBe("linkDontExist");
 });
 });
 
 describe('Testing add a generic node with more links than values in a Hypergraph',()=>{
 test('Add node with id:15 and links["1","2"] and values ["1","2","3"]',()=>{
     const HGProva = new Hypergraph(links,nodes,nodelink);
-    const idNode = "14";
+    const idNode = "15";
     const link = ["2","13"];
     const values = ["1","2","3"];
-    expect(functions.addNode(HGProva,idNode,link,values)).toEqual("inputIncorrect");
+    expect(functions.addNode(HGProva,idNode,link,values)).toBe("inputIncorrect");
 });
 });
 
 describe('Testing remove a node of a Hypergraph',()=>{
 test('Remove node with id:12',()=>{
     const idNode = "12";
-    expect(functions.removeNode(HG,idNode)).toEqual("removed");
+    expect(functions.removeNode(HG,idNode)).toBe("removed");
 });
 });
 
 describe('Testing remove a node not existing of a Hypergraph',()=>{
 test('Remove node with id:14',()=>{
     const idNode = "14";
-    expect(functions.removeNode(HG,idNode)).toEqual("notExisting");
+    expect(functions.removeNode(HG,idNode)).toBe("notExisting");
 });
 });
 
 describe('Testing if a hypergraph has a node',()=>{
 test('Check if existing a node',()=>{
-    const node={"id":"1" , "links":["5"]};
-    expect(functions.hasNode(HG,node)).toBe("yes");
+    const node="1";
+    expect(functions.hasNode(HG,node)).toEqual(true);
 });
 });
 
 describe('Testing if a hypergraph not has a node',()=>{
 test('Check if not existing a node',()=>{
-    const node={"id":"1" , "links":["12"]};
-    expect(functions.hasNode(HG,node)).toBe("no");
+    const node="12";
+    expect(functions.hasNode(HG,node)).toEqual(false);
 });
 });
 
@@ -217,3 +220,17 @@ test('Selfloop is 1',()=>{
     expect(functions.numberSelfLoop(HG)).toBe(1);
 });
 });
+
+describe('Testing nodes with selfloop',()=>{
+test('The node with selfloop is the node 1',()=>{
+    expect(functions.nodesWithSelfLoop(HG)).toStrictEqual(["1"]);
+});
+});
+
+describe('Testing links with selfloop',()=>{
+test('The link with selfloop is the link 5',()=>{
+    expect(functions.linksWithSelfLoop(HG)).toStrictEqual(["5"]);
+});
+});
+
+
