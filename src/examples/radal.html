@@ -27,8 +27,8 @@
 
 d3.json("data.json", function (error, graph) {
 	var margin = {top: 200, right: 200, bottom: 200, left: 200},
-	width = 800,
-	height = 800;
+	width = 1500,
+	height = 1500;
 	var offset = 0;
 
 	nodes = graph.nodes;	//nodi
@@ -41,22 +41,30 @@ d3.json("data.json", function (error, graph) {
 	var dictX=[];
 	var dictY=[];
 
-	var count=0;
+	var dictNodeLinkValue=[];
 
+	nodelinks.forEach(function(element,i){
+		dictNodeLinkValue["Nodo:idNodo"+element.node+" Link:"+element.link]="Nodo:"+element.node+" Link:"+element.link+" Value:"+element.value;
+	});
+
+	var count=0;
+	var valuestart = 1//nodes.length/10;
 	var firstnodes=[];
 	nodes.forEach(function(element,j){
-			var obj = {"axis":"idNodo"+element.id,"value":1,"bool":true}
+			var obj = {"axis":"idNodo"+element.id,"value":valuestart,"bool":true}
 			firstnodes.push(obj);
 	});
 	//bool true, disegna, false non disegna
 
-	var cc=2;
+	var cc=valuestart+1;
 	links.forEach(function(element,i){
+		id=element.id;
 		nod=element.nodes;	//esempio ["1","2","3"];
 		if(nod.length!=1 && nod.length>2){	//controllo per vedere se è selfloop
 			var d=[];
 			nodes.forEach(function(ele,j){
 			var obj = {"axis":"idNodo"+ele.id,"value":cc,"bool":false}	//pre ogni link, setto momentaneamente tutti i nodi
+			if(nod.includes(ele.id)) obj = {"axis":"idNodo"+ele.id,"value":cc,"bool":false,"link":id};
 			d.push(obj);
 			});
 			data.push(d);
@@ -80,8 +88,7 @@ d3.json("data.json", function (error, graph) {
 		cc=cc+1;
 	});
 	data.push(firstnodes);
-	console.log("SELFLOOP");
-	console.log(selfloop);
+	
 	var color = d3.scaleOrdinal().range(["#FC74FD"]);
 
 	var radarChartOptions = {
@@ -292,14 +299,19 @@ blobWrapper.selectAll(".radarCircle")
 .style("fill-opacity",function(d,i){
 	if(d.bool==true || d.value==1)	return 0.8;
 	else				return 0;
+})
+.append("title")
+.attr("dx", 22)
+.attr("dy", ".35em")
+.text(function(d,i){
+	if(d.value==1) return "Nodo:"+d.axis;
+	else		   {
+		return dictNodeLinkValue["Nodo:"+d.axis+" Link:"+d.link];}
 });
-blobWrapper
 
-console.log("DICT X");
-console.log(dictX);
 
-console.log("DICT Y");
-console.log(dictY);
+//blobWrapper
+
 
 g.data(selfloop)
 .append("path")		
