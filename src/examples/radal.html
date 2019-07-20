@@ -24,16 +24,111 @@
 <div class="radarChart"></div>
 <script type="text/javascript">
 
-
 d3.json("data.json", function (error, graph) {
-	var margin = {top: 200, right: 200, bottom: 200, left: 200},
-	width = 800,
-	height = 800;
+
 	var offset = 0;
+graph={
+    "nodes":[
+        {"id":"1" , "links":["5"]},
+        {"id":"2" , "links":["2","3","4"]},
+        {"id":"3" , "links":["2","4"]},
+        {"id":"4" , "links":["2"]},
+        {"id":"5" , "links":["1","2","3","4"]},
+        {"id":"6" , "links":[]},
+        {"id":"7" , "links":["2"]},
+        {"id":"8" , "links":["1","3","4","5"]},
+        {"id":"9" , "links":["3"]},
+		{"id":"10" , "links":["1","3","4"]},
+		{"id":"1" , "links":["5"]},
+        {"id":"2" , "links":["2","3","4"]},
+        {"id":"3" , "links":["2","4"]},
+        {"id":"4" , "links":["2"]},
+        {"id":"5" , "links":["1","2","3","4"]},
+        {"id":"6" , "links":[]},
+        {"id":"7" , "links":["2"]},
+        {"id":"8" , "links":["1","3","4","5"]},
+        {"id":"9" , "links":["3"]},
+		{"id":"10" , "links":["1","3","4"]},
+		{"id":"1" , "links":["5"]},
+        {"id":"2" , "links":["2","3","4"]},
+        {"id":"3" , "links":["2","4"]},
+        {"id":"4" , "links":["2"]},
+        {"id":"5" , "links":["1","2","3","4"]},
+        {"id":"6" , "links":[]},
+        {"id":"7" , "links":["2"]},
+        {"id":"8" , "links":["1","3","4","5"]},
+        {"id":"9" , "links":["3"]},
+		{"id":"10" , "links":["1","3","4"]},
+		{"id":"1" , "links":["5"]},
+        {"id":"2" , "links":["2","3","4"]},
+        {"id":"3" , "links":["2","4"]},
+        {"id":"4" , "links":["2"]},
+        {"id":"5" , "links":["1","2","3","4"]},
+        {"id":"6" , "links":[]},
+        {"id":"7" , "links":["2"]},
+        {"id":"8" , "links":["1","3","4","5"]},
+        {"id":"9" , "links":["3"]},
+		{"id":"10" , "links":["1","3","4"]},
+		{"id":"8" , "links":["1","3","4","5"]},
+        {"id":"9" , "links":["3"]},
+		{"id":"10" , "links":["1","3","4"]},
+		{"id":"8" , "links":["1","3","4","5"]},
+        {"id":"9" , "links":["3"]},
+		{"id":"10" , "links":["1","3","4"]}
+    ],
+    "links":[
+        {"id":"1", "nodes": ["5","8","10"]},
+        {"id":"2", "nodes": ["2","3","4","5","7"]},
+        {"id":"3", "nodes": ["2","5","8","9","10"]},
+        {"id":"4", "nodes": ["2","3","5","8","10"]},
+		{"id":"5", "nodes": ["1","8"]},
+		{"id":"6", "nodes": ["2","3","5","8","9"]},
+		{"id":"7", "nodes": ["2","3","5","8","9"]},
+		{"id":"6", "nodes": ["2","3","5","8","9"]},
+		{"id":"1", "nodes": ["5","8","10"]},
+        {"id":"2", "nodes": ["2","3","4","5","7"]},
+        {"id":"3", "nodes": ["2","5","8","9","10"]}
+    ],
+    "nodelinks":[
+                    {"node":"1","link":"5","value":"1"},
+                    {"node":"2","link":"2","value":"1"},
+                    {"node":"2","link":"3","value":"1"},
+                    {"node":"2","link":"4","value":"1"},
+                    {"node":"3","link":"2","value":"1"},
+                    {"node":"3","link":"4","value":"1"},
+                    {"node":"4","link":"2","value":"1"},
+                    {"node":"5","link":"1","value":"1"},
+                    {"node":"5","link":"2","value":"1"},
+                    {"node":"5","link":"3","value":"1"},
+                    {"node":"5","link":"4","value":"1"},
+                    {"node":"7","link":"2","value":"1"},
+                    {"node":"8","link":"1","value":"1"},
+                    {"node":"8","link":"3","value":"1"},
+                    {"node":"8","link":"4","value":"1"},
+                    {"node":"8","link":"5","value":"1"},
+                    {"node":"9","link":"3","value":"1"},
+                    {"node":"10","link":"1","value":"1"},
+                    {"node":"10","link":"3","value":"1"},
+                    {"node":"10","link":"4","value":"1"}
+        ]
+	};
+
 
 	nodes = graph.nodes;	//nodi
 	links = graph.links;	//link
 	nodelinks = graph.nodelinks;	//nodo-link-value
+	
+	var height=0;
+	var width=0;
+	if(nodes.length>links.length){
+		width=nodes.length*100;
+		height=nodes.length*100;
+	}
+	else{
+		width=links.length*100;
+		height=links.length*100;
+	}
+	var margin = {top: 200, right: 200, bottom: 200, left: 200};
 
 	var data = [];	//data per la costruzione di tutto
 	var selfloop = [];	//selfloop
@@ -44,13 +139,16 @@ d3.json("data.json", function (error, graph) {
 	var count=0;
 
 	var firstnodes=[];
+
+	var start = Math.floor( nodes.length/10 );
+	console.log("START = "+start);
 	nodes.forEach(function(element,j){
-			var obj = {"axis":"idNodo"+element.id,"value":1,"bool":true}
+			var obj = {"axis":"idNodo"+element.id,"value":start,"bool":true}
 			firstnodes.push(obj);
 	});
 	//bool true, disegna, false non disegna
 
-	var cc=2;
+	var cc=start+1;
 	links.forEach(function(element,i){
 		nod=element.nodes;	//esempio ["1","2","3"];
 		if(nod.length!=1 && nod.length>2){	//controllo per vedere se è selfloop
@@ -80,16 +178,14 @@ d3.json("data.json", function (error, graph) {
 		cc=cc+1;
 	});
 	data.push(firstnodes);
-	console.log("SELFLOOP");
-	console.log(selfloop);
+	
 	var color = d3.scaleOrdinal().range(["#FC74FD"]);
-
 	var radarChartOptions = {
-		w: width,
-		h: height,
+		w: 2000,
+		h: 2000,
 		margin: margin,
 		maxValue: 0.5,
-		levels: data.length,
+		levels: links.length+start,
 		roundStrokes: true,
 		color: color,
 		opacityCircles: 0
@@ -103,12 +199,12 @@ RadarChart(".radarChart", data, radarChartOptions);
 
 function RadarChart(id, data, options) {
 var cfg = {
-w: 1500,				//Width of the circle
-h: 1500,				//Height of the circle
+w: width,				//Width of the circle
+h: height,				//Height of the circle
 margin: {top: 20, right: 20, bottom: 20, left: 20}, //The margins of the SVG
-levels: 2,				//How many levels or inner circles should there be drawn
+levels: 1,				//How many levels or inner circles should there be drawn
 maxValue: 0, 			//What is the value that the biggest circle will represent
-labelFactor: 1.25, 	//How much farther than the radius of the outer circle should the labels be placed
+labelFactor: 1.1, 	//How much farther than the radius of the outer circle should the labels be placed
 wrapWidth: 60, 		//The number of pixels after which a label needs to be given a new line
 opacityArea: 0, 	//The opacity of the area of the blob
 dotRadius: 5, 			//The size of the colored circles of each blog
@@ -126,7 +222,7 @@ if('undefined' !== typeof options){
 }//if
 
 //If the supplied maxValue is smaller than the actual one, replace by the max in the data
-var maxValue = data.length	;   //Math.max(cfg.maxValue, d3.max(data, function(i){return d3.max(i.map(function(o){return o.value;}))}));
+var maxValue = links.length+start	;   //Math.max(cfg.maxValue, d3.max(data, function(i){return d3.max(i.map(function(o){return o.value;}))}));
 
 var allAxis = (data[0].map(function(i, j){return i.axis})),	//Names of each axis
 total = allAxis.length,					//The number of different axes
@@ -174,7 +270,8 @@ axisGrid.selectAll(".levels")
 .attr("r", function(d, i){return (radius/cfg.levels*d)})
 .style("fill","#CDCDCD")
 .style("stroke", function(d,i){
-    if(i!=data.length-1) return "#CDCDCD";
+	console.log(d);
+    if(i!=links.length && d>start) return "#CDCDCD";
     else               return "white";
 })
 .style("fill-opacity",cfg.opacityCircles)
@@ -277,29 +374,24 @@ blobWrapper.selectAll(".radarCircle")
 .attr("r", cfg.dotRadius)
 .attr("cx", function(d,i){ 
 	//if(d.bool==true)
-	if(d.value==1) dictX[d.axis]=rScale(d.value) * Math.cos(angleSlice*i  - Math.PI/2 - offset); 
+	if(d.value==start) dictX[d.axis]=rScale(d.value) * Math.cos(angleSlice*i  - Math.PI/2 - offset); 
 	return rScale(d.value) * Math.cos(angleSlice*i  - Math.PI/2 - offset); 
 })
 .attr("cy", function(d,i){ 
 	//if(d.bool==true)
-	if(d.value==1) dictY[d.axis]=rScale(d.value) * Math.sin(angleSlice*i  - Math.PI/2 - offset); 
+	if(d.value==start) dictY[d.axis]=rScale(d.value) * Math.sin(angleSlice*i  - Math.PI/2 - offset); 
 	return rScale(d.value) * Math.sin(angleSlice*i  - Math.PI/2 - offset); 
 })
 .style("fill", function(d,i,j) { 
-	if(d.value==1 && d.bool==false) return "black";
+	if(d.value==start && d.bool==false) return "black";
 	if(d.bool==true)	return cfg.color(j);
 	else				return "white"; })
 .style("fill-opacity",function(d,i){
-	if(d.bool==true || d.value==1)	return 0.8;
+	if(d.bool==true || d.value==start)	return 0.8;
 	else				return 0;
 });
 blobWrapper
 
-console.log("DICT X");
-console.log(dictX);
-
-console.log("DICT Y");
-console.log(dictY);
 
 g.data(selfloop)
 .append("path")		
@@ -312,7 +404,7 @@ g.data(selfloop)
 		y=cynod2-cynod1;
 		return "M "+cxnod1+" "+cynod1+" l "+x+" "+y;
 })
-.attr("stroke", cfg.color())
+.attr("stroke", "gray")
 .attr("stroke-width", "3")
 .style("fill", "none");
 
