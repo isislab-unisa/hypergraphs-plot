@@ -25,12 +25,14 @@ function plot(h::Hypergraph; type="color-edge")
 end
 
 function plotVenn(JSONString::String)
-    plotVennPY= pyimport("wrapper")[:plotVenn]
-    plotVennPY(JSONString)
+    #plotVennPY= pyimport("wrapper")[:plotVenn]
+    #plotVennPY(JSONString)
+    venn(JSONString)
 end
 
 function plotColorEdge(JSONString::String)
-    plotColorEdgePY= pyimport("wrapper")[:plotColorEdge]
-    plotColorEdgePY(JSONString)
+    #plotColorEdgePY= pyimport("wrapper")[:plotColorEdge]
+    #plotColorEdgePY(JSONString)
+    colorEdge(JSONString)
 end
 
