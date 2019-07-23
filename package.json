@@ -40,7 +40,7 @@
   "jest": {
     "verbose": true,
     "testMatch": [
-      "**/__tests__/functions.test.js"
+      "**/tests/classes/**.test.js"
     ],
     "collectCoverage": true
   }
