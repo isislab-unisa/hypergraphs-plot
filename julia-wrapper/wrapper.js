@@ -31,3 +31,14 @@ function colorEdgePlot({json} = {}){
 }
 
 
+function radalPlot({json} = {}){
+    if (json) {
+        require(['d3'], function (d3) {
+            d3.json(json, function (error, graph) {
+                hgplot.drawing.hgRadalPlot({ graph: graph })
+            })
+        });
+    }else{
+        hgplot.drawing.hgRadalPlot();
+    }
+}
