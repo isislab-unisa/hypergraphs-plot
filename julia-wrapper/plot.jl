@@ -12,6 +12,8 @@ params: h: Hyperhgraph
 function plot(JSONString::String; type="color-edge")
     if type=="venn"
         plotVenn(JSONString)
+    elseif type=="radal"
+        plotRadal(JSONString)
     else plotColorEdge(JSONString)
     end
 end
@@ -19,8 +21,10 @@ end
 function plot(h::Hypergraph; type="color-edge")
     generateFileJSON(h) #generate a json file into default path
     if type=="venn"
-        plotVenn("scripts/data.json")
-    else plotColorEdge("scripts/data.json")
+        plotVenn("data.json")
+    elseif type=="radal"
+        plotRadal("data.json")
+    else plotColorEdge("data.json")
     end
 end
 
@@ -36,3 +40,6 @@ function plotColorEdge(JSONString::String)
     colorEdge(JSONString)
 end
 
+function plotRadal(JSONString::String)
+    radal(JSONString)
+end

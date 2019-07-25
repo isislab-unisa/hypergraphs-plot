@@ -40,7 +40,11 @@
   "jest": {
     "verbose": true,
     "testMatch": [
+<<<<<<< HEAD
       "**/test/**.test.js"
+=======
+      "**/tests/classes/**.test.js"
+>>>>>>> 63977a3b0a92650f42b68adddb69ac7e3bbb32cb
     ],
     "collectCoverage": true
   }

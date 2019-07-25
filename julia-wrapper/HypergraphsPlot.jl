@@ -9,8 +9,6 @@ using JSON
 export plot
 export generatehg
 export generateFileJSON
-export plotColorEdge
-export plotVenn
 export venn
 
 include("plot.jl")
