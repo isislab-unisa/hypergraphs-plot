@@ -63,7 +63,7 @@ function colorEdge(s::String)
     </style>
 
     <div class="hg-plot"></div>
-    <script src="./bundle.v1.0js"></script>
+    <script src="./bundle.v1.0.js"></script>
     <script src="julia-wrapper/wrapper.js"></script>
     <script>
         colorEdgePlot({json:'"""*s*"""'});
