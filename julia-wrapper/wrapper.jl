@@ -36,7 +36,7 @@ function venn(s::String)
     </style>
 
     <div id="original"></div>
-    <script src="./dist/bundle.js"></script>
+    <script src="./bundle.v1.0.js"></script>
     <script src="julia-wrapper/wrapper.js"></script>
     <script>
         vennPlot({json:'"""*s*"""'});
@@ -63,7 +63,7 @@ function colorEdge(s::String)
     </style>
 
     <div class="hg-plot"></div>
-    <script src="./dist/bundle.js"></script>
+    <script src="./bundle.v1.0.js"></script>
     <script src="julia-wrapper/wrapper.js"></script>
     <script>
         colorEdgePlot({json:'"""*s*"""'});
@@ -99,7 +99,7 @@ function radal(s::String)
         }
     </style>
     <div class="radarChart"></div>
-    <script src="./dist/bundle.js"></script>
+    <script src="./bundle.v1.0.js"></script>
     <script type="text/javascript">
         radalPlot({json:'"""*s*"""'})
     </script>
