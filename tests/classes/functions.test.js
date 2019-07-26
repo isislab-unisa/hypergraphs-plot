@@ -1,5 +1,5 @@
-import {Hypergraph} from '../index';
-import * as functions from '../index';
+import {Hypergraph} from '../../src/classes/index';
+import * as functions from '../../src/classes/index';
 
 
 const nodes = [
