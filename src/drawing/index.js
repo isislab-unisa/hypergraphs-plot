@@ -1,5 +1,9 @@
 import * as svg from "./svg"
+import {hgVennNodesPlot} from "./svgVennNodes"
 
-export {svg};
+export {
+    svg,
+    hgVennNodesPlot
+};
 
 export * from "./svg"

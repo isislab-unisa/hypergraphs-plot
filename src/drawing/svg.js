@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import * as venn from "venn.js";
-import { ColorEdgeHG, VennHG } from "../classes/index"
+import { ColorEdgeHG, VennHG} from "../classes/index"
 
 var grafo = {}
 var type;
@@ -439,7 +439,7 @@ export function hgRadalPlot({ graph, json } = {}) {
 }
 
 function plotRadal(graph) {
-    var offset=0;
+    var offset = 0;
 
     var nodes = graph.nodes;	//nodi
     var links = graph.links;	//link
