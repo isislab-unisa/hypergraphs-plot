@@ -1,6 +1,5 @@
 import * as d3 from "d3";
-import * as venn from "venn.js";
-import { ColorEdgeHG, VennHG } from "../classes/index"
+import {RadalHG} from "../classes/index"
 
 var grafo = {}
 var type;
@@ -21,11 +20,12 @@ export function hgRadalPlot({ graph, json } = {}) {
 
 function plotRadal(graph) {
     var offset=0;
-
-    var nodes = graph.nodes;	//nodi
-    var links = graph.links;	//link
-    var nodelinks = graph.nodelinks;	//nodo-link-value
-
+    var RadalHG = new RadalHG(graph.links,graph.nodes,graph.nodelinks);
+    var nodes = RadalHG.nodes;	//nodi
+    var links = RadalHG.links;	//link
+    var nodelinks = RadalHG.nodelinks;	//nodo-link-value
+    var data = RadalHG.data;
+    var start = RadalHG.startlevel;
     var height = 0;
     var width = 0;
     if (nodes.length > links.length) {
@@ -38,54 +38,9 @@ function plotRadal(graph) {
     }
     var margin = { top: 100, right: 200, bottom: 200, left: 100 };
 
-    var data = [];	//data per la costruzione di tutto
-    var selfloop = [];	//selfloop
-
+       
     var dictX = [];
     var dictY = [];
-
-    var count = 0;
-
-    var firstnodes = [];
-
-    var start = Math.floor(nodes.length / 10);
-    console.log("START = " + start);
-    nodes.forEach(function (element, j) {
-        var obj = { "axis": "idNodo" + element.id, "value": start, "bool": true }
-        firstnodes.push(obj);
-    });
-    //bool true, disegna, false non disegna
-
-    var cc = start + 1;
-    links.forEach(function (element, i) {
-        var nod = element.nodes;	//esempio ["1","2","3"];
-        if (nod.length != 1 && nod.length > 2) {	//controllo per vedere se è selfloop
-            var d = [];
-            nodes.forEach(function (ele, j) {
-                var obj = { "axis": "idNodo" + ele.id, "value": cc, "bool": false }	//pre ogni link, setto momentaneamente tutti i nodi
-                d.push(obj);
-            });
-            data.push(d);
-        }
-        if (nod.length != 1 && nod.length > 2) {
-            nod.forEach(function (el, x) {
-                var result = d.filter(obj => {
-                    if (obj.axis === "idNodo" + el) obj.bool = true;	// e qui dico chi deve essere visibile grazie al bool=true;
-                });
-            })
-        }
-        if (nod.length == 1) {
-            firstnodes.filter(obj => {
-                if (obj.axis === "idNodo" + nod[0]) obj.bool = false;	//selfloop
-            });
-            count = count + 1;
-        }
-        if (nod.length == 2) {	//link with 2 nodes
-            selfloop.push({ "nodo1": "idNodo" + nod[0], "nodo2": "idNodo" + nod[1] });
-        }
-        cc = cc + 1;
-    });
-    data.push(firstnodes);
 
     var color = d3.scaleOrdinal().range(["#FC74FD"]);
     var radarChartOptions = {
@@ -298,7 +253,17 @@ function plotRadal(graph) {
             .style("fill-opacity", function (d, i) {
                 if (d.bool == true || d.value == start) return 0.8;
                 else return 0;
-            });
+            })
+            .append("title")
+            .attr("dx", 22)
+            .attr("dy", ".35em")
+            .text(function(d,i){
+                if(d.value==1) return "Nodo:"+d.axis;
+                else		   {
+                    return dictNodeLinkValue["Nodo:"+d.axis+" Link:"+d.link];}
+                })
+            .on("mouseover", handleMouseOver)
+            .on("mouseout", handleMouseOut);
         blobWrapper
 
 
@@ -324,6 +289,40 @@ function plotRadal(graph) {
         var tooltip = g.append("text")
             .attr("class", "tooltip")
             .style("opacity", 0);
+
+
+
+            
+
+
+        // Create Event Handlers for mouse
+        function handleMouseOver(d, i) {  // Add interactivity
+            // Use D3 to select element, change color and size
+            d3.select(this).attr({
+            fill: "orange",
+            r: radius * 2
+            });
+            // Specify where to put label of text
+            svg.append("text").attr({
+            id: "t" + d.x + "-" + d.y + "-" + i,  // Create an id for text so we can select it later for removing on mouseout
+                x: function() { return xScale(d.x) - 30; },
+                y: function() { return yScale(d.y) - 15; }
+            })
+            .text(function() {
+            return dictNodeLinkValue["Nodo:"+d.axis+" Link:"+d.link];  // Value of the text
+            });
+        }
+
+        function handleMouseOut(d, i) {
+                // Use D3 to select element, change color back to normal
+                d3.select(this).attr({
+                fill: "black",
+                r: radius
+                });
+                // Select text by id and then remove
+                d3.select("#t" + d.x + "-" + d.y + "-" + i).remove();  // Remove text location
+        }
+
 
 
         //Taken from http://bl.ocks.org/mbostock/7555321
