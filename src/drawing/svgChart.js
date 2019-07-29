@@ -20,12 +20,17 @@ export function hgRadalPlot({ graph, json } = {}) {
 
 function plotRadal(graph) {
     var offset=0;
-    var RadalHG = new RadalHG(graph.links,graph.nodes,graph.nodelinks);
-    var nodes = RadalHG.nodes;	//nodi
-    var links = RadalHG.links;	//link
-    var nodelinks = RadalHG.nodelinks;	//nodo-link-value
-    var data = RadalHG.data;
-    var start = RadalHG.startlevel;
+    var radal = new RadalHG(graph.links,graph.nodes,graph.nodelinks);
+    var nodes = radal.nodes;	//nodi
+    var links = radal.links;	//link
+    var nodelinks = radal.nodelinks;	//nodo-link-value
+    var data = radal.data;
+    var start = radal.startlevel;
+    var dictNodeLinkValue = radal.dictNodeLinkValue;
+    var edges = radal.edges;
+    var selfloop = radal.selfloop;
+
+    console.log(links);
     var height = 0;
     var width = 0;
     if (nodes.length > links.length) {
@@ -133,7 +138,6 @@ function plotRadal(graph) {
             .attr("r", function (d, i) { return (radius / cfg.levels * d) })
             .style("fill", "#CDCDCD")
             .style("stroke", function (d, i) {
-                console.log(d);
                 if (i != links.length && d > start) return "#CDCDCD";
                 else return "white";
             })
@@ -226,7 +230,6 @@ function plotRadal(graph) {
         });*/
 
         //Create the outlines	
-
         //asdsasdjajasodjasodjasdo
         //Append the circles
         blobWrapper.selectAll(".radarCircle")
@@ -258,7 +261,18 @@ function plotRadal(graph) {
             .attr("dx", 22)
             .attr("dy", ".35em")
             .text(function(d,i){
-                if(d.value==1) return "Nodo:"+d.axis;
+                if(d.value==1) {
+                    if(d.bool==true) return "Nodo:"+d.axis;
+                    else{
+                            var s ="Nodo:"+d.axis+"\n";
+                            selfloop.forEach(function(element,i){
+                                if(d.axis==element.nodo) s=s+dictNodeLinkValue["Nodo:"+d.axis+" Link:"+element.link];
+                            });
+                            
+                            console.log(s);
+                            return s;
+                        }
+                    }
                 else		   {
                     return dictNodeLinkValue["Nodo:"+d.axis+" Link:"+d.link];}
                 })
@@ -267,7 +281,8 @@ function plotRadal(graph) {
         blobWrapper
 
 
-        g.data(selfloop)
+            g
+            .data(edges)
             .append("path")
             .attr("d", function (self) {
                 var cxnod1 = dictX[self.nodo1];
@@ -280,7 +295,15 @@ function plotRadal(graph) {
             })
             .attr("stroke", "gray")
             .attr("stroke-width", "3")
-            .style("fill", "none");
+            .style("fill", "none")
+            .append("title")
+            .attr("dx", 22)
+            .attr("dy", ".35em")
+            .text(function(d,i){
+                var s=dictNodeLinkValue["Nodo:"+d.nodo1+" Link:"+d.link]+"\n"+dictNodeLinkValue["Nodo:"+d.nodo2+" Link:"+d.link]
+                return s;
+            });
+            
 
 
 
