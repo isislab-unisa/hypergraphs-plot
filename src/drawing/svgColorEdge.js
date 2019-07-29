@@ -22,7 +22,7 @@ function plotColorEdge(graph) {
     type = "color-edge"
     console.log(graph)
     //var dataMarker = { id: 0, name: 'circle', path: 'M 0, 0  m -5, 0  a 5,5 0 1,0 10,0  a 5,5 0 1,0 -10,0', viewbox: '-6 -6 12 12' };
-    var nodeR = 20, lNodeR = 0.3;    //raggio nodi e nodo iperarco
+    var nodeR = 10, lNodeR = 0.3;    //raggio nodi e nodo iperarco
     //var nodeId = 0;
     var width = 1000, height = 1000;
     console.log("AAAAAAA")
@@ -137,7 +137,7 @@ function plotColorEdge(graph) {
             if (d.link) {
                 return "rgb(100,100,100)";
             } else {
-                return color(d.id);
+                return "#808080";//color(d.id);
             }
         });
 
