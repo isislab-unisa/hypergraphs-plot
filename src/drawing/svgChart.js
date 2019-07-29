@@ -197,7 +197,8 @@ function plotRadal(graph) {
         }
 
         //Create a wrapper for the blobs	
-        var blobWrapper = g.selectAll(".radarWrapper")
+        var blobWrapper = 
+            g.selectAll(".radarWrapper")
             .data(data)
             .enter().append("g")
             .attr("class", "radarWrapper");
@@ -232,7 +233,7 @@ function plotRadal(graph) {
         //Create the outlines	
         //asdsasdjajasodjasodjasdo
         //Append the circles
-        blobWrapper.selectAll(".radarCircle")
+            blobWrapper.selectAll(".radarCircle")
             .data(function (d, i) { return d; })
             .enter()
             .append("circle")
