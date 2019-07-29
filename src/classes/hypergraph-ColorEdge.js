@@ -32,7 +32,7 @@ export default class ColorEdgeHG extends Hypergraph {
             d = d.nodes;    //nodes of the link
             //if link length >2 there's an Hyperlink: i need to create a connection node
 
-            if (d.length >= 2) {
+            if (d.length > 2) {
                 //connection node id creation
                 var id = 'linkid:' + linkid + '-ln';
                 for (k = 0; k < d.length; k++) {
