@@ -23,7 +23,8 @@
     "babel-preset-es2015": "^6.24.1",
     "d3": "^5.9.7",
     "d3-scale-chromatic": "^1.3.3",
-    "venn.js": "^0.2.20",
+    "fmin": "0.0.2",
+    "venn.js": "git+https://github.com/benfred/venn.js.git",
     "webpack": "^4.35.3"
   },
   "devDependencies": {
