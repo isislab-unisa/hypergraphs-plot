@@ -51,13 +51,19 @@ function plotColorEdge(graph) {
 
     //defs creation for markers
     var defs = svg.append("defs");
-
+/*
     //force layout definition
     var simulation = d3.forceSimulation()
-        .force("link", d3.forceLink().id(function (d) { return d.id; }))//.distance(80).strength(1))
-        .force("charge", d3.forceManyBody().strength(-50).distanceMin(30).distanceMax(200))
-        .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collide", d3.forceCollide(50));
+    .force("link", d3.forceLink().id(function (d) { return d.id; }))//.distance(80).strength(1))
+    .force("charge", d3.forceManyBody().strength(-50).distanceMin(50).distanceMax(200))
+    .force("center", d3.forceCenter(width / 2, height / 2))
+    .force("collide", d3.forceCollide(50));*/
+    var simulation = d3.forceSimulation()
+    .force("x",d3.forceX(width/2).strength(0.4))
+    .force("y",d3.forceY(height/2).strength(0.6))
+    .force("charge",d3.forceManyBody().strength(-1000))
+    .force("link", d3.forceLink().id(d =>  d.id ))
+    .force("collide",d3.forceCollide().radius(d => d.r * 10))
 
     //data reading from json file
     var nodes = graph.nodes,
@@ -66,16 +72,56 @@ function plotColorEdge(graph) {
     grafo = JSON.parse(JSON.stringify(graph));              //d3.hypergraph invocation passing links and nodes
     var data = new ColorEdgeHG(links, nodes, graph.nodelinks);
 
+
     //d3.hypergraph links
     links = data.links;
     //d3.hypergraph nodes
     nodes = data.nodes;
+
     var dictNodes = data.dictNodeLinks
     var dictLinks = data.dictLinks
     var dictNodeLinks = data.dictNodeLinks
     //node mapping by id
     var nodeById = d3.map(nodes, function (d) { return d.id; });
 
+    /**
+     * links
+     * 
+     * ###Example
+     * '''
+     * if is a hyperedge
+     * source = {
+     *           id: "5"                        id of the node
+     *           links:["2"]                    links of the node
+     *           }
+     * target = {
+     *           id: "Link:2-ln2,5,6,9,10"      target of the node
+     *           linkid: "2"                    id of the link
+     *           type: "hyperedge"              type of the edge
+     *          }
+     * 
+     * if is an edge
+     * source = {
+     *           id: "4"                        id of the node
+     *           links:["3", "4"]               links of the node
+     *          }
+     * target = {
+     *           id: "8"                        target of the node, is just a node because is an edge
+     *           linkid: "4"                    id of the link
+     *           type: "edge"                   type of the edge
+     *          }
+     * 
+     * if is a selfloop
+     * source = {
+     *           id: "6"                        id of the node
+     *           links:["1", "2"]               links of the node
+     *          }
+     * target = {
+     *           id: "6"                        target him self, cause is a selfloop
+     *           linkid: "2"                    id of the link
+     *           type: "selfloop"               type of the edge
+     *          }
+     */
     links.forEach(function (link) {
         var s = link.source = nodeById.get(link.source),
             t = link.target = nodeById.get(link.target),
@@ -83,9 +129,11 @@ function plotColorEdge(graph) {
         if (t.id == s.id) {
             t = {
                 link: null,
+                size: link.size
             }
         }
         t["linkid"] = link.linkid;
+        t["type"]=link.type;
         nodes.push(i);
         links.push({ source: s, target: i }, { source: i, target: t });
         bilinks.push([s, i, t]);
@@ -98,14 +146,13 @@ function plotColorEdge(graph) {
         .attr("marker-start", "url(#circleMarker)")
         .attr("marker-mid", "url(#textMarker)")
         .attr("marker-end", function (d) {
-            if (!d[2].link)
+            if(d[2].type=="selfloop" || d[2].type=="edge")                //if (!d[2].link)
                 return "url(#circleMarker)";
             else
                 return "null";
         })
         .style("stroke", function (d) {
-            if (isNaN(d[2].id) && d[2].id != undefined) return color(d[2].id);
-            if (d[2].id == undefined) return color(d[2].id + d[0].id + d[2].linkid);
+            return color(d[2].linkid+d[2].id);
         });
 
     //node creation
@@ -135,10 +182,9 @@ function plotColorEdge(graph) {
             if (d.link) {
                 return "rgb(100,100,100)";
             } else {
-                return "#D3D3D3";//color(d.id);
+                return "#D3D3D3";
             }
         });
-        
     //id text
     node.append("text")
         .attr("dx", 22)
@@ -150,16 +196,27 @@ function plotColorEdge(graph) {
         });
     link.append("title")
         .text(function (d, i) {
-            if (d[2].link == null && d[1].id==d[2].id) {
-                return dictNodeLinks["node:" + d[0].id + "-linkid:" + d[2].linkid + "-SelfLoop:" + d[2].linkid];
+            if(d[2].type=="hyperedge"){
+                //Example dictNodeLinks[node:2-Link:2-ln2,5,6,9,10]
+                //Node:2 - Link:2 - Value:1
+                return dictNodeLinks["node:" + d[0].id + "-" + d[2].id];            
             }
-            if(d[2].link==null && d[1].id!=d[2].id){
-                console.log("node:" + d[1].id+"-linkid:"+d[2].linkid+"-ln"+d[1]+","+d[2].id);
+            if(d[2].type=="selfloop"){
+                //dictNodeLinks[node:6-Link1-SelfLoop:1]
+                //Node:6 - Link:1 - Value:1
+                return dictNodeLinks["node:"+d[0].id+"-Link:"+d[2].linkid+"-SelfLoop:"+d[2].linkid];
             }
-            else
-                return dictNodeLinks["node:" + d[0].id + "-" + d[2].id];
+            if(d[2].type=="edge"){
+                var s = dictNodeLinks["node:"+d[2].id+"-Link:"+d[2].linkid+"-ln"+d[0].id+","+d[2].id] + "\n" +  
+                        dictNodeLinks["node:"+d[0].id+"-Link:"+d[2].linkid+"-ln"+d[0].id+","+d[2].id];
+                if(s!=undefined) return s;
+                else{
+                s = dictNodeLinks["node:"+d[2].id+"-Link:"+d[2].linkid+"-ln"+d[2].id+","+d[0].id] + "\n" +  
+                    dictNodeLinks["node:"+d[0].id+"-Link:"+d[2].linkid+"-ln"+d[2].id+","+d[0].id];
+                    return s;
+                }
+            }
         });
-        console.log(dictNodeLinks);
     //onmouseover id text
     node.append("title")
         .text(function (d) {
@@ -193,7 +250,6 @@ function plotColorEdge(graph) {
         link.attr("d", positionLink);
         node.attr("transform", positionNode);
     }
-console.log(links);
     function positionLink(d) {
         if (d[2].link == null && d[1].id==d[2].id) {
             var
@@ -225,8 +281,9 @@ console.log(links);
 
                 // Make drx and dry different to get an ellipse
                 // instead of a circle.
-                drx = d[2].linkid * 10;
-                dry = d[2].linkid * 10;
+                drx = d[2].size //d[2].linkid * 10;
+                dry = d[2].size //d[2].linkid * 10;
+                console.log(d[2]);
                 // For whatever reason the arc collapses to a point if the beginning
                 // and ending points of the arc are the same, so kludge it.
                 x2 = x2 + 1;

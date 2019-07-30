@@ -120,5 +120,3 @@ function plotVenn(graph) {
         d3.selectAll(".venntooltip").remove();
     })
 }
-
-

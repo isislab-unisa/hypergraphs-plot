@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import * as venn from "venn.js";
+//import * as venn from "venn.js";
 import * as classes from "./classes/index"
 import * as drawing from "./drawing/index"
 import * as exeptions from "./exceptions/index"
