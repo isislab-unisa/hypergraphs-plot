@@ -31,7 +31,6 @@ export default class ColorEdgeHG extends Hypergraph {
             var linkid = d.id,  //id of the link
             d = d.nodes;    //nodes of the link
             //if link length >2 there's an Hyperlink: i need to create a connection node
-
             if (d.length > 2) {
                 //connection node id creation
                 var id = 'linkid:' + linkid + '-ln';
@@ -51,6 +50,9 @@ export default class ColorEdgeHG extends Hypergraph {
             //if is a selfloop, target and source is the same node
             if (d.length == 1) {
                 hyper.push({ source: d[0], target: d[0], linkid: linkid });
+            }
+            if(d.length==2){
+                hyper.push({source: d[0],target: d[1],linkid:linkid});
             }
         });
 

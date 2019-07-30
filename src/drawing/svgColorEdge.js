@@ -20,14 +20,14 @@ export function hgColorEdgePlot({ graph, json } = {}) {
 
 function plotColorEdge(graph) {
     type = "color-edge"
-    console.log(graph)
+
     //var dataMarker = { id: 0, name: 'circle', path: 'M 0, 0  m -5, 0  a 5,5 0 1,0 10,0  a 5,5 0 1,0 -10,0', viewbox: '-6 -6 12 12' };
-    var nodeR = 10, lNodeR = 0.3;    //raggio nodi e nodo iperarco
+    var nodeR = 10, lNodeR = 0.2;    //raggio nodi e nodo iperarco
     //var nodeId = 0;
     var width = 1000, height = 1000;
-    console.log("AAAAAAA")
+
     var color = d3.scaleOrdinal(d3.schemeCategory10);
-    console.log("BBBBBB")
+
     //zoom handler
     var zoom = d3.zoom()
         .scaleExtent([1 / 2, 10])
@@ -75,7 +75,7 @@ function plotColorEdge(graph) {
     var dictNodeLinks = data.dictNodeLinks
     //node mapping by id
     var nodeById = d3.map(nodes, function (d) { return d.id; });
-    console.log(links);
+
     links.forEach(function (link) {
         var s = link.source = nodeById.get(link.source),
             t = link.target = nodeById.get(link.target),
@@ -85,13 +85,11 @@ function plotColorEdge(graph) {
                 link: null,
             }
         }
-        console.log(link);
         t["linkid"] = link.linkid;
         nodes.push(i);
         links.push({ source: s, target: i }, { source: i, target: t });
         bilinks.push([s, i, t]);
     });
-
     //links creation
     var link = svg.selectAll(".link")
         .data(bilinks)
@@ -137,10 +135,10 @@ function plotColorEdge(graph) {
             if (d.link) {
                 return "rgb(100,100,100)";
             } else {
-                return "#808080";//color(d.id);
+                return "#D3D3D3";//color(d.id);
             }
         });
-
+        
     //id text
     node.append("text")
         .attr("dx", 22)
@@ -152,14 +150,16 @@ function plotColorEdge(graph) {
         });
     link.append("title")
         .text(function (d, i) {
-            if (d[2].link == null) {
-                console.log("node:" + d[0].id + "-linkid:" + d[2].linkid + "-SelfLoop:" + d[2].linkid);
+            if (d[2].link == null && d[1].id==d[2].id) {
                 return dictNodeLinks["node:" + d[0].id + "-linkid:" + d[2].linkid + "-SelfLoop:" + d[2].linkid];
+            }
+            if(d[2].link==null && d[1].id!=d[2].id){
+                console.log("node:" + d[1].id+"-linkid:"+d[2].linkid+"-ln"+d[1]+","+d[2].id);
             }
             else
                 return dictNodeLinks["node:" + d[0].id + "-" + d[2].id];
         });
-    console.log(dictNodeLinks);
+        console.log(dictNodeLinks);
     //onmouseover id text
     node.append("title")
         .text(function (d) {
@@ -189,13 +189,13 @@ function plotColorEdge(graph) {
         .on("tick", ticked)
         .force("link")
         .links(links);
-
     function ticked() {
         link.attr("d", positionLink);
         node.attr("transform", positionNode);
     }
+console.log(links);
     function positionLink(d) {
-        if (d[2].link == null) {
+        if (d[2].link == null && d[1].id==d[2].id) {
             var
                 x1 = d[0].x,
                 y1 = d[0].y,
@@ -230,8 +230,8 @@ function plotColorEdge(graph) {
                 // For whatever reason the arc collapses to a point if the beginning
                 // and ending points of the arc are the same, so kludge it.
                 x2 = x2 + 1;
-                y2 = y2 + 20;
-                x1 = x1 + 20;
+                y2 = y2 + 10;
+                x1 = x1 + 10;
                 y1 = y1 + 1;
                 // invece attorno
                 /*
@@ -243,7 +243,6 @@ function plotColorEdge(graph) {
             }
             return "M" + x1 + "," + y1 + "A" + drx + "," + dry + " " + xRotation + "," + largeArc + "," + sweep + " " + x2 + "," + y2;
         }
-
         var diffX0, diffY0, diffX2, diffY2, pathLength01, pathLength12, offsetX0, offsetY0, offsetX2, offsetY2;
 
         diffX0 = d[0].x - d[1].x;
