@@ -1,11 +1,11 @@
-import {hgVennPlot} from "./svgVenn"
+//import {hgVennPlot} from "./svgVenn"
 import {hgColorEdgePlot} from "./svgColorEdge"
 import {hgRadalPlot} from "./svgChart"
-import {hgVennNodesPlot} from "./svgVennNodes"
+//import {hgVennNodesPlot} from "./svgVennNodes"
 
 export {
-    hgVennPlot,
+   // hgVennPlot,
     hgColorEdgePlot,
     hgRadalPlot,
-    hgVennNodesPlot
+  //  hgVennNodesPlot
 };

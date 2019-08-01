@@ -62,13 +62,27 @@ export default class ColorEdgeHG extends Hypergraph {
                 hyper.push({ source: d[0], target: d[0],linkid: linkid,type: "selfloop",size:nodesSelfloop[d[0]]});
                 
             }
-
         });
-        this.links= hyper;
+        
+        this.links = links;
+        this.hyper= hyper;
         this.nodes= nodes;
         this.dictNodes= dictNodes;
         this.dictLinks= dictLinks;
         this.dictNodeLinks= dictNodeLinks;
     }
 
+
+    getHyper(){
+        return this.hyper;
+    }
+    getDictNodes(){
+        return this.dictNodes;
+    }
+    getDictLinks(){
+        return this.dictLinks;
+    }
+    getDictNodeLinks(){
+        return this.dictNodeLinks;
+    }
 }

@@ -1,4 +1,4 @@
-import * as d3 from "d3";
+/*import * as d3 from "d3";
 import * as d3v3 from "./d3-venn/d3.v3"
 import { VennNodesHG } from "../classes/index"
 import { default as vennn, pack, distribute, force } from "./d3-venn/venn.js";
@@ -227,3 +227,4 @@ console.log(vennArea.selectAll('path.venn-area-path'))
     layout.packer().start()
 
 }
+*/

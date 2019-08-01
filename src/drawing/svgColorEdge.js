@@ -74,7 +74,7 @@ function plotColorEdge(graph) {
 
 
     //d3.hypergraph links
-    links = data.links;
+    links = data.hyper;
     //d3.hypergraph nodes
     nodes = data.nodes;
 
@@ -283,7 +283,6 @@ function plotColorEdge(graph) {
                 // instead of a circle.
                 drx = d[2].size //d[2].linkid * 10;
                 dry = d[2].size //d[2].linkid * 10;
-                console.log(d[2]);
                 // For whatever reason the arc collapses to a point if the beginning
                 // and ending points of the arc are the same, so kludge it.
                 x2 = x2 + 1;
