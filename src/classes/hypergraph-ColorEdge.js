@@ -65,24 +65,48 @@ export default class ColorEdgeHG extends Hypergraph {
         });
         
         this.links = links;
-        this.hyper= hyper;
         this.nodes= nodes;
+        this.nodelinks=nodelink;
+        this.hyper= hyper;
         this.dictNodes= dictNodes;
         this.dictLinks= dictLinks;
         this.dictNodeLinks= dictNodeLinks;
     }
 
+/**
+ * Return the hyper of the ColorEdge
+ * 
+ * @return {Array} 
+ */
+getHyper(){
+    return this.hyper;
+}
 
-    getHyper(){
-        return this.hyper;
-    }
-    getDictNodes(){
-        return this.dictNodes;
-    }
-    getDictLinks(){
-        return this.dictLinks;
-    }
-    getDictNodeLinks(){
-        return this.dictNodeLinks;
-    }
+/**
+ * Return the dict of the nodes of a ColorEdge
+ * 
+ * @return {dict} 
+ */
+getDictNodes(){
+    return this.dictNodes;
+}
+
+/**
+ * Return the dict of the links of a ColorEdge
+ * 
+ * @return {dict} 
+ */
+getDictLinks(){
+    return this.dictLinks;
+}
+
+/**
+ * Return the dict of the node-links of a ColorEdge
+ * 
+ * @return {dict} 
+ */
+getDictNodeLinks(){
+    return this.dictNodeLinks;
+}
+    
 }

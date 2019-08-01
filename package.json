@@ -4,8 +4,8 @@
   "description": "A js library to visualize hypergraphs.",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config webpack.prod.js",
-    "build:p": "webpack --config webpack.prod.js -p",
+    "build": "webpack --config webpack.confing.js",
+    "build:p": "webpack --config webpack.confing.js -p",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls"

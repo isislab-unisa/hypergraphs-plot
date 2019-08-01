@@ -63,4 +63,49 @@ export default class RadalHG extends Hypergraph {
         this.nodelinks=nodelinks;
         this.selfloop=selfloop;
     }
+
+    /**
+     * Return the edges of Radal
+     * 
+     * @return {Array} 
+     */
+    getEdges(){
+        return this.edges;
+    }
+
+    /**
+     * Return the dictNodeLinkValue of Radal
+     * 
+     * @return {Array} 
+     */
+    getDictNodeLinkValue(){
+        return this.dictNodeLinkValue;
+    }
+
+    /**
+     * Return the startLevel of Radal
+     * 
+     * @return {Array} 
+     */
+    getStartLevel(){
+        return this.startlevel;
+    }
+
+    /**
+     * Return the Data of Radal
+     * 
+     * @return {Array} 
+     */
+    getData(){
+        return this.data;
+    }
+
+    /**
+     * Return the selfloop of Radal
+     * 
+     * @return {Array} 
+     */
+    getSelfloop(){
+        return this.selfloop;
+    }
 }

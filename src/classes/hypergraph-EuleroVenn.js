@@ -48,7 +48,7 @@ export default class VennHG extends Hypergraph{
                 });
             }
         });
-        console.log(valLinksNodes)
+        //console.log(valLinksNodes)
 
 
         //intersections, sizes and nodes
@@ -110,5 +110,32 @@ export default class VennHG extends Hypergraph{
         this.nodesInLinks= nodesInLinks
         this.nodesToDisplay= nodesToDisplay
         this.valLinksNodes= valLinksNodes
+    }
+
+    /**
+     * Return the nodesInLinks of the Venn
+     * 
+     * @return {Array} 
+     */
+    getNodesInLinks(){
+        return this.nodesInLinks;
+    }
+
+    /**
+     * Return the nodesToDisplay of the Venn
+     * 
+     * @return {Array} 
+     */
+    getNodesToDisplay(){
+        return this.nodesToDisplay;
+    }
+
+    /**
+     * Return the valLinksNodes of the Venn
+     * 
+     * @return {Array} 
+     */
+    getValLinksNodes(){
+        return this.valLinksNodes;
     }
 }

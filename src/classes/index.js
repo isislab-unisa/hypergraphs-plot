@@ -1,4 +1,4 @@
-//import VennHG from "./hypergraph-EuleroVenn"
+import VennHG from "./hypergraph-EuleroVenn"
 import ColorEdgeHG from "./hypergraph-ColorEdge"
 import VennNodesHG from "./hypergraph-VennNodes"
 import RadalHG from "./hypergraph-Radal"
@@ -7,7 +7,7 @@ import Hypergraph from "./Hypergraph"
 
 export {
     Hypergraph,
-   // VennHG,
+    VennHG,
     ColorEdgeHG,
     VennNodesHG,
     RadalHG,
