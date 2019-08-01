@@ -76,36 +76,33 @@ end
 
 function radal(s::String)
 
-    HTML("""
-    
+    display("text/html","""
     <style type="text/css">
-        body {
-            font-family: 'Open Sans', sans-serif;
-            font-size: 11px;
-            font-weight: 300;
-            fill: #242424;
-            text-align: center;
-            text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
-            cursor: default;
-        }
-
-        .legend {
-            font-family: 'Raleway', sans-serif;
-            fill: #333333;
-        }
-
-        .tooltip {
-            fill: #333333;
-        }
+    body {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 11px;
+        font-weight: 300;
+        fill: #242424;
+        text-align: center;
+        text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
+        cursor: default;
+    }
+    
+    .legend {
+        font-family: 'Raleway', sans-serif;
+        fill: #333333;
+    }
+    
+    .tooltip {
+        fill: #333333;
+    }
     </style>
     <div class="radarChart"></div>
     <script src="./bundle.v1.0.js"></script>
     <script type="text/javascript">
-        radalPlot({json:'"""*s*"""'})
+    radalPlot({json:'""",s,"""'})
     </script>
-
-
-    
     """)
+
 
 end

@@ -31,6 +31,7 @@ export default class RadalHG extends Hypergraph {
                     d.push(obj);
                 });
                 data.push(d);
+            cc = cc + 1;
             }
             if (nod.length != 1 && nod.length > 2) {
                 nod.forEach(function (el, x) {
@@ -50,7 +51,6 @@ export default class RadalHG extends Hypergraph {
             if (nod.length == 2) {	//link with 2 nodes
                 edges.push({ "nodo1": "idNodo" + nod[0], "nodo2": "idNodo" + nod[1], "link":id });
             }
-            cc = cc + 1;
         });
         data.push(firstnodes);
 
@@ -62,6 +62,7 @@ export default class RadalHG extends Hypergraph {
         this.nodes=nodes;
         this.nodelinks=nodelinks;
         this.selfloop=selfloop;
+        this.cc=cc;
     }
 
     /**

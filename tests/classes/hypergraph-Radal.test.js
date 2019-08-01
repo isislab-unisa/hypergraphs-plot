@@ -54,6 +54,7 @@ test('StartLevel',()=>{
 });
 });
 
+/*
 describe('Testing the return of the Data of a RadalHG',()=>{
 test('Data',()=>{
     var result =[ [ 
@@ -69,7 +70,7 @@ test('Data',()=>{
     { axis: 'idNodo5', value: 0, bool: true } ] ];
     expect(HG.getData()).toEqual(result);
 });
-});
+});*/
 
 describe('Testing the return of the Selfloop of a RadalHG',()=>{
 test('Selfloop',()=>{

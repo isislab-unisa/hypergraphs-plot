@@ -1,6 +1,6 @@
 //import {hgVennPlot} from "./svgVenn"
 import {hgColorEdgePlot} from "./svgColorEdge"
-import {hgRadalPlot} from "./svgChart"
+import {hgRadalPlot} from "./svgRadal"
 //import {hgVennNodesPlot} from "./svgVennNodes"
 
 export {

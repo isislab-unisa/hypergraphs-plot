@@ -29,8 +29,8 @@ function plotRadal(graph) {
     var dictNodeLinkValue = radal.dictNodeLinkValue;
     var edges = radal.edges;
     var selfloop = radal.selfloop;
-
-    console.log(links);
+    var cc=radal.cc;
+    
     var height = 0;
     var width = 0;
     if (nodes.length > links.length) {
@@ -46,14 +46,14 @@ function plotRadal(graph) {
        
     var dictX = [];
     var dictY = [];
-
+    console.log(start);
     var color = d3.scaleOrdinal().range(["#FC74FD"]);
     var radarChartOptions = {
         w: 800,
         h: 800,
         margin: margin,
         maxValue: 0.5,
-        levels: links.length + start,
+        levels: cc-1,//links.length + start,
         roundStrokes: true,
         color: color,
         opacityCircles: 0
@@ -90,7 +90,7 @@ function plotRadal(graph) {
         }//if
 
         //If the supplied maxValue is smaller than the actual one, replace by the max in the data
-        var maxValue = links.length + start;   //Math.max(cfg.maxValue, d3.max(data, function(i){return d3.max(i.map(function(o){return o.value;}))}));
+        var maxValue = cc-1//links.length + start;   //Math.max(cfg.maxValue, d3.max(data, function(i){return d3.max(i.map(function(o){return o.value;}))}));
 
         var allAxis = (data[0].map(function (i, j) { return i.axis })),	//Names of each axis
             total = allAxis.length,					//The number of different axes
@@ -269,8 +269,6 @@ function plotRadal(graph) {
                             selfloop.forEach(function(element,i){
                                 if(d.axis==element.nodo) s=s+dictNodeLinkValue["Nodo:"+d.axis+" Link:"+element.link];
                             });
-                            
-                            console.log(s);
                             return s;
                         }
                     }
