@@ -1,4 +1,4 @@
-/*import * as d3 from "d3";
+import * as d3 from "d3";
 import * as d3v3 from "./d3-venn/d3.v3"
 import { VennNodesHG } from "../classes/index"
 import { default as vennn, pack, distribute, force } from "./d3-venn/venn.js";
@@ -20,8 +20,6 @@ export function hgVennNodesPlot({ graph, json } = {}) {
 }
 
 function plotVennNodes(graph) {
-    console.log("@@@@@ grafo @@@@@@")
-    console.log(graph)
 
     var nodes = graph.nodes,
         links = graph.links,
@@ -29,11 +27,9 @@ function plotVennNodes(graph) {
 
 
     //d3.hypergraph invocation passing links and nodes 
-    var data = new VennNodesHG(links, nodes, nodelinks)
-    console.log("SI")
-    console.log(data.nodes)
+    var data1 = new VennNodesHG(links, nodes, nodelinks)
     //renaming keys
-    data.nodes.forEach(node => {
+    data1.nodes.forEach(node => {
         if(node.id!==undefined){
         node["name"] = "node_"+node.id
         delete node.id}
@@ -41,21 +37,11 @@ function plotVennNodes(graph) {
         delete node.links
         node["r"] = 5
     });
-    console.log(data)
 
  
     var width = 800,
         height = 800,
         colors = d3.scaleOrdinal(d3.schemeCategory10);
-
-    var setChar = 'ABCDEFGHIJKLMN',
-        charFn = i => setChar[i],
-        setLength = 4,
-        sets = d3.range(setLength).map(function (d, i) {
-            return setChar[i]
-        })
-    console.log("@@@@@ sets @@@@@@")
-    console.log(sets)
 
     var opts = {
         dataLength: 10,
@@ -65,14 +51,14 @@ function plotVennNodes(graph) {
         innerOpacity: 0.1
     };
 
+    console.log("@@@@@ Val Links Nodes @@@@@@")
+    console.log(data1.valLinksNodes)
 
     var layout = vennn()
         .size([width, height])
         .padding(0)
         .packingStragegy(force)
 
-    console.log("@@@@@@ layout @@@@@@")
-    console.log(layout)
 
     // .setsSize(x => (Math.log(x) ))
     // .value(x => 1),
@@ -81,11 +67,9 @@ function plotVennNodes(graph) {
         .attr('height', height),
         isFirstLayout = true;
 
-    var data = data.nodes;
+    var data = data1.nodes;
 
     layout.nodes(data)
-    console.log("CIAO");
-    console.log(layout.sets().values())
     var vennArea = svg.selectAll("g.venn-area")
         .data(layout.sets().values(), function (d) {
             return d.__key__;
@@ -113,7 +97,6 @@ function plotVennNodes(graph) {
         .attr("text-anchor", "middle")
         .attr("dy", ".35em");
 
-console.log(vennArea.selectAll('path.venn-area-path'))
     vennArea.selectAll('path.venn-area-path').transition()
         .duration(0)
         .attr('opacity', opts.circleOpacity)
@@ -156,7 +139,8 @@ console.log(vennArea.selectAll('path.venn-area-path'))
             return d.d
         })
         .remove()
-
+    
+        console.info(layout.sets().values())
     // need this so that nodes always on top
     var circleContainer = svg.selectAll("g.venn-circle-container")
         .data(layout.sets().values(), function (d) {
@@ -189,10 +173,10 @@ console.log(vennArea.selectAll('path.venn-area-path'))
 
     var points = circleContainer.selectAll("circle.node")
         .data(function (d) {
-            return d.nodes
+            return d.nodes;
         }, function (d) {
-            return d.name
-        })
+            return d.name;
+        });
 
     var pointsEnter = points.enter()
         .append('circle')
@@ -226,5 +210,25 @@ console.log(vennArea.selectAll('path.venn-area-path'))
     //start the force layout
     layout.packer().start()
 
+
+    var tooltip = d3.select("body").append("div").attr("class", "venntooltip");
+
+    d3.selectAll("circle.node").on("mouseover", function (d, i) {
+        // Display a tooltip with the current size
+        tooltip.transition().duration(400).style("opacity", .9);
+        var node= d.name
+        node= node.replace("node_", "")
+        var val= ""
+        d.set.forEach(set =>{
+            val+= data1.valLinksNodes[set][node]+ " "
+        })
+        tooltip.text("node: " + node + " set: " + d.set + " values: " + val)
+        // highlight the current path
+
+    }).on("mousemove", function () {
+        tooltip.style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY - 28) + "px");
+    }).on("mouseout", function (d, i) {
+        tooltip.transition().duration(400).style("opacity", 0);
+    });
 }
-*/
