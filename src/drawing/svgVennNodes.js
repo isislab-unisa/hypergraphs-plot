@@ -30,15 +30,21 @@ function plotVennNodes(graph) {
     var data1 = new VennNodesHG(links, nodes, nodelinks)
     //renaming keys
     data1.nodes.forEach(node => {
-        if(node.id!==undefined){
-        node["name"] = "node_"+node.id
-        delete node.id}
-        node["set"] = node.links
+        if (!node.links.length) {
+            node["set"] = ["0"]
+        } else {
+            node["set"] = node.links
+        }
         delete node.links
+        if (node.id !== undefined) {
+            node["name"] = "node_" + node.id
+            delete node.id
+        }
         node["r"] = 5
     });
+    console.log(data1.nodes)
 
- 
+
     var width = 800,
         height = 800,
         colors = d3.scaleOrdinal(d3.schemeCategory10);
@@ -82,7 +88,12 @@ function plotVennNodes(graph) {
                 (d.sets.length == 1 ? "circle" : "intersection");
         })
         .attr('fill', function (d, i) {
-            return colors(i)
+            console.log("@@@@@@@@ QUI @@@@@@@@@@@")
+            console.log(d)
+            if (d.__key__ == "0")
+                return "white"
+            else
+                return colors(i)
         })
 
     vennEnter.append('path')
@@ -122,7 +133,12 @@ function plotVennNodes(graph) {
         return [d];
     }).transition()
         .duration(isFirstLayout ? 0 : opts.duration)
-        .attr('opacity', opts.innerOpacity)
+        .attr('opacity', function (d) {
+            if (d.__key__ == "0")
+                return 0;
+            else
+                return opts.innerOpacity;
+        })
         .attr("cx", function (d) {
             return d.center.x
         })
@@ -139,8 +155,8 @@ function plotVennNodes(graph) {
             return d.d
         })
         .remove()
-    
-        console.info(layout.sets().values())
+
+    console.info(layout.sets().values())
     // need this so that nodes always on top
     var circleContainer = svg.selectAll("g.venn-circle-container")
         .data(layout.sets().values(), function (d) {
@@ -216,15 +232,17 @@ function plotVennNodes(graph) {
     d3.selectAll("circle.node").on("mouseover", function (d, i) {
         // Display a tooltip with the current size
         tooltip.transition().duration(400).style("opacity", .9);
-        var node= d.name
-        node= node.replace("node_", "")
-        var val= ""
-        d.set.forEach(set =>{
-            val+= data1.valLinksNodes[set][node]+ " "
-        })
-        tooltip.text("node: " + node + " set: " + d.set + " values: " + val)
-        // highlight the current path
-
+        var node = d.name
+        node = node.replace("node_", "")
+        var val = ""
+        if (d.set[0] != "0") {
+            d.set.forEach(set => {
+                val += data1.valLinksNodes[set][node] + " "
+            })
+            tooltip.text("node: " + node + " set: " + d.set + " values: " + val)
+        } else {
+            tooltip.text("node: " + node)
+        }
     }).on("mousemove", function () {
         tooltip.style("left", (d3.event.pageX) + "px")
             .style("top", (d3.event.pageY - 28) + "px");
