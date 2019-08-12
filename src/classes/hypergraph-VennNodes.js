@@ -24,7 +24,6 @@ export default class VennNodesHG extends Hypergraph{
         }//end
 
         //fill valLinksNodes
-        console.log("@@@@@ val links @@@@@@")
         nodelinks.forEach(element => {
             if (valLinksNodes[element.link] === undefined) {
                 valLinksNodes[element.link] = {}
@@ -48,7 +47,6 @@ export default class VennNodesHG extends Hypergraph{
                 });
             }
         });
-        console.log(valLinksNodes)
 
 
         //intersections, sizes and nodes
@@ -94,18 +92,7 @@ export default class VennNodesHG extends Hypergraph{
 
 
         i = 0
-        //add intersections
-        Object.entries(map).forEach(entry => {
-            //entry[0] is the intersection
-            //entry[1] is the number of nodes inside of intersection
-            if (entry[0].length != 0 && entry[0].length != 1) {
-                var arr = []
-                arr = entry[0].split(",");
-                linkss.push({ links: arr, size: Math.round(MAX_SIZE / entry[0].length * MAX_SIZE / 100 + OFFSET) })
-                i++
-            }
-        })//end
-        this.links= linkss
+       
         this.nodes= nodes
         this.nodesInLinks= nodesInLinks
         this.nodesToDisplay= nodesToDisplay

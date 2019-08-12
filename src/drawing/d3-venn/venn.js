@@ -1,4 +1,4 @@
-/*import * as d3 from "./d3.v3"
+import * as d3 from "./d3.v3"
 
 import {
     binder,
@@ -203,7 +203,7 @@ import {
         {sets: ['B'], size: 1, nodes : ['node_1']},
         {sets: ['A','B'], size: 2, nodes ['node_2', 'node_3']}
         ];
-    *//*
+    */
     function extractSets(data) {
       var sets = d3.map({}, function(d) {
           return d.__key__
@@ -314,4 +314,3 @@ import {
   export {
     pack, distribute, force
   };
-  */
