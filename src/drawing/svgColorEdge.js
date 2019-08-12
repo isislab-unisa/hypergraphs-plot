@@ -1,10 +1,22 @@
 import * as d3 from "d3";
 import { ColorEdgeHG } from "../classes/index"
+import { isModuleDeclaration } from "@babel/types";
+
+
 
 var grafo = {}
 var type;
 
-export function hgColorEdgePlot({ graph, json } = {}) {
+export function hgColorEdgePlot({ graph} = {}) {
+
+    if (graph !== undefined) {
+        plotColorEdge(graph);
+    }
+    else{
+        var graph = require("../../data.json");
+        plotColorEdge(graph);
+    }
+    /*
     if (graph !== undefined) {
         console.log("graph")
         plotColorEdge(graph)
@@ -15,7 +27,7 @@ export function hgColorEdgePlot({ graph, json } = {}) {
     } else {
         var graph = require("./data.json");
         plotColorEdge(graph)
-    }
+    }*/
 }
 
 function plotColorEdge(graph) {
@@ -71,7 +83,6 @@ function plotColorEdge(graph) {
         bilinks = [];
     grafo = JSON.parse(JSON.stringify(graph));              //d3.hypergraph invocation passing links and nodes
     var data = new ColorEdgeHG(links, nodes, graph.nodelinks);
-
 
     //d3.hypergraph links
     links = data.hyper;
