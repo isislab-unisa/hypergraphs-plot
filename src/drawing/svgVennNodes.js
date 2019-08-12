@@ -3,19 +3,13 @@ import * as d3v3 from "./d3-venn/d3.v3"
 import { VennNodesHG } from "../classes/index"
 import { default as vennn, pack, distribute, force } from "./d3-venn/venn.js";
 
-export function hgVennNodesPlot({ graph, json } = {}) {
+export function hgVennNodesPlot({ graph } = {}) {
     if (graph !== undefined) {
-        console.log("with graph")
-        plotVennNodes(graph)
-
-    } else if (json) {
-        console.log("with json")
-        var graph = require("" + json)
-        plotVennNodes(graph)
-    } else {
-        console.log("default path")
-        var graph = require("./data.json")
-        plotVennNodes(graph)
+        plotVennNodes(graph);
+    }
+    else{
+        var graph = require("../../data.json");
+        plotVennNodes(graph);
     }
 }
 
@@ -68,7 +62,8 @@ function plotVennNodes(graph) {
 
     // .setsSize(x => (Math.log(x) ))
     // .value(x => 1),
-    var svg = d3v3.select('svg')
+    var div = d3v3.select('#venn');
+    var svg =   div.append('svg')
         .attr('width', width)
         .attr('height', height),
         isFirstLayout = true;

@@ -8,7 +8,7 @@ var grafo = {}
 var type;
 
 export function hgColorEdgePlot({ graph} = {}) {
-
+    console.log(graph);
     if (graph !== undefined) {
         plotColorEdge(graph);
     }

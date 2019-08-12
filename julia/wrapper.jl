@@ -5,10 +5,10 @@ function venn(s::String)
     <head>
     <link rel="stylesheet" type="text/css" href="css/venn-style.css">
     </head>
-    <div id="original"></div>
+    <div id="venn"></div>
     <script src="./bundle.v1.0.js"></script>
     <script>
-    hgplot.drawing..hgVennPlot({json:'"""*s*"""'});
+    hgplot.drawing.hgVennNodesPlot({graph:"""*s*"""});
     </script>
     """) 
 end
@@ -35,7 +35,7 @@ function radal(s::String)
     <div class="radarChart"></div>
     <script src="./bundle.v1.0.js"></script>
     <script>
-    hgplot.drawing.hgRadalPlot({json:'"""*s*"""'})
+    hgplot.drawing.hgRadalPlot({graph:"""*s*"""})
     </script>
     """)
 

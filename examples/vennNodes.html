@@ -9,26 +9,28 @@
     <!-- <script src="https://raw.githubusercontent.com/christophe-g/vennLayout/master/vennLayout.js"></script> -->
     <script type="text/javascript" src="../dist/bundle.js"></script>
     <style>
-        #venn {
-            margin-left: 250px;
-            margin-top: -200px;
-        }
+#venn {
+    margin-left: 250px;
+    margin-top: -200px;
+}
 
-        .venntooltip{
-            position:absolute;
-            text-align: left;
-            background: #333;
-            color: #ddd;
-            padding: 2px;
-            border: 0px;
-            border-radius: 8px;
-        }
+.venntooltip{
+    position:absolute;
+    text-align: left;
+    background: #333;
+    color: #ddd;
+    padding: 2px;
+    border: 0px;
+    border-radius: 8px;
+}
     </style>
 </head>
 
 <body>
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <svg id="venn"></svg>
+    <div id="venn">
+      
+    </div>
     <script>
         hgplot.drawing.hgVennNodesPlot();
     </script>

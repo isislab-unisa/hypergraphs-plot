@@ -83,7 +83,7 @@ s=s*sNodes*sLinks*sNodeLinks
                 write(f, s)
         end
         elseif path == ""
-            open("src/drawing/data.json", "w") do f
+            open("data.json", "w") do f
                 write(f, s)
         end
     

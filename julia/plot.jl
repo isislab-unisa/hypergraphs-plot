@@ -15,7 +15,12 @@ end
 
 function plot(h::Hypergraph; type="color-edge")
     generateFileJSON(h) #generate a json file into default path
-    plotting(JSON.json(JSON.parsefile("src/drawing/data.json")),type)
+
+    f = open("data.json","r")
+    s = read(f,String)
+    close(f)
+    plotting(s,type)
+
 end
 
 function plotting(JSON::String,type)

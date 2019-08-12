@@ -4,17 +4,14 @@ import {RadalHG} from "../classes/index"
 var grafo = {}
 var type;
 
-export function hgRadalPlot({ graph, json } = {}) {
+export function hgRadalPlot({ graph } = {}) {
+    console.log(graph)
     if (graph !== undefined) {
-        console.log("graph")
-        plotRadal(graph)
-    } else if (json !== undefined) {
-        console.log("json")
-        var graph = require("" + json)
-        plotRadal(graph)
-    } else {
-        var graph = require("./data.json");
-        plotRadal(graph)
+        plotRadal(graph);
+    }
+    else{
+        var graph = require("../../data.json");
+        plotRadal(graph);
     }
 }
 
