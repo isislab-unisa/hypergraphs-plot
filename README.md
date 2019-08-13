@@ -2,12 +2,9 @@
 A js library to visualize hypergraphs.
 
 
-| **Documentation** | **Build Status** |
+| **Build Status** |
 |---------------|--------------|
-|[![][docs-stable-img]][docs-stable-url] <br/> [![][docs-latest-img]][docs-dev-url] | [![Build Status][travis-img]][travis-url]  [![Coverage Status][codecov-img]][codecov-url] <br/> Linux and macOS |
-
-[docs-dev-url]: https://pszufe.github.io/SimpleHypergraphs.jl/dev
-[docs-stable-url]: https://pszufe.github.io/SimpleHypergraphs.jl/stable
+[![Build Status][travis-img]][travis-url]  [![Coverage Status][codecov-img]][codecov-url] <br/> Linux and macOS |
 
 [travis-img]: https://travis-ci.org/isislab-unisa/hypergraphs-plot.svg?branch=master
 [travis-url]: https://travis-ci.org/isislab-unisa/hypergraphs-plot
