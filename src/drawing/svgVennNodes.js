@@ -36,7 +36,6 @@ function plotVennNodes(graph) {
         }
         node["r"] = 5
     });
-    console.log(data1.nodes)
 
 
     var width = 800,
@@ -83,8 +82,6 @@ function plotVennNodes(graph) {
                 (d.sets.length == 1 ? "circle" : "intersection");
         })
         .attr('fill', function (d, i) {
-            console.log("@@@@@@@@ QUI @@@@@@@@@@@")
-            console.log(d)
             if (d.__key__ == "0")
                 return "white"
             else

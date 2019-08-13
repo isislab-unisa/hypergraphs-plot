@@ -25,10 +25,10 @@ end
 
 function plotting(JSON::String,type)
     if type=="venn"
-        venn(JSON)
+        plotVenn(JSON)
     elseif type=="color-edge"
-        colorEdge(JSON)
+        plotColorEdge(JSON)
     elseif type=="radal"
-        radal(JSON)
+        plotRadal(JSON)
     end
 end

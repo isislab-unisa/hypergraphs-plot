@@ -11,7 +11,7 @@ function generatehg(node_num=10, he_num=5)
     for i in 1:node_num
         for j in 1:he_num
             random= rand()
-            if random<= 1/3
+            if random<= 1/5
                 H[i,j]= 1
             end
         end
