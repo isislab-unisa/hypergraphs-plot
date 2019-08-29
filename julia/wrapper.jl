@@ -1,14 +1,14 @@
-function plotVenn(s::String)
-    w= widgetVenn(s)
+function plotVenn(data)
+    w= widgetVenn(data)
     display(w)
 end
 
-function plotColorEdge(s::String)
-    w= widgetColorEdge(s)
+function plotColorEdge(data)
+    w= widgetColorEdge(data)
     display(w)
 end
 
-function plotRadal(s::String)
-    w= widgetRadal(s)
+function plotRadal(data)
+    w= widgetRadal(data)
     display(w)
 end

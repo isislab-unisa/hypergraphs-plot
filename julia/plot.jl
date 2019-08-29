@@ -1,13 +1,14 @@
 using PyCall
 #=
-plot hypergraph with different layouts and visualizations
+plot hypergraphs with different visualizations
 
-type: extra_node, eulero_venn, matrix
-layout: spring_layout, circular_layout
+layout: color-edge, venn, radal
 
 params: h: Hyperhgraph
-        type: extra_node(default), eulero_venn, matrix
-        layout: spring_layout(default), circular_layout
+        type: color-edge(default), venn, radal
+
+example: plot(h, type="color-edge")
+         plot("data.json", type="venn")
 =#
 function plot(JSONString::String; type="color-edge")
     plotting(JSON.json(JSON.parsefile(JSONString)),type)
@@ -17,18 +18,19 @@ function plot(h::Hypergraph; type="color-edge")
     generateFileJSON(h) #generate a json file into default path
 
     f = open("data.json","r")
-    s = read(f,String)
+    data = read(f,String)
     close(f)
-    plotting(s,type)
+    plotting(data,type)
 
 end
 
-function plotting(JSON::String,type)
+function plotting(data, type)
     if type=="venn"
-        plotVenn(JSON)
+        plotVenn(data)
     elseif type=="color-edge"
-        plotColorEdge(JSON)
+        plotColorEdge(data)
     elseif type=="radal"
-        plotRadal(JSON)
+        plotRadal(data)
     end
 end
+

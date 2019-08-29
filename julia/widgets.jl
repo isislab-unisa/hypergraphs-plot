@@ -1,9 +1,9 @@
 struct Widget
-    type::String
-    body::String
+    type
+    body
 end
 
-function widgetColorEdge(s::String)
+function widgetColorEdge(data)
     w= Widget("colorEdge", """
     <head>
     <link rel="stylesheet" type="text/css" href="css/color-edge-style.css">
@@ -11,14 +11,14 @@ function widgetColorEdge(s::String)
     <div class="hg-plot"></div>
     <script src="./bundle.v1.0.js"></script>
     <script>
-    hgplot.drawing.hgColorEdgePlot({graph:"""*s*"""});
+    hgplot.drawing.hgColorEdgePlot({graph:"""*data*"""});
     </script>
     """)
 
     return w
 end
 
-function widgetVenn(s::String)
+function widgetVenn(data)
     w= Widget("venn", """
     <head>
     <link rel="stylesheet" type="text/css" href="css/venn-style.css">
@@ -26,14 +26,14 @@ function widgetVenn(s::String)
     <div id="venn"></div>
     <script src="./bundle.v1.0.js"></script>
     <script>
-    hgplot.drawing.hgVennNodesPlot({graph:"""*s*"""});
+    hgplot.drawing.hgVennNodesPlot({graph:"""*data*"""});
     </script>
     """)
 
     return w
 end
 
-function widgetRadal(s::String)
+function widgetRadal(data)
     w= Widget("radal", """
     <head>
     <link rel="stylesheet" type="text/css" href="css/radal-style.css">
@@ -41,7 +41,7 @@ function widgetRadal(s::String)
     <div class="radarChart"></div>
     <script src="./bundle.v1.0.js"></script>
     <script>
-    hgplot.drawing.hgRadalPlot({graph:"""*s*"""})
+    hgplot.drawing.hgRadalPlot({graph:"""*data*"""})
     </script>
     """)
 
