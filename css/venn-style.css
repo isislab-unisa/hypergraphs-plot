@@ -6,4 +6,6 @@
     padding: 2px;
     border: 0px;
     border-radius: 8px;
+    opacity: 1;
+    z-index: 5;
 }

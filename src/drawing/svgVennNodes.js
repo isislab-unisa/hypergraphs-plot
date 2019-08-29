@@ -221,7 +221,7 @@ function plotVennNodes(graph) {
 
     var tooltip = d3.select("body").append("div").attr("class", "venntooltip");
 
-    d3.selectAll("circle.node").on("mouseover", function (d, i) {
+    d3.selectAll("g.venn-circle-container circle.node").on("mouseover", function (d, i) {
         // Display a tooltip with the current size
         tooltip.transition().duration(400).style("opacity", .9);
         var node = d.name
