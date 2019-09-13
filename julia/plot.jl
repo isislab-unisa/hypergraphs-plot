@@ -11,7 +11,10 @@ example: plot(h, type="color-edge")
          plot("data.json", type="venn")
 =#
 function plot(JSONString::String; type="color-edge")
-    plotting(JSON.json(JSON.parsefile(JSONString)),type)
+    f = open(JSONString,"r")
+    data = read(f,String)
+    close(f)
+    plotting(data,type)
 end
 
 function plot(h::Hypergraph; type="color-edge")
