@@ -3,7 +3,7 @@ struct Widget
     body
 end
 
-function widgetColorEdge(data)
+function widgetColorEdge(data,Preferences)
     w= Widget("colorEdge", """
     <head>
     <link rel="stylesheet" type="text/css" href="css/color-edge-style.css">
@@ -11,7 +11,7 @@ function widgetColorEdge(data)
     <div class="hg-plot"></div>
     <script src="./bundle.v1.0.js"></script>
     <script>
-    hgplot.drawing.hgColorEdgePlot({graph:"""*data*"""});
+    hgplot.drawing.hgColorEdgePlot({graph:"""*data*"""},{Preferences:"""*JSON.json(Preferences)*"""});
     </script>
     """)
 

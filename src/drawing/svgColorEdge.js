@@ -7,38 +7,32 @@ import { isModuleDeclaration } from "@babel/types";
 var grafo = {}
 var type;
 
-export function hgColorEdgePlot({ graph} = {}) {
+export function hgColorEdgePlot({graph} = {}, {Preferences}={}) {
+    console.log(Preferences)
     console.log(graph);
     if (graph !== undefined) {
-        plotColorEdge(graph);
+        plotColorEdge(graph,Preferences);
     }
     else{
         var graph = require("../../data.json");
-        plotColorEdge(graph);
+        plotColorEdge(graph,Preferences);
     }
-    /*
-    if (graph !== undefined) {
-        console.log("graph")
-        plotColorEdge(graph)
-    } else if (json !== undefined) {
-        console.log("json")
-        var graph = require("" + json)
-        plotColorEdge(graph)
-    } else {
-        var graph = require("./data.json");
-        plotColorEdge(graph)
-    }*/
 }
 
-function plotColorEdge(graph) {
+function plotColorEdge(graph,Preferences) {
     type = "color-edge"
 
+    var nodeR=Number(Preferences["sizeNodes"]) , lNodeR = 0.2;   //raggio nodi e nodo iperarco
+    var colorNodes = Preferences["colorNodes"];
+    
+    console.log("NODER"+nodeR);
+    console.log("COLORNODES"+colorNodes);
     //var dataMarker = { id: 0, name: 'circle', path: 'M 0, 0  m -5, 0  a 5,5 0 1,0 10,0  a 5,5 0 1,0 -10,0', viewbox: '-6 -6 12 12' };
-    var nodeR = 10, lNodeR = 0.2;    //raggio nodi e nodo iperarco
+       
     //var nodeId = 0;
     var width = 1000, height = 1000;
 
-    var color = d3.scaleOrdinal(d3.schemeCategory10);
+    //var color = d3.scaleOrdinal(d3.schemeCategory10);
 
     //zoom handler
     var zoom = d3.zoom()
@@ -149,6 +143,16 @@ function plotColorEdge(graph) {
         links.push({ source: s, target: i }, { source: i, target: t });
         bilinks.push([s, i, t]);
     });
+
+
+    var colorEdges ={};
+    bilinks.forEach(function(element,i){
+        if(Preferences["colorEdges"]=="default")   
+            colorEdges[(element[2].linkid+element[2].id)+""]=getRandomColor();
+        else
+            colorEdges[(element[2].linkid+element[2].id)+""]=Preferences["colorEdges"];
+    });
+
     //links creation
     var link = svg.selectAll(".link")
         .data(bilinks)
@@ -163,7 +167,7 @@ function plotColorEdge(graph) {
                 return "null";
         })
         .style("stroke", function (d) {
-            return color(d[2].linkid+d[2].id);
+            return  colorEdges[(d[2].linkid+d[2].id)+""];          //color(d[2].linkid+d[2].id);
         });
 
     //node creation
@@ -193,7 +197,7 @@ function plotColorEdge(graph) {
             if (d.link) {
                 return "rgb(100,100,100)";
             } else {
-                return "#D3D3D3";
+                return colorNodes;
             }
         });
     //id text
@@ -370,4 +374,12 @@ function plotColorEdge(graph) {
     function zoomed() {
         svg.attr("transform", d3.event.transform);
     }
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
 }
