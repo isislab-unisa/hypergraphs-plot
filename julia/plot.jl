@@ -10,6 +10,9 @@ params: h: Hyperhgraph
 example: plot(h, type="color-edge")
          plot("data.json", type="venn")
 =#
+
+idColorEdge=0
+
 function plot(JSONString::String;type="color-edge",colorNodes="#D3D3D3",colorEdges="default",sizeNodes=10)
     Preferences=Dict()
     Preferences["colorNodes"]=colorNodes;
@@ -40,7 +43,8 @@ function plotting(data,Preferences,type)
     if type=="venn"
         plotVenn(data)
     elseif type=="color-edge"
-        plotColorEdge(data,Preferences)
+        global idColorEdge=idColorEdge+1
+        plotColorEdge(data,Preferences,idColorEdge)
     elseif type=="radal"
         plotRadal(data)
     end

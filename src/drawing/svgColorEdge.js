@@ -7,19 +7,20 @@ import { isModuleDeclaration } from "@babel/types";
 var grafo = {}
 var type;
 
-export function hgColorEdgePlot({graph} = {}, {Preferences}={}) {
-    console.log(Preferences)
+export function hgColorEdgePlot({graph} = {}, {Preferences}={}, {idColorEdge}) {
+    console.log(Preferences);
     console.log(graph);
+    console.log(idColorEdge);
     if (graph !== undefined) {
-        plotColorEdge(graph,Preferences);
+        plotColorEdge(graph,Preferences,idColorEdge);
     }
     else{
         var graph = require("../../data.json");
-        plotColorEdge(graph,Preferences);
+        plotColorEdge(graph,Preferences,idColorEdge);
     }
 }
 
-function plotColorEdge(graph,Preferences) {
+function plotColorEdge(graph,Preferences,idColorEdge) {
     type = "color-edge"
 
     var nodeR=Number(Preferences["sizeNodes"]) , lNodeR = 0.2;   //raggio nodi e nodo iperarco
@@ -46,7 +47,7 @@ function plotColorEdge(graph,Preferences) {
         .on("end", dragended);
 
     //svg creation
-    var svg = d3.select(".hg-plot")
+    var svg = d3.select(".hg-plot"+idColorEdge+"")
         .append("svg:svg")
         .attr("width", width)
         .attr("height", height)

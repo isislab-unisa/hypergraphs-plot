@@ -3,8 +3,8 @@ function plotVenn(data)
     display(w)
 end
 
-function plotColorEdge(data,Preferences)
-    w= widgetColorEdge(data,Preferences)
+function plotColorEdge(data,Preferences,idColorEdge)
+    w= widgetColorEdge(data,Preferences,idColorEdge)
     display(w)
 end
 
