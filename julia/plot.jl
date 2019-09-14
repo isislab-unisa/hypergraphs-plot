@@ -11,15 +11,14 @@ example: plot(h, type="color-edge")
          plot("data.json", type="venn")
 =#
 function plot(JSONString::String;type="color-edge",colorNodes="#D3D3D3",colorEdges="default",sizeNodes=10)
-    preferences=Dict()
-    preferences["colorNodes"]=colorNodes;
-    preferences["colorEdges"]=colorEdges;
-    preferences["sizeNodes"]=sizeNodes;
+    Preferences=Dict()
+    Preferences["colorNodes"]=colorNodes;
+    Preferences["colorEdges"]=colorEdges;
+    Preferences["sizeNodes"]=sizeNodes;
 
-    f = open(JSONString,"r")
-    data = read(f,String)
-    close(f)
-    plotting(data,preferences,type)
+    data = conversionJSON(JSONString)
+
+    plotting(data,Preferences,type)
 end
 
 function plot(h::Hypergraph;type="color-edge",colorNodes="#D3D3D3",colorEdges="default",sizeNodes=10)
