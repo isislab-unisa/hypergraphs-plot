@@ -1,5 +1,5 @@
 # hypergraphs-plot
-![alt text](https://github.com/isislab-unisa/hypergraphs-plot/blob/master/logo.png)
+![GitHub Logo](logo.jpeg)
 A js library to visualize hypergraphs.
 
 
