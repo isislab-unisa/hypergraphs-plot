@@ -1,11 +1,12 @@
 # hypergraphs-plot
 ![GitHub Logo](logo.jpeg)
+
 hypergraphs-plot is a js library to visualize hypergraphs.
 
 
 | **Documentation** | **Build Status** |
 |---------------|--------------|
-|... | [![Build Status][travis-img]][travis-url]  [![Coverage Status][codecov-img]][codecov-url] <br/> Linux and macOS |
+| soon | [![Build Status][travis-img]][travis-url]  [![Coverage Status][codecov-img]][codecov-url] <br/> Linux and macOS |
 
 [docs-dev-url]: https://pszufe.github.io/SimpleHypergraphs.jl/dev
 [docs-stable-url]: https://pszufe.github.io/SimpleHypergraphs.jl/stable
