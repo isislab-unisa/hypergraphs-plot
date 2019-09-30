@@ -11,7 +11,7 @@ function widgetColorEdge(data,preferences,idColorEdge)
     <div class="hg-plot"""*string(idColorEdge)*""""></div>
     <script src="./bundle.v1.0.js"></script>
     <script>
-    hgplot.drawing.hgColorEdgePlot({graph:"""*data*"""},{Preferences:"""*JSON.json(preferences)*"""},{idColorEdge:"""*"\""*string(idColorEdge)*"\""*"""});
+    hgplot.drawing.hgColorEdgePlot({graph:"""*data*"""},{preferences:"""*JSON.json(preferences)*"""},{idColorEdge:"""*"\""*string(idColorEdge)*"\""*"""});
     </script>
     """)
     return w
@@ -25,7 +25,7 @@ function widgetRadal(data,preferences,idRadal)
     <div class="radarChart"""*string(idRadal)*""""></div>
     <script src="./bundle.v1.0.js"></script>
     <script>
-    hgplot.drawing.hgRadalPlot({graph:"""*data*"""},{Preferences:"""*JSON.json(preferences)*"""},{idColorEdge:"""*"\""*string(idRadal)*"\""*"""});;
+    hgplot.drawing.hgRadalPlot({graph:"""*data*"""},{preferences:"""*JSON.json(preferences)*"""},{idRadal:"""*"\""*string(idRadal)*"\""*"""});;
     </script>
     """)
     return w
