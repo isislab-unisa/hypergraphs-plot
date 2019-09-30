@@ -1,4 +1,5 @@
 # hypergraphs-plot
+![alt text](https://github.com/isislab-unisa/hypergraphs-plot/blob/master/logo.png)
 A js library to visualize hypergraphs.
 
 
@@ -14,3 +15,17 @@ A js library to visualize hypergraphs.
 
 [codecov-img]: https://coveralls.io/repos/github/isislab-unisa/hypergraphs-plot/badge.svg?branch=master
 [codecov-url]: https://coveralls.io/github/isislab-unisa/hypergraphs-plot?branch=master
+
+
+##Installing
+Install the latest version of hypergraphs-plot with NPM
+
+```
+npm install https://github.com/isislab-unisa/hypergraphs-plot.git
+```
+
+Otherwise, download the [latest release](https://github.com/isislab-unisa/hypergraphs-plot/blob/master/bundle.v1.0.js).
+
+###Usage
+
+
