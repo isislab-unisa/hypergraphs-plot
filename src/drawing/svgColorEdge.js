@@ -7,24 +7,34 @@ import { isModuleDeclaration } from "@babel/types";
 var grafo = {}
 var type;
 
-export function hgColorEdgePlot({graph} = {}, {Preferences}={}, {idColorEdge}) {
-    console.log(Preferences);
+export function hgColorEdgePlot({graph} = {}, {preferences}={}, {idColorEdge}) {
+    console.log(preferences);
     console.log(graph);
     console.log(idColorEdge);
     if (graph !== undefined) {
-        plotColorEdge(graph,Preferences,idColorEdge);
+        plotColorEdge(graph,preferences,idColorEdge);
     }
     else{
         var graph = require("../../data.json");
-        plotColorEdge(graph,Preferences,idColorEdge);
+        plotColorEdge(graph,preferences,idColorEdge);
     }
 }
 
-function plotColorEdge(graph,Preferences,idColorEdge) {
+function plotColorEdge(graph,preferences,idColorEdge) {
     type = "color-edge"
 
-    var nodeR=Number(Preferences["sizeNodes"]) , lNodeR = 0.2;   //raggio nodi e nodo iperarco
-    var colorNodes = Preferences["colorNodes"];
+    var lNodeR= 0.2;
+    var nodeR;
+    if(preferences.sizeNodes=="default")
+        nodeR= 10;
+    else 
+        nodeR= Number(preferences.sizeNodes);
+    
+    var colorNodes;
+    if(preferences.colorNodes=="default")
+        colorNodes= "#D3D3D3";
+    else 
+        colorNodes= preferences.colorNodes;
     
     console.log("NODER"+nodeR);
     console.log("COLORNODES"+colorNodes);
@@ -148,10 +158,10 @@ function plotColorEdge(graph,Preferences,idColorEdge) {
 
     var colorEdges ={};
     bilinks.forEach(function(element,i){
-        if(Preferences["colorEdges"]=="default")   
+        if(preferences["colorEdges"]=="default")   
             colorEdges[(element[2].linkid+element[2].id)+""]=getRandomColor();
         else
-            colorEdges[(element[2].linkid+element[2].id)+""]=Preferences["colorEdges"];
+            colorEdges[(element[2].linkid+element[2].id)+""]=preferences["colorEdges"];
     });
 
     //links creation

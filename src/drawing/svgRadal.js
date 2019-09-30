@@ -4,18 +4,18 @@ import {RadalHG} from "../classes/index"
 var grafo = {}
 var type;
 
-export function hgRadalPlot({ graph } = {}) {
+export function hgRadalPlot({ graph } = {}, {preferences}={}, {idRadal}) {
     console.log(graph)
     if (graph !== undefined) {
-        plotRadal(graph);
+        plotRadal(graph,preferences,idRadal);
     }
     else{
         var graph = require("../../data.json");
-        plotRadal(graph);
+        plotRadal(graph,preferences,idRadal);
     }
 }
 
-function plotRadal(graph) {
+function plotRadal(graph,preferences,idRadal) {
     var offset=0;
     var radal = new RadalHG(graph.links,graph.nodes,graph.nodelinks);
     var nodes = radal.nodes;	//nodi
@@ -44,7 +44,11 @@ function plotRadal(graph) {
     var dictX = [];
     var dictY = [];
     console.log(start);
-    var color = d3.scaleOrdinal().range(["#FC74FD"]);
+    var color;
+    if(preferences.colorNodes=="default")
+        color= d3.scaleOrdinal().range(["#FC74FD"]);
+    else color= d3.scaleOrdinal().range([preferences.colorNodes]);
+    
     var radarChartOptions = {
         w: 800,
         h: 800,
@@ -57,7 +61,7 @@ function plotRadal(graph) {
     };
 
     //Call function to draw the Radar chart
-    RadarChart(".radarChart", data, radarChartOptions);
+    RadarChart(".radarChart"+idRadal, data, radarChartOptions);
 
 
     /////////// Inspired by the code of alangrafu ///////////
