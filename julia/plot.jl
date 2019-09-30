@@ -12,19 +12,20 @@ example: plot(h, type="color-edge")
 =#
 
 idColorEdge=0
+idRadal=0
 
-function plot(JSONString::String;type="color-edge",colorNodes="#D3D3D3",colorEdges="default",sizeNodes=10)
-    Preferences=Dict()
-    Preferences["colorNodes"]=colorNodes;
-    Preferences["colorEdges"]=colorEdges;
-    Preferences["sizeNodes"]=sizeNodes;
+function plot(JSONString::String;type="color-edge",colorNodes="default",colorEdges="default",sizeNodes="default")
+    preferences=Dict()
+    preferences["colorNodes"]=colorNodes;
+    preferences["colorEdges"]=colorEdges;
+    preferences["sizeNodes"]=sizeNodes;
 
     data = conversionJSON(JSONString)
 
-    plotting(data,Preferences,type)
+    plotting(data,preferences,type)
 end
 
-function plot(h::Hypergraph;type="color-edge",colorNodes="#D3D3D3",colorEdges="default",sizeNodes=10)
+function plot(h::Hypergraph;type="color-edge",colorNodes="default",colorEdges="default",sizeNodes="default")
     preferences=Dict()
     preferences["colorNodes"]=colorNodes;
     preferences["colorEdges"]=colorEdges;
@@ -39,14 +40,15 @@ function plot(h::Hypergraph;type="color-edge",colorNodes="#D3D3D3",colorEdges="d
 
 end
 
-function plotting(data,Preferences,type)
+function plotting(data,preferences,type)
     if type=="venn"
         plotVenn(data)
     elseif type=="color-edge"
         global idColorEdge=idColorEdge+1
-        plotColorEdge(data,Preferences,idColorEdge)
+        plotColorEdge(data,preferences,idColorEdge)
     elseif type=="radal"
-        plotRadal(data)
+        global idRadal=idRadal+1
+        plotRadal(data,preferences,idRadal)
     end
 end
 
